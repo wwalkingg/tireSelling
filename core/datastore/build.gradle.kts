@@ -13,5 +13,6 @@ dependencies {
 
     implementation(libs.kotlinx.coroutines.android)
 
-    implementation(libs.androidx.dataStore.core)
+//    implementation(libs.androidx.dataStore.core)
+    implementation(libs.androidx.dataStore.preferences)
 }
