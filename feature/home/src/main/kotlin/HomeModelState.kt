@@ -1,0 +1,2 @@
+class HomeModelState : ModelState() {
+}
