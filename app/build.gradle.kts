@@ -38,6 +38,13 @@ android {
 
 dependencies {
     implementation(project(":feature:home"))
+    implementation(project(":feature:auth"))
+    implementation(project(":feature:course-all"))
+    implementation(project(":feature:course-detail"))
+    implementation(project(":feature:coach-all"))
+    implementation(project(":feature:coach-detail"))
+    implementation(project(":feature:partner-find"))
+    implementation(project(":feature:person-health"))
 
     implementation(project(":core:common"))
     implementation(project(":core:ui"))
@@ -62,6 +69,4 @@ dependencies {
     implementation(libs.androidx.profileinstaller)
 
     implementation(libs.coil.kt)
-    implementation(libs.decompose)
-    implementation(libs.decompose.compose.android)
 }

@@ -6,6 +6,10 @@ import core.design_system.Icons
 
 class HomeComponent(componentContext: ComponentContext) : ComponentContext by componentContext {
     internal val model = HomeModelState()
+
+    internal fun navigationTo(){
+
+    }
 }
 
 internal enum class BottomMenu(

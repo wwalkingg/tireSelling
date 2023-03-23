@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.android.feature.home"
+    namespace = "com.example.android.feature.coach-all"
 }
 
 dependencies {

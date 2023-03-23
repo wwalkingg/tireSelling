@@ -27,5 +27,12 @@ include(":core:ui")
 include(":core:component-base")
 
 include(":feature")
+include(":feature:auth")
 include(":feature:home")
+include(":feature:course-all")
+include(":feature:course-detail")
+include(":feature:coach-all")
+include(":feature:coach-detail")
+include(":feature:partner-find")
+include(":feature:person-health")
  

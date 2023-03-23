@@ -8,4 +8,6 @@ android {
 
 dependencies {
     implementation(libs.kotlinx.coroutines.android)
+    api(libs.decompose)
+    api(libs.decompose.compose.android)
 }
