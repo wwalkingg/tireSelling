@@ -5,9 +5,9 @@ plugins {
 }
 
 android {
-    namespace = "com.example.android.feature.course-all"
+    namespace = "com.example.android.feature.course_all"
 }
 
 dependencies {
-//    implementation(libs.androidx.compose.material3.windowSizeClass)
+    implementation(project(":core:network"))
 }

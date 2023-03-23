@@ -1,13 +1,17 @@
 package feature.home
 
-import LocalRootSnackBarHostState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.material3.*
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -26,12 +30,14 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, component: HomeComponent) {
-    val rootSnackBarHostState = LocalRootSnackBarHostState.current
     val scope = rememberCoroutineScope()
     Scaffold(
         modifier,
         bottomBar = {
-            BottomBar(modifier = Modifier.fillMaxWidth(), BottomMenu.values()[component.model.pagerState.currentPage]) {
+            BottomBar(
+                modifier = Modifier.fillMaxWidth(),
+                BottomMenu.values()[component.model.pagerState.currentPage]
+            ) {
                 scope.launch {
                     component.model.pagerState.animateScrollToPage(it.ordinal)
                 }
@@ -41,7 +47,9 @@ fun HomeScreen(modifier: Modifier = Modifier, component: HomeComponent) {
         HorizontalPager(
             4,
             state = component.model.pagerState,
-            modifier = Modifier.padding(padding).fillMaxSize()
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxSize()
         ) {
             when (it) {
                 0 -> RecommendScreen(component = RecommendComponent(component))

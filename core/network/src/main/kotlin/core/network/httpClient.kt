@@ -9,7 +9,8 @@ import kotlinx.serialization.json.Json
 
 private val json = Json { ignoreUnknownKeys = true }
 //val token =
-val baseUrl = "http://172.18.5.33:8082/"
+val baseUrl = "http://localhost:8082"
+//val baseUrl = "http://172.18.5.33:8082/"
 //val baseUrl = "http://lnmath.buzz:9021/"
 val httpClient = HttpClient(CIO) {
     defaultRequest {

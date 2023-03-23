@@ -20,9 +20,15 @@ import feature.home.recommend.FunctionalMenu.*
 @Composable
 fun RecommendScreen(modifier: Modifier = Modifier, component: RecommendComponent) {
     Scaffold(modifier, topBar = { TopBar { } }) { padding ->
-        Column(modifier = Modifier.padding(padding).fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxSize()
+        ) {
             Swiper(
-                modifier = Modifier.fillMaxWidth().height(140.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(140.dp),
                 list = List(10) {
                     SwiperResp(
                         id = it,
@@ -30,15 +36,32 @@ fun RecommendScreen(modifier: Modifier = Modifier, component: RecommendComponent
                         createTime = ""
                     )
                 })
-            FunctionalMenus(modifier = Modifier.padding(5.dp).fillMaxWidth(), onClick = {
+            FunctionalMenus(modifier = Modifier
+                .padding(5.dp)
+                .fillMaxWidth(), onClick = {
                 when (it) {
-                    AllCourse -> {}
-                    PersonalHealth -> {}
-                    TODO -> {}
-                    FindPartner -> {}
+                    AllCourse -> {
+                        component.onCourseAllFunctionalMenuClick()
+                    }
+
+                    PersonalHealth -> {
+                        component.onPersonHealthFunctionalMenuClick()
+                    }
+
+                    Coach -> {
+                        component.onCoachAllFunctionalMenuClick()
+                    }
+
+                    FindPartner -> {
+                        component.onPartnerFindFunctionalMenuClick()
+                    }
                 }
             })
-            Recommends(modifier = Modifier.padding(10.dp).fillMaxWidth())
+            Recommends(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth()
+            )
 
         }
     }
@@ -46,13 +69,21 @@ fun RecommendScreen(modifier: Modifier = Modifier, component: RecommendComponent
 
 @Composable
 private fun TopBar(modifier: Modifier = Modifier, onSearchClick: () -> Unit) {
-    Box(modifier = modifier.fillMaxWidth().height(50.dp).padding(8.dp)) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .padding(8.dp)
+    ) {
         Image(
             painter = painterResource(Images.logo),
             contentDescription = null,
-            modifier = Modifier.align(
-                Alignment.Center
-            ).fillMaxHeight().padding(4.dp)
+            modifier = Modifier
+                .align(
+                    Alignment.Center
+                )
+                .fillMaxHeight()
+                .padding(4.dp)
         )
         IconButton(onClick = onSearchClick, modifier = Modifier.align(Alignment.CenterEnd)) {
             Icon(

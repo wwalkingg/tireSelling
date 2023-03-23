@@ -1,6 +1,6 @@
 package core.design_system
 
-import com.example.android.designsystem.R
+import com.example.android.design_system.R
 
 object Icons {
     val calendar = R.drawable.ic_calendar
@@ -27,4 +27,7 @@ object Icons {
     val questionDuotone = R.drawable.ic_question_duotone
     val bookmarks = R.drawable.ic_bookmarks
     val bookmarksDuotone = R.drawable.ic_bookmarks_duotone
+    val caretLeft = R.drawable.ic_caret_left
+    val funnel = R.drawable.ic_funnel
+    val check = R.drawable.ic_check
 }

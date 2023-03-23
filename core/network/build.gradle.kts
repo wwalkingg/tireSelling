@@ -8,7 +8,7 @@ android {
     lint {
         checkDependencies = true
     }
-    namespace = "com.example.android.designsystem"
+    namespace = "com.example.android.network"
 }
 
 dependencies {

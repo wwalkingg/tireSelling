@@ -1,6 +1,6 @@
 package com.example.android
 
-import LocalRootSnackBarHostState
+import core.design_system.component.LocalRootSnackBarHostState
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent

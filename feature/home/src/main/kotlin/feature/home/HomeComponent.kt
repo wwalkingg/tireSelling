@@ -2,14 +2,15 @@ package feature.home
 
 import HomeModelState
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.stack.push
+import core.common.navigation.Config
+import core.common.navigation.rootNavigation
 import core.design_system.Icons
 
-class HomeComponent(componentContext: ComponentContext) : ComponentContext by componentContext {
+class HomeComponent(val componentContext: ComponentContext) :
+    ComponentContext by componentContext {
     internal val model = HomeModelState()
 
-    internal fun navigationTo(){
-
-    }
 }
 
 internal enum class BottomMenu(

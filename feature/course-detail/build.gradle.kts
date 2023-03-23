@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.android.feature.course-detail"
+    namespace = "com.example.android.feature.course_detail"
 }
 
 dependencies {

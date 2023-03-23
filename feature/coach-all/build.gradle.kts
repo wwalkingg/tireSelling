@@ -5,9 +5,10 @@ plugins {
 }
 
 android {
-    namespace = "com.example.android.feature.coach-all"
+    namespace = "com.example.android.feature.coach_all"
 }
 
 dependencies {
 //    implementation(libs.androidx.compose.material3.windowSizeClass)
+    implementation(project(":core:network"))
 }

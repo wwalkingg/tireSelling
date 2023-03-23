@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.android.feature.partner-find"
+    namespace = "com.example.android.feature.partner_find"
 }
 
 dependencies {

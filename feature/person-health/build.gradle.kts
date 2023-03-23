@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.android.feature.person-health"
+    namespace = "com.example.android.feature.person_health"
 }
 
 dependencies {

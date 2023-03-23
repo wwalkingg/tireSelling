@@ -3,7 +3,14 @@ package feature.home.recommend
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -27,12 +34,17 @@ internal fun FunctionalMenus(modifier: Modifier = Modifier, onClick: (Functional
     ) {
         FunctionalMenu.values().forEach {
             Column(
-                modifier = Modifier.clip(MaterialTheme.shapes.medium).clickable { onClick(it) }.padding(5.dp),
+                modifier = Modifier
+                    .clip(MaterialTheme.shapes.medium)
+                    .clickable { onClick(it) }
+                    .padding(5.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onPrimaryContainer) {
                     Icon(
-                        modifier = Modifier.size(42.dp).clip(CircleShape)
+                        modifier = Modifier
+                            .size(42.dp)
+                            .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.primaryContainer)
                             .padding(10.dp),
                         painter = painterResource(it.icon),
@@ -55,6 +67,6 @@ internal enum class FunctionalMenu(
 ) {
     AllCourse("全部课程", Icons.graduationCapDuotone),
     PersonalHealth("个人健康", Icons.babyDuotone),
-    TODO("教练", Icons.chalkboardTeacherDuotone),
+    Coach("教练", Icons.chalkboardTeacherDuotone),
     FindPartner("寻找伙伴", Icons.globeHemisphereEastDuotone);
 }
