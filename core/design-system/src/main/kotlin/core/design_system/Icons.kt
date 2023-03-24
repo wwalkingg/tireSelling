@@ -1,5 +1,6 @@
 package core.design_system
 
+import androidx.compose.material.icons.materialIcon
 import com.example.android.design_system.R
 
 object Icons {
@@ -33,3 +34,4 @@ object Icons {
     val heartStraight = R.drawable.ic_heart_straight
     val heartStraightFill = R.drawable.ic_heart_straight_fill
 }
+

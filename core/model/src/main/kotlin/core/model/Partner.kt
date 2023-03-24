@@ -16,3 +16,11 @@ data class Partner(
     val height: Int?,
     val weight: Double?
 )
+
+@Serializable
+data class PartnerSimple(
+    val id: Int,
+    val name: String,
+    val avatar: String,
+    val createTime: String?
+)

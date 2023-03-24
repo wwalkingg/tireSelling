@@ -16,6 +16,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.router.stack.pop
+import core.common.navigation.rootNavigation
 import core.design_system.Icons
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,7 +71,7 @@ internal fun TopBar(
             }
         },
         navigationIcon = {
-            IconButton(onClick = { }) {
+            IconButton(onClick = { rootNavigation.pop() }) {
                 Icon(painterResource(Icons.caretLeft), contentDescription = null)
             }
         },

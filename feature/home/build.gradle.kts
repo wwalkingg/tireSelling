@@ -10,4 +10,6 @@ android {
 
 dependencies {
 //    implementation(libs.androidx.compose.material3.windowSizeClass)
+    implementation(project(":core:network"))
+    implementation(project(":feature:my-subscribe"))
 }

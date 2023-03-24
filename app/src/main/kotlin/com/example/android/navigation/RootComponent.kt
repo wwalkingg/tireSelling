@@ -5,7 +5,6 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
-import com.russhwolf.settings.string
 import core.common.navigation.Config
 import core.common.navigation.rootNavigation
 import feature.all_course.CourseAllComponent
@@ -17,8 +16,11 @@ import feature.coach_detail.CoachDetailComponent
 import feature.course_all.CoachAllComponent
 import feature.course_detail.CourseDetailComponent
 import feature.home.HomeComponent
+import feature.my_collect.MyCollectComponent
+import feature.my_subscribe.MySubscribeComponent
 import feature.partner_find.PartnerFindComponent
 import feature.person_health.PersonHealthComponent
+import feature.search.SearchComponent
 import settings
 
 
@@ -43,7 +45,7 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
         return when (config) {
             is Config.RootConfig.Home -> Child.Home(HomeComponent(componentContext))
             Config.RootConfig.CoachAll -> Child.CoachAll(CoachAllComponent(componentContext))
-            Config.RootConfig.CoachDetail -> Child.CoachDetail(CoachDetailComponent(componentContext))
+            is Config.RootConfig.CoachDetail -> Child.CoachDetail(CoachDetailComponent(componentContext, config.id))
             Config.RootConfig.CourseAll -> Child.CourseAll(CourseAllComponent(componentContext))
             is Config.RootConfig.CourseDetail -> Child.CourseDetail(
                 CourseDetailComponent(
@@ -65,6 +67,10 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
                     componentContext
                 )
             )
+
+            Config.RootConfig.MyCollect -> Child.MyCollect(MyCollectComponent(componentContext))
+            Config.RootConfig.MySubscribe -> Child.MySubscribe(MySubscribeComponent(componentContext))
+            Config.RootConfig.Search -> Child.Search(SearchComponent(componentContext))
         }
     }
 
@@ -81,6 +87,9 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
         data class Register(val component: RegisterComponent) : Child
         data class UserInfoModifier(val component: UserInfoModifierComponent) : Child
         data class PasswordModifier(val component: PasswordModifierComponent) : Child
+        data class MyCollect(val component: MyCollectComponent) : Child
+        data class MySubscribe(val component: MySubscribeComponent) : Child
+        data class Search(val component: SearchComponent) : Child
     }
 
 }

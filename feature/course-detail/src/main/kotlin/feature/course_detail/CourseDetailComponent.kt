@@ -27,6 +27,8 @@ class CourseDetailModelState(val id: Int) : ModelState() {
     private val _courseLoadStateFlow = MutableStateFlow<CourseLoadState>(CourseLoadState.Loading)
     val courseLoadStateFlow = _courseLoadStateFlow.asStateFlow()
 
+    var courseId: Int? = null
+
     init {
         loadCourse()
     }
@@ -36,6 +38,7 @@ class CourseDetailModelState(val id: Int) : ModelState() {
             _courseLoadStateFlow.emit(CourseLoadState.Loading)
             httpClient.get("/filter/getCoursesById?courseId=$id")
                 .success<UserCourseResp> {
+                    courseId = it.course.id
                     _courseLoadStateFlow.emit(CourseLoadState.Success(it))
                 }
                 .error {
@@ -45,9 +48,15 @@ class CourseDetailModelState(val id: Int) : ModelState() {
     }
 
     fun collect() {
+        if (courseId == null) {
+            coroutineScope.launch {
+                rootSnackBarHostState.showSnackbar("请等待加载")
+            }
+            return
+        }
         isCollect = true
         coroutineScope.launch {
-            httpClient.get("/joinPlan").success {
+            httpClient.post("/filter/joinPlan") { parameter("courseId", courseId) }.success {
                 rootSnackBarHostState.showSnackbar("收藏成功")
             }.error { rootSnackBarHostState.showSnackbar("收藏失败") }
         }

@@ -3,6 +3,8 @@ package feature.course_detail
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,7 +17,7 @@ import core.model.Course
 
 @Composable
 fun CourseDetailContent(modifier: Modifier = Modifier, course: Course) {
-    Column(modifier, verticalArrangement = Arrangement.spacedBy(5.dp)) {
+    Column(modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(5.dp)) {
         AsyncImage(model = baseUrl + course.cover, contentDescription = null, modifier = Modifier.fillMaxWidth())
         Text(course.title, style = MaterialTheme.typography.titleLarge)
         Text(

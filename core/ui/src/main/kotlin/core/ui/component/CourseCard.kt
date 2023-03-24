@@ -1,4 +1,4 @@
-package core.ui
+package core.ui.component
 
 import core.model.Course
 
@@ -13,7 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import core.common.baseUrl
 
 
 @Composable
@@ -22,6 +25,12 @@ fun CourseCard(modifier: Modifier = Modifier, course: Course, onClick: (id: Int)
         Box(
             modifier = Modifier.width(114.dp).clip(MaterialTheme.shapes.small).fillMaxHeight().background(Color.Gray)
         ) {
+            AsyncImage(
+                model = baseUrl + course.cover,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
             Text(
                 difficultyText[course.difficulty],
                 color = difficultyColor[course.difficulty],

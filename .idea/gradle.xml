@@ -16,7 +16,6 @@
             </builds>
           </compositeBuild>
         </compositeConfiguration>
-        <option name="testRunner" value="GRADLE" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="#JAVA_HOME" />
         <option name="modules">
@@ -41,8 +40,11 @@
             <option value="$PROJECT_DIR$/feature/course-all" />
             <option value="$PROJECT_DIR$/feature/course-detail" />
             <option value="$PROJECT_DIR$/feature/home" />
+            <option value="$PROJECT_DIR$/feature/my-collect" />
+            <option value="$PROJECT_DIR$/feature/my-subscribe" />
             <option value="$PROJECT_DIR$/feature/partner-find" />
             <option value="$PROJECT_DIR$/feature/person-health" />
+            <option value="$PROJECT_DIR$/feature/search" />
           </set>
         </option>
       </GradleProjectSettings>

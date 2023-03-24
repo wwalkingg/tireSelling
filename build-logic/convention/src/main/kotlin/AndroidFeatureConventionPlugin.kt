@@ -34,12 +34,14 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 add("implementation", project(":core:data"))
                 add("implementation", project(":core:common"))
                 add("implementation", project(":core:datastore"))
+                add("implementation", project(":core:component-base"))
 
                 add("implementation", libs.findLibrary("coil.kt").get())
                 add("implementation", libs.findLibrary("coil.kt.compose").get())
                 add("implementation", libs.findLibrary("androidx.lifecycle.runtimeCompose").get())
                 add("implementation", libs.findLibrary("kotlinx.coroutines.android").get())
-                add("implementation", project(":core:component-base"))
+                add("implementation", libs.findLibrary("kotlinx.collections.immutable").get())
+
             }
         }
     }

@@ -44,6 +44,9 @@ dependencies {
     implementation(project(":feature:coach-detail"))
     implementation(project(":feature:partner-find"))
     implementation(project(":feature:person-health"))
+    implementation(project(":feature:my-collect"))
+    implementation(project(":feature:my-subscribe"))
+    implementation(project(":feature:search"))
 
     implementation(project(":core:common"))
     implementation(project(":core:ui"))

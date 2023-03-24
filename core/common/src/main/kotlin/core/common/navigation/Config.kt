@@ -12,13 +12,13 @@ interface Config : Parcelable {
         object CourseAll : RootConfig
 
         @Parcelize
-        data class CourseDetail(val id:Int) : RootConfig
+        data class CourseDetail(val id: Int) : RootConfig
 
         @Parcelize
         object CoachAll : RootConfig
 
         @Parcelize
-        object CoachDetail : RootConfig
+        data class CoachDetail(val id: Int) : RootConfig
 
         @Parcelize
         object PartnerFind : RootConfig
@@ -34,6 +34,15 @@ interface Config : Parcelable {
 
         @Parcelize
         object Login : RootConfig
+
+        @Parcelize
+        object MyCollect : RootConfig
+
+        @Parcelize
+        object MySubscribe : RootConfig
+
+        @Parcelize
+        object Search : RootConfig
     }
 
 }

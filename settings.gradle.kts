@@ -35,4 +35,6 @@ include(":feature:coach-all")
 include(":feature:coach-detail")
 include(":feature:partner-find")
 include(":feature:person-health")
- 
+include(":feature:my-collect")
+include(":feature:my-subscribe")
+include(":feature:search")

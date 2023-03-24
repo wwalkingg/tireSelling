@@ -7,19 +7,30 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.router.stack.push
+import core.common.navigation.Config
+import core.common.navigation.rootNavigation
 import core.design_system.Icons
 import core.design_system.Images
+import core.design_system.component.loading
 import core.model.SwiperResp
+import core.ui.status_page.ErrorPage
 import feature.home.recommend.FunctionalMenu.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecommendScreen(modifier: Modifier = Modifier, component: RecommendComponent) {
-    Scaffold(modifier, topBar = { TopBar { } }) { padding ->
+    Scaffold(modifier, topBar = {
+        TopBar {
+            rootNavigation.push(Config.RootConfig.Search)
+        }
+    }) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
@@ -57,12 +68,19 @@ fun RecommendScreen(modifier: Modifier = Modifier, component: RecommendComponent
                     }
                 }
             })
-            Recommends(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxWidth()
-            )
-
+            val loadRecommendUIState by component.modelState.loadRecommendUIStateFlow.collectAsState()
+            when (loadRecommendUIState) {
+                LoadRecommendUIState.Error -> ErrorPage { component.modelState.loadRecommend() }
+                LoadRecommendUIState.Loading -> Box(Modifier.fillMaxSize().loading())
+                is LoadRecommendUIState.Success -> {
+                    Recommends(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .fillMaxWidth(),
+                        (loadRecommendUIState as LoadRecommendUIState.Success).data
+                    )
+                }
+            }
         }
     }
 }
