@@ -10,6 +10,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.push
+import core.common.navigation.Config
 import core.common.navigation.rootNavigation
 import core.design_system.Icons
 import core.design_system.component.loading
@@ -63,9 +65,13 @@ fun LoginScreen(modifier: Modifier = Modifier, component: LoginComponent) {
                 placeholder = { Text("请输入你的密码") },
                 visualTransformation = PasswordVisualTransformation()
             )
+            Spacer(Modifier.height(10.dp))
             Button(
                 onClick = { component.modelState.login() }) {
                 Text("登录")
+            }
+            TextButton(onClick = { rootNavigation.push(Config.RootConfig.Register) }) {
+                Text("还没有账号，去注册")
             }
         }
     }
@@ -73,12 +79,8 @@ fun LoginScreen(modifier: Modifier = Modifier, component: LoginComponent) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar() {
+private fun TopBar() {
     TopAppBar(title = {
         Text("登录")
-    }, navigationIcon = {
-        IconButton(onClick = { rootNavigation.pop() }) {
-            Icon(painterResource(Icons.caretLeft), contentDescription = null)
-        }
     })
 }

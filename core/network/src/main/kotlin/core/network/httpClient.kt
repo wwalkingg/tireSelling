@@ -18,7 +18,7 @@ val httpClient = HttpClient(CIO) {
     defaultRequest {
         url(baseUrl)
         headers {
-            append("Authorization", "token")
+            append("Authorization", token)
         }
     }
     install(ContentNegotiation) {

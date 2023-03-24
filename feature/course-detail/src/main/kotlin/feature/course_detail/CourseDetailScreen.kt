@@ -1,13 +1,11 @@
 package feature.course_detail
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.arkivanov.decompose.router.stack.pop
@@ -21,7 +19,23 @@ import core.ui.status_page.ErrorPage
 fun CourseDetailScreen(modifier: Modifier = Modifier, component: CourseDetailComponent) {
     val courseLoadState by component.modelState.courseLoadStateFlow.collectAsState()
     Scaffold(
-        topBar = { TopBar() }
+        topBar = { TopBar() },
+        bottomBar = {
+            BottomBar(
+                isCollect = component.modelState.isCollect,
+                onCollectClick = {
+                    if (component.modelState.isCollect) {
+                        component.modelState.cancelCollect()
+                    } else component.modelState.collect()
+                },
+                isSubscribe = component.modelState.isSubscribe,
+                onSubscribeClick = {
+                    if (component.modelState.isSubscribe) {
+                        component.modelState.cancelSubscribe()
+                    } else component.modelState.subscribe()
+                }
+            )
+        }
     ) {
         Column(modifier = modifier.padding(it)) {
             when (courseLoadState) {
@@ -34,7 +48,7 @@ fun CourseDetailScreen(modifier: Modifier = Modifier, component: CourseDetailCom
                 }
 
                 is CourseLoadState.Success -> {
-                    CourseDetailContent(course = (courseLoadState as CourseLoadState.Success).course)
+                    CourseDetailContent(course = (courseLoadState as CourseLoadState.Success).userCourseResp.course)
                 }
             }
         }
@@ -49,4 +63,27 @@ fun TopBar(modifier: Modifier = Modifier) {
             Icon(painterResource(Icons.caretLeft), contentDescription = null)
         }
     })
+}
+
+@Composable
+fun BottomBar(
+    modifier: Modifier = Modifier,
+    isCollect: Boolean,
+    onCollectClick: () -> Unit,
+    isSubscribe: Boolean,
+    onSubscribeClick: () -> Unit
+) {
+    Row(modifier, horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+        IconButton(onClick = onCollectClick) {
+            if (isCollect)
+                Icon(painterResource(Icons.heartStraightFill), contentDescription = null)
+            else Icon(painterResource(Icons.heartStraight), contentDescription = null)
+        }
+
+        Button(onClick = onSubscribeClick) {
+            if (isSubscribe)
+                Text("已订阅")
+            else Text("订阅")
+        }
+    }
 }

@@ -30,4 +30,6 @@ object Icons {
     val caretLeft = R.drawable.ic_caret_left
     val funnel = R.drawable.ic_funnel
     val check = R.drawable.ic_check
+    val heartStraight = R.drawable.ic_heart_straight
+    val heartStraightFill = R.drawable.ic_heart_straight_fill
 }

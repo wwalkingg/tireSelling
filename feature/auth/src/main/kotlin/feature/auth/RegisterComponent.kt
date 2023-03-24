@@ -15,7 +15,6 @@ import core.network.utils.error
 import core.network.utils.success
 import httpClient
 import io.ktor.client.request.*
-import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -25,30 +24,32 @@ import kotlinx.coroutines.launch
 import settings
 
 class RegisterComponent(componentContext: ComponentContext) : ComponentContext by componentContext {
+    internal val modelState = RegisterModelState()
 }
 
 class RegisterModelState : ModelState() {
     var id by mutableStateOf("")
     var password by mutableStateOf("")
+    var confirmPassword by mutableStateOf("")
 
-    private val _loginUIStateFlow = MutableStateFlow<LoginUIState>(LoginUIState.Wait)
-    val loginUIStateFlow = _loginUIStateFlow.asStateFlow()
-    fun login() {
+    private val _registerUIStateFlow = MutableStateFlow<RegisterUIState>(RegisterUIState.Wait)
+    val registerUIStateFlow = _registerUIStateFlow.asStateFlow()
+    fun register() {
         coroutineScope.launch {
-            _loginUIStateFlow.emit(LoginUIState.Loading)
-            httpClient.post("/login") {
+            _registerUIStateFlow.emit(RegisterUIState.Loading)
+            httpClient.post("/register") {
                 contentType(ContentType.Application.Json)
                 setBody(LoginParameter(id, password))
             }.success<LoginResp> {
-                settings.set("token", it.token)
-                _loginUIStateFlow.emit(LoginUIState.Success(it))
+                settings["token"] = it.token
+                _registerUIStateFlow.emit(RegisterUIState.Success(it))
                 launch(Dispatchers.Main) {
                     rootNavigation.replaceAll(Config.RootConfig.Home)
                 }
             }.error {
-                _loginUIStateFlow.emit(LoginUIState.Error("登录失败"))
+                _registerUIStateFlow.emit(RegisterUIState.Error("注册失败"))
                 delay(2000L)
-                _loginUIStateFlow.emit(LoginUIState.Wait)
+                _registerUIStateFlow.emit(RegisterUIState.Wait)
             }
         }
     }
@@ -58,5 +59,5 @@ sealed interface RegisterUIState {
     object Wait : RegisterUIState
     object Loading : RegisterUIState
     data class Error(val message: String) : RegisterUIState
-    data class Success(val loginResp: LoginResp) : RegisterUIState
+    data class Success(val registerResp: LoginResp) : RegisterUIState
 }

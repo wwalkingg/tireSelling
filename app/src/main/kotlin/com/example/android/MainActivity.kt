@@ -18,10 +18,11 @@ import com.arkivanov.decompose.defaultComponentContext
 import com.example.android.navigation.RootComponent
 import com.example.android.navigation.RootContent
 import com.example.android.ui.theme.AndroidTheme
+import core.design_system.component.rootSnackBarHostState
 
 class MainActivity : ComponentActivity() {
 
-    private val snackBarHostState = SnackbarHostState()
+    private val snackBarHostState = rootSnackBarHostState
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {

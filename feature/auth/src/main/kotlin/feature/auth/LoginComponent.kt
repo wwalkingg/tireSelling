@@ -31,8 +31,8 @@ class LoginComponent(componentContext: ComponentContext) : ComponentContext by c
 }
 
 class LoginModelState : ModelState() {
-    var id by mutableStateOf("")
-    var password by mutableStateOf("")
+    var id by mutableStateOf("123456")
+    var password by mutableStateOf("147258")
 
     private val _loginUIStateFlow = MutableStateFlow<LoginUIState>(LoginUIState.Wait)
     val loginUIStateFlow = _loginUIStateFlow.asStateFlow()
@@ -43,7 +43,7 @@ class LoginModelState : ModelState() {
                 contentType(ContentType.Application.Json)
                 setBody(LoginParameter(id, password))
             }.success<LoginResp> {
-                settings.set("token", it.token)
+                settings["token"] = it.token
                 _loginUIStateFlow.emit(LoginUIState.Success(it))
                 launch(Dispatchers.Main) {
                     rootNavigation.replaceAll(Config.RootConfig.Home)
