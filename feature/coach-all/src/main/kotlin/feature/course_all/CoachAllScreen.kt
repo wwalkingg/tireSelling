@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import core.common.navigation.Config
 import core.common.navigation.rootNavigation
@@ -58,5 +59,9 @@ fun CoachAllScreen(modifier: Modifier = Modifier, component: CoachAllComponent) 
 private fun TopBar() {
     TopAppBar(
         title = { Text("教练") },
-        navigationIcon = { Icon(painterResource(Icons.caretLeft), contentDescription = null) })
+        navigationIcon = {
+            IconButton(onClick = { rootNavigation.pop() }) {
+                Icon(painterResource(Icons.caretLeft), contentDescription = null)
+            }
+        })
 }
