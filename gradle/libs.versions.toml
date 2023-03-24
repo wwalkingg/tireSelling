@@ -54,7 +54,12 @@ turbine = "0.12.1"
 decompose = "1.0.0"
 ktor = "2.2.3"
 logback="1.2.11"
+multiplatform-settings = "1.0.0"
 [libraries]
+multiplatformSettings = { group = "com.russhwolf", name = "multiplatform-settings", version.ref = "multiplatform-settings" }
+multiplatformSettings-noArg = { group = "com.russhwolf", name = "multiplatform-settings-no-arg", version.ref = "multiplatform-settings" }
+multiplatformSettings-coroutines =  { group = "com.russhwolf", name = "multiplatform-settings-coroutines", version.ref = "multiplatform-settings" }
+
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
 decompose = { group = "com.arkivanov.decompose", name = "decompose", version.ref = "decompose" }
 decompose-compose-multiplatform = { group = "com.arkivanov.decompose", name = "extensions-compose-jetbrains", version.ref = "decompose" }

@@ -1,9 +1,11 @@
 package com.example.android.navigation
 
+import android.util.Log
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
+import com.russhwolf.settings.string
 import core.common.navigation.Config
 import core.common.navigation.rootNavigation
 import feature.all_course.CourseAllComponent
@@ -17,14 +19,22 @@ import feature.course_detail.CourseDetailComponent
 import feature.home.HomeComponent
 import feature.partner_find.PartnerFindComponent
 import feature.person_health.PersonHealthComponent
+import settings
 
 
 class RootComponent(componentContext: ComponentContext) : ComponentContext by componentContext {
+    var isLogin: Boolean = false
+
+    init {
+        val token = settings.getStringOrNull("token")
+        isLogin = !token.isNullOrBlank()
+        Log.i("RootComponent", "token: $token")
+    }
 
     private val _childStack =
         childStack(
             source = rootNavigation,
-            initialConfiguration = Config.RootConfig.Home,
+            initialConfiguration = if (isLogin) Config.RootConfig.Home else Config.RootConfig.Login,
             handleBackButton = true,
             childFactory = ::createChild,
         )
@@ -35,9 +45,9 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
             Config.RootConfig.CoachAll -> Child.CoachAll(CoachAllComponent(componentContext))
             Config.RootConfig.CoachDetail -> Child.CoachDetail(CoachDetailComponent(componentContext))
             Config.RootConfig.CourseAll -> Child.CourseAll(CourseAllComponent(componentContext))
-            Config.RootConfig.CourseDetail -> Child.CourseDetail(
+            is Config.RootConfig.CourseDetail -> Child.CourseDetail(
                 CourseDetailComponent(
-                    componentContext
+                    componentContext, id = config.id
                 )
             )
 

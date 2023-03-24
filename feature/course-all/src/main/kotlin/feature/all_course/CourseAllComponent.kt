@@ -5,6 +5,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.stack.push
+import core.common.navigation.Config
+import core.common.navigation.rootNavigation
 import core.model.Course
 import core.model.CourseSortType
 import core.network.utils.error
@@ -17,13 +20,23 @@ import kotlinx.coroutines.launch
 
 class CourseAllComponent(componentContext: ComponentContext) :
     ComponentContext by componentContext {
+    fun navigationTo(courseDetail: Config.RootConfig.CourseDetail) {
+        rootNavigation.push(courseDetail)
+    }
+
     internal val modelState = CourseAllModelState()
 }
 
 internal class CourseAllModelState : ModelState() {
     var orderMethods by mutableStateOf(OrderMethods.UploadTime)
         private set
-    var selectedCourseTypeId by mutableStateOf(0) // 0 代表全部
+    private var _selectedCourseTypeId by mutableStateOf(0) // 0 代表全部
+    var selectedCourseTypeId
+        get() = _selectedCourseTypeId
+        set(value) {
+            _selectedCourseTypeId = value
+            loadCourseAll()
+        }
 
     private val _loadAllCourseFlow =
         MutableStateFlow<LoadAllCourseUIState>(LoadAllCourseUIState.Loading)
@@ -48,6 +61,7 @@ internal class CourseAllModelState : ModelState() {
 
     fun loadCourseAll() {
         coroutineScope.launch {
+            _loadAllCourseFlow.emit(LoadAllCourseUIState.Loading)
             val isLoadAllCourse = selectedCourseTypeId == 0
             val url =
                 if (isLoadAllCourse) "/course/getAllCourses" else "/getAllCoursesByType?type=${selectedCourseTypeId}"
@@ -64,7 +78,7 @@ internal class CourseAllModelState : ModelState() {
             _loadCourseTypeFlow.emit(LoadCourseTypeUIState.Loading)
             httpClient.get("/getAllCourseTypes").success<List<CourseSortType>> {
                 _loadCourseTypeFlow.emit(
-                    LoadCourseTypeUIState.Success(it)
+                    LoadCourseTypeUIState.Success(listOf(CourseSortType(id = 0, typeName = "全部")) + it)
                 )
             }.error {
                 _loadCourseTypeFlow.emit(LoadCourseTypeUIState.Error)

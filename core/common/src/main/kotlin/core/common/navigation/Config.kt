@@ -12,7 +12,7 @@ interface Config : Parcelable {
         object CourseAll : RootConfig
 
         @Parcelize
-        object CourseDetail : RootConfig
+        data class CourseDetail(val id:Int) : RootConfig
 
         @Parcelize
         object CoachAll : RootConfig

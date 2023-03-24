@@ -50,6 +50,7 @@ dependencies {
     implementation(project(":core:design-system"))
     implementation(project(":core:data"))
     implementation(project(":core:model"))
+    implementation(project(":core:datastore"))
 
     debugImplementation(libs.androidx.compose.ui.testManifest)
 

@@ -14,5 +14,8 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
 //    implementation(libs.androidx.dataStore.core)
-    implementation(libs.androidx.dataStore.preferences)
+//    implementation(libs.androidx.dataStore.preferences)
+    api(libs.multiplatformSettings)
+    api(libs.multiplatformSettings.noArg)
+    api(libs.multiplatformSettings.coroutines)
 }
