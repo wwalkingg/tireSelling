@@ -71,6 +71,7 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
             Config.RootConfig.MyCollect -> Child.MyCollect(MyCollectComponent(componentContext))
             Config.RootConfig.MySubscribe -> Child.MySubscribe(MySubscribeComponent(componentContext))
             Config.RootConfig.Search -> Child.Search(SearchComponent(componentContext))
+            Config.RootConfig.PasswordModifier -> Child.PasswordModifier(PasswordModifierComponent(componentContext))
         }
     }
 

@@ -2,7 +2,11 @@ package feature.home.me
 
 import ModelState
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.essenty.lifecycle.subscribe
+import core.common.navigation.Config
+import core.common.navigation.rootNavigation
 import core.model.UserInfo
 import core.network.utils.error
 import core.network.utils.success
@@ -11,6 +15,7 @@ import io.ktor.client.request.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import settings
 
 class MeComponent(componentContext: ComponentContext) : ComponentContext by componentContext {
 
@@ -40,11 +45,20 @@ internal class MeModelState : ModelState() {
         }
     }
 
-    fun onCollectClick() {}
+    fun onCollectClick() {
+        rootNavigation.push(Config.RootConfig.MyCollect)
+    }
 
-    fun onModifierUserInfoClick() {}
+    fun onModifierUserInfoClick() {
+        rootNavigation.push(Config.RootConfig.UserInfoModifier)
+    }
 
-    fun onModifierPasswordClick() {}
+    fun onModifierPasswordClick() {
+        rootNavigation.push(Config.RootConfig.PasswordModifier)
+    }
 
-    fun onLogoutClick() {}
+    fun onLogoutClick() {
+        settings.remove("token")
+        rootNavigation.replaceAll(Config.RootConfig.Login)
+    }
 }

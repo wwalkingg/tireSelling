@@ -30,6 +30,9 @@ interface Config : Parcelable {
         object UserInfoModifier : RootConfig
 
         @Parcelize
+        object PasswordModifier : RootConfig
+
+        @Parcelize
         object Register : RootConfig
 
         @Parcelize
