@@ -13,8 +13,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import baseUrl
 import coil.compose.AsyncImage
+import core.common.baseUrl
 import core.design_system.component.loading
 import core.model.UserInfo
 

@@ -35,4 +35,5 @@ dependencies {
 
     implementation(project(":core:model"))
     implementation(project(":core:datastore"))
+    implementation(project(":core:common"))
 }
