@@ -27,7 +27,7 @@ internal class MyCollectModelState : ModelState() {
     fun loadMyPlan() {
         coroutineScope.launch {
             _loadMyPlanUIStateFlow.emit(LoadMyPlanUIState.Loading)
-            httpClient.get("/myPlan").success<List<Course>> {
+            httpClient.get("/filter/myPlan").success<List<Course>> {
                 _loadMyPlanUIStateFlow.emit(LoadMyPlanUIState.Success(it))
             }.error {
                 _loadMyPlanUIStateFlow.emit(LoadMyPlanUIState.Error)

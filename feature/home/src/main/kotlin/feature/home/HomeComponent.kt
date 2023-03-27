@@ -1,16 +1,16 @@
 package feature.home
 
-import HomeModelState
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.pager.PagerState
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.router.stack.push
-import core.common.navigation.Config
-import core.common.navigation.rootNavigation
+import com.arkivanov.essenty.instancekeeper.getOrCreate
 import core.design_system.Icons
 
-class HomeComponent(val componentContext: ComponentContext) :
+class HomeComponent(componentContext: ComponentContext) :
     ComponentContext by componentContext {
-    internal val model = HomeModelState()
-
+    internal val model = instanceKeeper.getOrCreate { HomeModelState() }
+    @OptIn(ExperimentalFoundationApi::class)
+    val pagerState = PagerState(0)
 }
 
 internal enum class BottomMenu(

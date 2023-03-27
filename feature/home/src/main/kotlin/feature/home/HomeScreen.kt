@@ -1,10 +1,7 @@
 package feature.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -12,6 +9,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.arkivanov.decompose.router.stack.push
 import core.common.navigation.Config
 import core.common.navigation.rootNavigation
@@ -30,9 +28,9 @@ import kotlinx.coroutines.launch
 fun HomeScreen(modifier: Modifier = Modifier, component: HomeComponent) {
     val scope = rememberCoroutineScope()
     val menu = BottomMenu.values()[
-        if (component.model.pagerState.currentPage > 1)
-            component.model.pagerState.currentPage + 1
-        else component.model.pagerState.currentPage
+        if (component.pagerState.currentPage > 1)
+            component.pagerState.currentPage + 1
+        else component.pagerState.currentPage
     ]
     Scaffold(
         modifier,
@@ -43,11 +41,11 @@ fun HomeScreen(modifier: Modifier = Modifier, component: HomeComponent) {
             ) {
                 scope.launch {
                     when (it) {
-                        BottomMenu.Recommend -> component.model.pagerState.animateScrollToPage(0)
-                        BottomMenu.Plan -> component.model.pagerState.animateScrollToPage(1)
+                        BottomMenu.Recommend -> component.pagerState.animateScrollToPage(0)
+                        BottomMenu.Plan -> component.pagerState.animateScrollToPage(1)
                         BottomMenu.Person -> rootNavigation.push(Config.RootConfig.PersonHealth)
-                        BottomMenu.Statistics -> component.model.pagerState.animateScrollToPage(2)
-                        BottomMenu.User -> component.model.pagerState.animateScrollToPage(3)
+                        BottomMenu.Statistics -> component.pagerState.animateScrollToPage(2)
+                        BottomMenu.User -> component.pagerState.animateScrollToPage(3)
                     }
                 }
             }
@@ -55,7 +53,7 @@ fun HomeScreen(modifier: Modifier = Modifier, component: HomeComponent) {
     ) { padding ->
         HorizontalPager(
             4,
-            state = component.model.pagerState,
+            state = component.pagerState,
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()

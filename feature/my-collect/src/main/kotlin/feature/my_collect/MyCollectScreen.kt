@@ -15,13 +15,14 @@ import core.common.navigation.Config
 import core.common.navigation.rootNavigation
 import core.design_system.component.loading
 import core.ui.component.CourseCard
+import core.ui.component.NavigationTopBar
 import core.ui.status_page.ErrorPage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyCollectScreen(modifier: Modifier = Modifier, component: MyCollectComponent) {
     val loadMyCollectUIState by component.modelState.loadMyPlanUIStateFlow.collectAsState()
-    Scaffold(topBar = { TopBar() }) { padding ->
+    Scaffold(topBar = { NavigationTopBar(title = "我的收藏") }) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             when (loadMyCollectUIState) {
                 LoadMyPlanUIState.Error -> {
@@ -48,12 +49,4 @@ fun MyCollectScreen(modifier: Modifier = Modifier, component: MyCollectComponent
             }
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopBar() {
-    TopAppBar(title = {
-        Text("我的收藏")
-    })
 }
