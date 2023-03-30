@@ -1,7 +1,6 @@
 package com.example.android.navigation
 
-import HomeComponent
-import com.arkivanov.decompose.Child
+import com.example.feature.home.HomeComponent
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
