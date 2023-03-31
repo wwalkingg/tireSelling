@@ -3,6 +3,8 @@ package com.example.feature.home.category
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -12,13 +14,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.android.core.model.Product
 import java.lang.Integer.min
 
 @Composable
-fun CategoryItem(modifier: Modifier, product: Product, onClick: () -> Unit) {
-    Column(modifier.clip(MaterialTheme.shapes.medium).clickable { onClick() }, horizontalAlignment = Alignment.CenterHorizontally) {
+fun CategoryItem(
+    modifier: Modifier,
+    product: Product,
+    onClick: () -> Unit,
+    contentPadding: PaddingValues = PaddingValues(0.dp)
+) {
+    Column(
+        modifier
+            .clip(MaterialTheme.shapes.medium)
+            .clickable { onClick() }
+            .padding(contentPadding)
+        ,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         AsyncImage(
             modifier = Modifier
                 .weight(1f)

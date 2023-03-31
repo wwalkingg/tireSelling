@@ -2,13 +2,22 @@ package com.example.feature.home.recommends
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -23,10 +32,28 @@ fun RecommendsTopBar() {
             .padding(10.dp)
     ) {
         CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onPrimary) {
-            Image(
-                modifier = Modifier.fillMaxWidth(0.4f),
-                painter = painterResource(id = Images.logo), contentDescription = null
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    modifier = Modifier.fillMaxWidth(0.4f),
+                    painter = painterResource(id = Images.logo), contentDescription = null
+                )
+                TextButton(
+                    onClick = { /*TODO*/ },
+                    colors = ButtonDefaults.textButtonColors(containerColor = MaterialTheme.colorScheme.inversePrimary)
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Rounded.Search,
+                            contentDescription = null
+                        )
+                        Text(text = "点击搜索")
+                    }
+                }
+            }
         }
     }
 }

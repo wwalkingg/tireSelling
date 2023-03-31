@@ -3,6 +3,7 @@ package com.example.feature.home.recommends
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.unit.dp
 import com.example.feature.home.category.CategoryItem
 
@@ -36,10 +36,9 @@ fun RecommendsScreen(modifier: Modifier = Modifier, component: RecommendsCompone
                 .background(
                     Brush.verticalGradient(
                         0f to MaterialTheme.colorScheme.primary,
-                        40f to Color.Unspecified,
+                        10f to Color.Unspecified,
                         startY = 0f,
-                        endY = 300.0f,
-                        tileMode = TileMode.Clamp
+                        endY = 800.0f
                     )
                 )
         ) {
@@ -48,9 +47,9 @@ fun RecommendsScreen(modifier: Modifier = Modifier, component: RecommendsCompone
                     .padding(10.dp)
                     .clip(MaterialTheme.shapes.small)
                     .background(MaterialTheme.colorScheme.background)
-                    .height(80.dp)
+                    .height(100.dp)
                     .fillMaxWidth(),
-                list = List(3) { SwiperData("") }
+                list = List(3) { SwiperData("") },
             )
             HotInfoTitle()
             LazyVerticalGrid(
@@ -60,14 +59,24 @@ fun RecommendsScreen(modifier: Modifier = Modifier, component: RecommendsCompone
                     .background(MaterialTheme.colorScheme.onPrimary)
                     .padding(10.dp),
                 columns = GridCells.Fixed(5),
-                verticalArrangement = Arrangement.spacedBy(5.dp)
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+                horizontalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 items(items = component.modelState.hotProduct) {
-                    CategoryItem(modifier = Modifier.height(50.dp), product = it, onClick = {})
+                    CategoryItem(
+                        modifier = Modifier.height(70.dp),
+                        product = it,
+                        onClick = {},
+                        contentPadding = PaddingValues(2.dp)
+                    )
                 }
             }
 
-            SkillBlock(modifier = Modifier.padding(10.dp).fillMaxWidth())
+            SkillBlock(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth()
+            )
         }
     }
 }

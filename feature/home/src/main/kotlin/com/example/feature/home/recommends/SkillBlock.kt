@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -38,8 +40,11 @@ fun SkillBlock(modifier: Modifier = Modifier) {
     ) {
         Title()
         Spacer(modifier = Modifier.height(5.dp))
-        Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-            CompositionLocalProvider(LocalTextStyle provides MaterialTheme.typography.bodySmall) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(3.dp)
+        ) {
+            CompositionLocalProvider(LocalTextStyle provides MaterialTheme.typography.bodyLarge) {
                 Text(
                     text = "从种子到收成：提高农民收成的几种技术",
                     maxLines = 1,
@@ -65,18 +70,18 @@ private fun Title() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = "农技课堂", style = MaterialTheme.typography.titleSmall)
-        SmallTextButton(
-            onClick = {}
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "更多", style = MaterialTheme.typography.labelSmall)
-                Icon(
-                    Icons.Default.KeyboardArrowRight,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp)
-                )
-            }
+        CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.primary) {
+            Text(text = "农技课堂", style = MaterialTheme.typography.titleLarge)
+            AssistChip(onClick = { }, label = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(text = "更多", style = MaterialTheme.typography.labelMedium)
+                    Icon(
+                        Icons.Default.KeyboardArrowRight,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+            })
         }
     }
 }

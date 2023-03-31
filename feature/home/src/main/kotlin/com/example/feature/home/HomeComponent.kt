@@ -21,6 +21,7 @@ class HomeComponent(componentContext: ComponentContext) : ComponentContext by co
     internal val categoryComponent = CategoryComponent(childContext("category"))
     internal val meComponent = MeComponent(childContext("Me"))
     internal val recommendsComponent = RecommendsComponent(childContext("Recommends"))
+
 }
 
 internal class HomeModelState : ModelState() {

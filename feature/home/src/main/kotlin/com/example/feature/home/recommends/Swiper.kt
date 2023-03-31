@@ -30,7 +30,11 @@ data class SwiperData(val imgUrl: String)
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun Swiper(modifier: Modifier = Modifier, list: List<SwiperData>) {
+internal fun Swiper(
+    modifier: Modifier = Modifier,
+    list: List<SwiperData>,
+    scale: Float = 12 / 5f
+) {
     val state = rememberPagerState(0)
     LaunchedEffect(Unit) {
         while (true) {
@@ -50,7 +54,7 @@ internal fun Swiper(modifier: Modifier = Modifier, list: List<SwiperData>) {
                 model = "https://picsum.photos/200/300",
                 modifier = Modifier.fillMaxSize(),
                 contentDescription = null,
-                contentScale = ContentScale.FillBounds
+                contentScale = ContentScale.Crop
             )
         }
         HorizontalPagerIndicator(

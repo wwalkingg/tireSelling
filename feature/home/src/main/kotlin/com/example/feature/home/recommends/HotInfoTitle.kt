@@ -23,13 +23,13 @@ internal fun HotInfoTitle() {
         Icon(
             painter = painterResource(id = Icons.hotInfo),
             contentDescription = null,
-            modifier = Modifier.size(16.dp),
+            modifier = Modifier.size(18.dp),
             tint = MaterialTheme.colorScheme.error
         )
         Spacer(modifier = Modifier.padding(2.dp))
         Text(
             text = "热门产品",
-            style = MaterialTheme.typography.titleSmall,
+            style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.error
         )
     }

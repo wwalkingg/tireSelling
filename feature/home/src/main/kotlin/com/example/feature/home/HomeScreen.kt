@@ -25,7 +25,8 @@ fun HomeScreen(modifier: Modifier = Modifier, component: HomeComponent) {
         Column(Modifier.padding(padding)) {
             HorizontalPager(
                 pageCount = BottomMenus.values().size,
-                state = component.modelState.pagerState
+                state = component.modelState.pagerState,
+                userScrollEnabled = false
             ) {
                 when (it) {
                     0 -> RecommendsScreen(component = component.recommendsComponent)
