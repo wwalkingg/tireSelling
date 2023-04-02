@@ -1,5 +1,6 @@
 package com.example.feature.home.recommends
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -22,7 +23,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlin.math.absoluteValue
 import kotlin.math.sign
 
@@ -32,15 +35,16 @@ data class SwiperData(val imgUrl: String)
 @Composable
 internal fun Swiper(
     modifier: Modifier = Modifier,
-    list: List<SwiperData>,
-    scale: Float = 12 / 5f
+    list: PersistentList<SwiperData>,
+    delay: Long = 3000L
 ) {
     val state = rememberPagerState(0)
-    LaunchedEffect(Unit) {
+    LaunchedEffect(list) {
         while (true) {
-            repeat(list.size) {
-                state.animateScrollToPage(it)
-                delay(3000L)
+            if (isActive) {
+                delay(delay)
+                Log.i("Swiper", "Swiper:$isActive")
+                state.animateScrollToPage((state.currentPage + 1) % list.size)
             }
         }
     }

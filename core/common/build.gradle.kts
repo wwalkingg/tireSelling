@@ -1,5 +1,6 @@
 plugins {
     id("convention.android.library")
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -8,4 +9,6 @@ android {
 
 dependencies {
     implementation(libs.kotlinx.coroutines.android)
+    api(libs.decompose)
+    api(libs.decompose.compose.android)
 }

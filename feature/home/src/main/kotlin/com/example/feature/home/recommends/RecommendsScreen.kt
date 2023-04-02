@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.feature.home.category.CategoryItem
+import kotlinx.collections.immutable.toPersistentList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,7 +50,7 @@ fun RecommendsScreen(modifier: Modifier = Modifier, component: RecommendsCompone
                     .background(MaterialTheme.colorScheme.background)
                     .height(100.dp)
                     .fillMaxWidth(),
-                list = List(3) { SwiperData("") },
+                list = List(3) { SwiperData("") }.toPersistentList(),
             )
             HotInfoTitle()
             LazyVerticalGrid(
