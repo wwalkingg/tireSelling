@@ -16,9 +16,7 @@ internal class CategoryModelState : ModelState() {
     val categorySorts = CategorySort.fakeData
     var selectedCategorySort by mutableStateOf(1)
 
-    private val categorySortAndProducts = mutableMapOf<Int, List<Product>>(
-        1 to Product.fakeData
-    )
+    private val categorySortAndProducts = emptyList<Product>()
 
-    val shownProducts get() = categorySortAndProducts[selectedCategorySort] ?: listOf()
+    val shownProducts get() = categorySortAndProducts[selectedCategorySort]
 }
