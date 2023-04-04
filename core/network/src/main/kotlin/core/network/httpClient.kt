@@ -17,7 +17,7 @@ import kotlinx.serialization.json.Json
 private val json = Json { ignoreUnknownKeys = true }
 
 val token = settings.getStringOrNull("token") ?: ""
-internal val httpClient = HttpClient(CIO) {
+val httpClient = HttpClient(CIO) {
     defaultRequest {
         url(baseUrl)
     }
@@ -32,7 +32,7 @@ internal val httpClient = HttpClient(CIO) {
     install(Logging)
 }
 
-internal fun HttpRequestBuilder.withToken() {
+fun HttpRequestBuilder.withToken() {
     headers {
         append("Authorization", token)
     }

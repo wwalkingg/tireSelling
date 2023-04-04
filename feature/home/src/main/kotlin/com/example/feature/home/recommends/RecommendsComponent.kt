@@ -2,10 +2,12 @@ package com.example.feature.home.recommends
 
 import ModelState
 import com.arkivanov.decompose.ComponentContext
-import com.example.android.core.model.ArticleOnlyTitle
-import com.example.android.core.model.Product
+import com.example.android.core.model.Category
+import httpClient
+import io.ktor.client.request.get
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class RecommendsComponent(componentContext: ComponentContext) :
     ComponentContext by componentContext {
@@ -13,31 +15,23 @@ class RecommendsComponent(componentContext: ComponentContext) :
 }
 
 internal class RecommendsModelState : ModelState() {
-    private val _loadHotProductUIStateFlow =
-        MutableStateFlow<LoadHotProductUIState>(LoadHotProductUIState.Loading)
-    val loadHotProductUIStateFlow = _loadHotProductUIStateFlow.asStateFlow()
+    private val _loadHotCategoriesUIStateFlow =
+        MutableStateFlow<LoadUIState<List<Category>>>(LoadUIState.Loading)
+    val loadHotCategoriesUIStateFlow = _loadHotCategoriesUIStateFlow.asStateFlow()
 
-    private val _loadRecommendArticlesUIStateFlow =
-        MutableStateFlow<LoadRecommendArticlesUIState>(LoadRecommendArticlesUIState.Loading)
-    val loadRecommendArticlesUIStateFlow = _loadRecommendArticlesUIStateFlow.asStateFlow()
+    fun loadCategories() {
+        coroutineScope.launch {
+            _loadHotCategoriesUIStateFlow.emit(LoadUIState.Loading)
+            httpClient.get("/categories")
+        }
 
+    }
 
 }
 
-internal sealed interface LoadHotProductUIState {
-    object Loading : LoadHotProductUIState
-    data class Loaded(val hotProduct: List<Product>) : LoadHotProductUIState
-    data class Error(val error: Throwable) : LoadHotProductUIState
-}
 
-internal sealed interface LoadRecommendArticlesUIState {
-    object Loading : LoadRecommendArticlesUIState
-    data class Loaded(val recommendArticles: List<ArticleOnlyTitle>) : LoadRecommendArticlesUIState
-    data class Error(val error: Throwable) : LoadRecommendArticlesUIState
-}
-
-internal sealed interface LoadRecommendProductsUIState{
-    object Loading : LoadRecommendProductsUIState
-    data class Loaded(val recommendProducts: List<Product>) : LoadRecommendProductsUIState
-    data class Error(val error: Throwable) : LoadRecommendProductsUIState
+sealed interface LoadUIState<out T> {
+    object Loading : LoadUIState<Nothing>
+    data class Loaded<out T>(val data: T) : LoadUIState<T>
+    data class Error(val error: Throwable) : LoadUIState<Nothing>
 }

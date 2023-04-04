@@ -25,7 +25,7 @@ import kotlinx.collections.immutable.toPersistentList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RecommendsScreen(modifier: Modifier = Modifier, component: RecommendsComponent) {
+fun RecommendsScreen(component: RecommendsComponent) {
     Scaffold(
         topBar = {
             RecommendsTopBar()
@@ -52,27 +52,7 @@ fun RecommendsScreen(modifier: Modifier = Modifier, component: RecommendsCompone
                     .fillMaxWidth(),
                 list = List(3) { SwiperData("") }.toPersistentList(),
             )
-            HotInfoTitle()
-            LazyVerticalGrid(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clip(MaterialTheme.shapes.medium)
-                    .background(MaterialTheme.colorScheme.onPrimary)
-                    .padding(10.dp),
-                columns = GridCells.Fixed(5),
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-                horizontalArrangement = Arrangement.spacedBy(2.dp)
-            ) {
-                items(items = component.modelState.hotProduct) {
-                    CategoryItem(
-                        modifier = Modifier.height(70.dp),
-                        product = it,
-                        onClick = {},
-                        contentPadding = PaddingValues(2.dp)
-                    )
-                }
-            }
-
+//            HotCategoriesContainer(categories = )
             SkillBlock(
                 modifier = Modifier
                     .padding(10.dp)
