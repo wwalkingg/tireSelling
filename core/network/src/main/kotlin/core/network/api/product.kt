@@ -1,7 +1,7 @@
 package core.network.api
 
-import Resp
 import com.example.android.core.model.Product
+import core.network.Resp
 import httpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get

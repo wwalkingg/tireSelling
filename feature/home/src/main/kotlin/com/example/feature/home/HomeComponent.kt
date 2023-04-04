@@ -1,6 +1,6 @@
 package com.example.feature.home
 
-import ModelState
+import core.component_base.ModelState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.DefaultMonotonicFrameClock

@@ -12,7 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.android.core.model.Category
@@ -23,6 +25,7 @@ fun CategoryItem(
     modifier: Modifier,
     category: Category,
     onClick: () -> Unit,
+    imgBackground:Color = MaterialTheme.colorScheme.primary,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     Column(
@@ -36,7 +39,7 @@ fun CategoryItem(
             modifier = Modifier
                 .weight(1f)
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primaryContainer)
+                .background(imgBackground)
                 .layout { measurable, constraints ->
                     val min = min(constraints.maxWidth, constraints.maxHeight)
                     val placeable =
@@ -46,6 +49,11 @@ fun CategoryItem(
                     }
                 }, model = category.categoryImg, contentDescription = null
         )
-        Text(text = category.name, style = MaterialTheme.typography.labelMedium)
+        Text(
+            text = category.name,
+            style = MaterialTheme.typography.labelMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }

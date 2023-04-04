@@ -1,6 +1,6 @@
 package com.example.feature.home.category
 
-import ModelState
+import core.component_base.ModelState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue

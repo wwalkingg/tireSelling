@@ -3,15 +3,19 @@ package com.example.feature.home.recommends
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -24,17 +28,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.android.core.model.Category
+import androidx.compose.ui.unit.sp
+import com.example.android.core.model.Article
 import com.example.core.design_system.Icons
-import com.example.feature.home.category.CategoryItem
 import kotlinx.collections.immutable.PersistentList
 
 @Composable
-fun HotCategoriesContainer(
+fun HotArticlesContainer(
     modifier: Modifier = Modifier,
-    categories: PersistentList<Category>,
-    onCategoryClick: (category: Category) -> Unit
+    articles: PersistentList<Article>,
+    onArticleClick: (article: Article) -> Unit,
+    onMoreClick: () -> Unit
 ) {
     Column(
         modifier
@@ -56,7 +62,7 @@ fun HotCategoriesContainer(
             )
             Spacer(modifier = Modifier.padding(2.dp))
             Text(
-                text = "热门分类",
+                text = "农技咨询",
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.error,
                 fontStyle = FontStyle.Italic,
@@ -66,19 +72,35 @@ fun HotCategoriesContainer(
         Spacer(modifier = Modifier.height(5.dp))
         // content
         CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onPrimaryContainer) {
-            LazyVerticalGrid(
-                modifier = Modifier,
-                columns = GridCells.Fixed(5),
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-                horizontalArrangement = Arrangement.spacedBy(2.dp)
+            Column(
+                Modifier
+                    .padding(start = 10.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
-                items(items = categories, key = { it.id }) {
-                    CategoryItem(
-                        modifier = Modifier.height(70.dp),
-                        category = it,
-                        onClick = { onCategoryClick(it) },
-                        contentPadding = PaddingValues(2.dp)
-                    )
+                articles.forEachIndexed { index, article ->
+                    Row(
+                        modifier = Modifier.height(IntrinsicSize.Max),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = (index + 1).toString(),
+                            fontSize = 14.sp,
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .aspectRatio(1f)
+                                .fillMaxWidth()
+                                .padding(1.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.background),
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.width(2.dp))
+                        Text(
+                            text = article.title,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }
