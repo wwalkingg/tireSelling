@@ -43,7 +43,6 @@ fun MeScreen(modifier: Modifier = Modifier, component: MeComponent) {
             SettingItem(title = "我的积分")
             SettingItem(title = "我的订单", description = "我的订单")
             SettingItem(title = "退出登录")
-
         }
     }
 }
