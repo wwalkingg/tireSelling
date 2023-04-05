@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -33,13 +32,6 @@ fun ProductItem(
         Box(
             Modifier
                 .weight(1f)
-                .layout { measurable, constraints ->
-                    println(constraints)
-                    val placeable = measurable.measure(constraints)
-                    layout(placeable.width, placeable.height) {
-                        placeable.placeRelative(0, 0)
-                    }
-                }
                 .clip(MaterialTheme.shapes.medium)
         ) {
             AsyncImage(
@@ -48,7 +40,7 @@ fun ProductItem(
                 model = product.image,
                 contentDescription = null,
             )
-            if(product.isHot) {
+            if (product.isHot) {
                 Text(
                     text = "热门",
                     modifier = Modifier

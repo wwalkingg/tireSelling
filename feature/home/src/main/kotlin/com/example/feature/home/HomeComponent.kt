@@ -1,9 +1,7 @@
 package com.example.feature.home
 
-import core.component_base.ModelState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.runtime.DefaultMonotonicFrameClock
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -12,8 +10,9 @@ import com.arkivanov.decompose.childContext
 import com.example.feature.home.category.CategoryComponent
 import com.example.feature.home.me.MeComponent
 import com.example.feature.home.recommends.RecommendsComponent
+import core.component_base.ModelState
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class HomeComponent(componentContext: ComponentContext) : ComponentContext by componentContext {
     internal val modelState = HomeModelState()
@@ -32,16 +31,12 @@ internal class HomeModelState : ModelState() {
     @OptIn(ExperimentalFoundationApi::class)
     var selected: BottomMenus
         set(value) {
-            coroutineScope.launch {
-                withContext(DefaultMonotonicFrameClock){
-                    pagerState.animateScrollToPage(BottomMenus.values().indexOf(value))
-                }
+            MainScope().launch {
+                pagerState.scrollToPage(BottomMenus.values().indexOf(value))
             }
             _selected = value
         }
         get() = _selected
-
-
 }
 
 internal sealed interface LoadUserInfoUIState {
