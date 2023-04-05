@@ -13,6 +13,8 @@ data class Product(
     val price: Double,
     val description: String,
     val createTime: String,
+    val isDeleted: Boolean,
+    val isHot: Boolean,
     @Transient
-    val isDeleted: Boolean = false
+    val isFavorite: Boolean = false
 )

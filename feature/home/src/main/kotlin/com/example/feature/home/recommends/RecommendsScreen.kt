@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -20,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.android.core.model.Article
 import com.example.android.core.model.Category
+import com.example.android.core.model.Product
 import core.component_base.LoadUIState
 import kotlinx.collections.immutable.toPersistentList
 
@@ -39,6 +42,7 @@ fun RecommendsScreen(component: RecommendsComponent) {
                         endY = 800.0f
                     )
                 )
+                .verticalScroll(rememberScrollState())
         ) {
             Swiper(
                 modifier = Modifier
@@ -57,6 +61,7 @@ fun RecommendsScreen(component: RecommendsComponent) {
 
                 is LoadUIState.Loaded -> {
                     HotCategoriesContainer(
+                        modifier = Modifier,
                         categories = (loadHotCategoriesUIState as LoadUIState.Loaded<List<Category>>).data.toPersistentList(),
                         onCategoryClick = { },
                     )
@@ -77,7 +82,7 @@ fun RecommendsScreen(component: RecommendsComponent) {
                     HotArticlesContainer(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(140.dp),
+                            .height(170.dp),
                         articles = (loadHotArticlesUIState as LoadUIState.Loaded<List<Article>>).data.toPersistentList(),
                         onArticleClick = { },
                         onMoreClick = { },
@@ -88,7 +93,27 @@ fun RecommendsScreen(component: RecommendsComponent) {
                     println((loadHotArticlesUIState as LoadUIState.Error).error)
                 }
             }
+
+            val loadHotProductsUIState by component.modelState.loadHotProductsUIStateFlow.collectAsState()
+            when (loadHotProductsUIState) {
+                LoadUIState.Loading -> {
+                    Text(text = "Loading")
+                }
+
+                is LoadUIState.Loaded -> {
+                    HotProductsFlowContainer(
+                        modifier = Modifier
+                            .padding(horizontal = 10.dp)
+                            .fillMaxWidth(),
+                        products = (loadHotProductsUIState as LoadUIState.Loaded<List<Product>>).data.toPersistentList(),
+                        onProductClick = { },
+                    )
+                }
+
+                is LoadUIState.Error -> {
+                    println((loadHotProductsUIState as LoadUIState.Error).error)
+                }
+            }
         }
     }
 }
-

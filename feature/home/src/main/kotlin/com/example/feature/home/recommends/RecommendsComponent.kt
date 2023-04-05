@@ -3,10 +3,12 @@ package com.example.feature.home.recommends
 import com.arkivanov.decompose.ComponentContext
 import com.example.android.core.model.Article
 import com.example.android.core.model.Category
+import com.example.android.core.model.Product
 import core.component_base.LoadUIState
 import core.component_base.ModelState
 import core.network.api.getAllCategories
 import core.network.api.getHotArticles
+import core.network.api.getHotProducts
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -31,9 +33,14 @@ internal class RecommendsModelState : ModelState() {
         MutableStateFlow<LoadUIState<List<Article>>>(LoadUIState.Loading)
     val loadHotArticlesUIStateFlow = _loadHotArticlesUIStateFlow.asStateFlow()
 
+    private val _loadHotProductsUIStateFlow =
+        MutableStateFlow<LoadUIState<List<Product>>>(LoadUIState.Loading)
+    val loadHotProductsUIStateFlow = _loadHotProductsUIStateFlow.asStateFlow()
+
     init {
         loadHotCategories()
         loadHotArticles()
+        loadHotProducts()
     }
 
     fun loadHotCategories() {
@@ -51,6 +58,15 @@ internal class RecommendsModelState : ModelState() {
                 .onStart { _loadHotArticlesUIStateFlow.emit(LoadUIState.Loading) }
                 .catch { _loadHotArticlesUIStateFlow.emit(LoadUIState.Error(it)) }
                 .collect { _loadHotArticlesUIStateFlow.emit(LoadUIState.Loaded(it)) }
+        }
+    }
+
+    fun loadHotProducts() {
+        coroutineScope.launch {
+            getHotProducts()
+                .onStart { _loadHotProductsUIStateFlow.emit(LoadUIState.Loading) }
+                .catch { _loadHotProductsUIStateFlow.emit(LoadUIState.Error(it)) }
+                .collect { _loadHotProductsUIStateFlow.emit(LoadUIState.Loaded(it)) }
         }
     }
 

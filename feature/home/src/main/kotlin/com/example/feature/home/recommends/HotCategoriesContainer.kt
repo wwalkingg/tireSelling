@@ -1,17 +1,16 @@
 package com.example.feature.home.recommends
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -30,6 +29,7 @@ import com.example.core.design_system.Icons
 import com.example.feature.home.category.CategoryItem
 import kotlinx.collections.immutable.PersistentList
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun HotCategoriesContainer(
     modifier: Modifier = Modifier,
@@ -66,18 +66,15 @@ fun HotCategoriesContainer(
         Spacer(modifier = Modifier.height(5.dp))
         // content
         CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onPrimaryContainer) {
-            LazyVerticalGrid(
-                modifier = Modifier,
-                columns = GridCells.Fixed(5),
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-                horizontalArrangement = Arrangement.spacedBy(2.dp)
-            ) {
-                items(items = categories, key = { it.id }) {
+            FlowRow(modifier = Modifier.fillMaxWidth(), maxItemsInEachRow = 5) {
+                categories.forEach { category ->
                     CategoryItem(
-                        modifier = Modifier.height(70.dp),
-                        category = it,
-                        onClick = { onCategoryClick(it) },
-                        contentPadding = PaddingValues(2.dp)
+                        modifier = Modifier
+                            .clip(MaterialTheme.shapes.small)
+                            .weight(1f),
+                        contentPadding = PaddingValues(2.dp),
+                        category = category,
+                        onClick = { onCategoryClick(category) }
                     )
                 }
             }
