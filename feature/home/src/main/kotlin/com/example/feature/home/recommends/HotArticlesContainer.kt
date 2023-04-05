@@ -52,12 +52,6 @@ fun HotArticlesContainer(
                 modifier = Modifier.padding(horizontal = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-//                Icon(
-//                    painter = painterResource(id = Icons.hotInfo),
-//                    contentDescription = null,
-//                    modifier = Modifier.size(18.dp),
-//                    tint = MaterialTheme.colorScheme.error
-//                )
                 Spacer(modifier = Modifier.padding(2.dp))
                 Text(
                     text = "农技咨询",
@@ -67,7 +61,7 @@ fun HotArticlesContainer(
                     fontWeight = FontWeight.Black
                 )
             }
-            AssistChip(onClick = { }, label = { Text(text = "更多") })
+            AssistChip(onClick = onMoreClick, label = { Text(text = "更多") })
         }
         Spacer(modifier = Modifier.height(5.dp))
         // content

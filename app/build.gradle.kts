@@ -38,6 +38,15 @@ android {
 
 dependencies {
     implementation(project(":feature:home"))
+    implementation(project(":feature:all-articles"))
+    implementation(project(":feature:article-detail"))
+    implementation(project(":feature:product-detail"))
+    implementation(project(":feature:address-management"))
+    implementation(project(":feature:collection-product"))
+    implementation(project(":feature:collection-store"))
+    implementation(project(":feature:login"))
+    implementation(project(":feature:order-management"))
+    implementation(project(":feature:reward-points"))
 
     implementation(project(":core:common"))
     implementation(project(":core:ui"))

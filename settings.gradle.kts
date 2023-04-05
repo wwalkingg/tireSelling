@@ -28,4 +28,13 @@ include(":core:component-base")
 
 include(":feature")
 include(":feature:home")
+include(":feature:all-articles")
+include(":feature:article-detail")
+include(":feature:product-detail")
+include(":feature:address-management")
+include(":feature:collection-product")
+include(":feature:collection-store")
+include(":feature:login")
+include(":feature:order-management")
+include(":feature:reward-points")
  

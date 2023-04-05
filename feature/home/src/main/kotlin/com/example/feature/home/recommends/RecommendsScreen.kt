@@ -20,9 +20,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.router.stack.push
 import com.example.android.core.model.Article
 import com.example.android.core.model.Category
 import com.example.android.core.model.Product
+import core.common.NavConfig
+import core.common.navigation
 import core.component_base.LoadUIState
 import kotlinx.collections.immutable.toPersistentList
 
@@ -85,12 +88,12 @@ fun RecommendsScreen(component: RecommendsComponent) {
                             .height(170.dp),
                         articles = (loadHotArticlesUIState as LoadUIState.Loaded<List<Article>>).data.toPersistentList(),
                         onArticleClick = { },
-                        onMoreClick = { },
+                        onMoreClick = { navigation.push(NavConfig.AllArticles) },
                     )
                 }
 
                 is LoadUIState.Error -> {
-                    println((loadHotArticlesUIState as LoadUIState.Error).error)
+                    Text(text = (loadHotArticlesUIState as LoadUIState.Error).error.toString())
                 }
             }
 
