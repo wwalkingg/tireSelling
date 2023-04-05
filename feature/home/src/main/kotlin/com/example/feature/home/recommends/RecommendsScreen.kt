@@ -87,7 +87,14 @@ fun RecommendsScreen(component: RecommendsComponent) {
                             .fillMaxWidth()
                             .height(170.dp),
                         articles = (loadHotArticlesUIState as LoadUIState.Loaded<List<Article>>).data.toPersistentList(),
-                        onArticleClick = { },
+                        onArticleClick = {
+                            navigation.push(
+                                NavConfig.ArticleDetail(
+                                    it.id,
+                                    it.title
+                                )
+                            )
+                        },
                         onMoreClick = { navigation.push(NavConfig.AllArticles) },
                     )
                 }

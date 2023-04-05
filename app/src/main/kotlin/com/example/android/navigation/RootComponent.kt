@@ -22,7 +22,7 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
     private val _childStack =
         childStack(
             source = navigation,
-            initialConfiguration = NavConfig.AllArticles,
+            initialConfiguration = NavConfig.AddressManagement,
             handleBackButton = true,
             childFactory = ::createChild,
         )

@@ -1,6 +1,7 @@
 
 plugins {
     id("convention.android.library")
+    id("kotlinx-serialization")
 }
 
 android {
@@ -18,4 +19,5 @@ dependencies {
     api(libs.multiplatformSettings)
     api(libs.multiplatformSettings.noArg)
     api(libs.multiplatformSettings.coroutines)
+    implementation(libs.kotlinx.serialization.json)
 }

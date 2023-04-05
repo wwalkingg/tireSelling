@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun OrderManagementScreen(modifier: Modifier = Modifier, component: OrderManagementComponent) {
-    Scaffold(topBar = { NavigationTopBar(title="")}) { padding ->
+    Scaffold(topBar = { NavigationTopBar(title="收获地址")}) { padding ->
         Column(Modifier.padding(padding)) {
             
         }

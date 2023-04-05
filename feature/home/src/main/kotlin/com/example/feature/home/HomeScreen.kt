@@ -8,6 +8,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import com.example.feature.home.category.CategoryScreen
 import com.example.feature.home.me.MeScreen
@@ -16,6 +17,11 @@ import com.example.feature.home.recommends.RecommendsScreen
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, component: HomeComponent) {
+    LaunchedEffect(component.modelState.selected) {
+        component.modelState.pagerState.scrollToPage(
+            BottomMenus.values().indexOf(component.modelState.selected)
+        )
+    }
     Scaffold(bottomBar = {
         HomeBottomBar(
             Modifier.fillMaxWidth(),
