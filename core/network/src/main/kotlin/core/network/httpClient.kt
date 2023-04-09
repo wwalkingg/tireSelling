@@ -1,22 +1,20 @@
+
 import core.common.Config.baseUrl
-import core.datastore.settings
 import core.network.RespWithoutData
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.plugins.HttpTimeout
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.headers
-import io.ktor.client.statement.HttpResponse
-import io.ktor.serialization.kotlinx.json.json
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.logging.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
 private val json = Json { ignoreUnknownKeys = true }
 
-val token = settings.getStringOrNull("token") ?: ""
+//val token = settings.getStringOrNull("token") ?: ""
 val httpClient = HttpClient(CIO) {
     defaultRequest {
         url(baseUrl)
@@ -34,7 +32,7 @@ val httpClient = HttpClient(CIO) {
 
 fun HttpRequestBuilder.withToken() {
     headers {
-        append("Authorization", token)
+//        append("Authorization", token)
     }
 }
 

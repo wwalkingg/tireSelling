@@ -1,7 +1,8 @@
 package core.datastore
 
-import android.content.Context
 import com.example.android.core.model.Address
+import com.russhwolf.settings.get
+import com.russhwolf.settings.set
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -13,24 +14,18 @@ private const val SPTag = "Addresses"
 class AddressStore(
     val addresses: List<Address>
 ) {
-    fun Context.store(): Boolean {
-        try {
-            val jsonString = Json.encodeToString(this)
-            getSharedPreferences(SPTag, Context.MODE_PRIVATE)
-                .edit()
-                .putString(SPTag, jsonString)
-                .apply()
-            return true
-        } catch (e: Exception) {
-            return false
-        }
+    fun store(): Boolean = try {
+        val jsonString = Json.encodeToString(this)
+        settings[SPTag] = jsonString
+        true
+    } catch (e: Exception) {
+        false
     }
 
     companion object {
-        fun Context.retrieve(): AddressStore {
-            val jsonString = getSharedPreferences(SPTag, Context.MODE_PRIVATE)
-                .getString("addresses", "[]")
-            return Json.decodeFromString<AddressStore>(jsonString!!)
+        fun retrieve(): AddressStore {
+            val jsonString = settings[SPTag, "[]"]
+            return Json.decodeFromString<AddressStore>(jsonString)
         }
     }
 }

@@ -7,5 +7,5 @@ class AddressManagementComponent(componentContext: ComponentContext) :
 }
 
 internal class AddressManagementModelState : ModelState() {
-    
+    val address
 }

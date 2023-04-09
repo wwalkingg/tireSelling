@@ -4,27 +4,13 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,13 +21,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.russhwolf.settings.set
-import core.datastore.settings
+import com.example.android.core.model.Address
+import core.datastore.SettingStore
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddAddressDialog(onDismissRequest: () -> Unit, onAdd: () -> Unit) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     var name by remember {
         mutableStateOf("")
     }
@@ -114,7 +102,11 @@ fun AddAddressDialog(onDismissRequest: () -> Unit, onAdd: () -> Unit) {
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
             )
             Button(
-                onClick = { checkInformation(context, name, phone, address, detailAddress) },
+                onClick = {
+                    scope.launch {
+                        checkInformation(context, name, phone, address, detailAddress)
+                    }
+                },
                 modifier = Modifier.align(Alignment.End)
             ) {
                 Text(text = "保存")
@@ -197,7 +189,7 @@ fun AddressSelectBottomSheet(modifier: Modifier = Modifier, onDismissRequest: ()
 }
 
 
-private fun checkInformation(
+private suspend fun checkInformation(
     context: Context,
     name: String,
     phone: String,
@@ -220,5 +212,5 @@ private fun checkInformation(
         Toast.makeText(context, "请输入收货人详细地址", Toast.LENGTH_SHORT).show()
         return
     }
-    settings.set("addresses")
+    SettingStore.AddressList().add(Address(name, phone, address, detailAddress))
 }

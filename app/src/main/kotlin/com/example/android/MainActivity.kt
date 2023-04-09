@@ -1,23 +1,19 @@
 package com.example.android
 
-import com.example.core.design_system.LocalRootSnackBarHostState
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
+import androidx.compose.material3.*
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.defaultComponentContext
 import com.example.android.navigation.RootComponent
 import com.example.android.navigation.RootContent
 import com.example.android.ui.theme.AndroidTheme
+import com.example.core.design_system.LocalRootSnackBarHostState
+import core.common.commonApplicationContext
 
 class MainActivity : ComponentActivity() {
 
@@ -26,6 +22,7 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        commonApplicationContext = this
         val root = RootComponent(defaultComponentContext())
         setContent {
             AndroidTheme {

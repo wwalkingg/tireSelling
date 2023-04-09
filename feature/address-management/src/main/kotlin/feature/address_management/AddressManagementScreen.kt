@@ -2,18 +2,11 @@
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import core.datastore.SettingStore
 import feature.address_management.AddAddressDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,8 +22,13 @@ fun AddressManagementScreen(modifier: Modifier = Modifier, component: AddressMan
         topBar = { NavigationTopBar(title = "地址管理") },
         bottomBar = { BottomBar { isAddAddressBottomSheetVisible = true } }
     ) { padding ->
+        val addresses by
         Column(Modifier.padding(padding)) {
-
+            addresses.forEach {
+                Card {
+                    Text(it.address)
+                }
+            }
         }
     }
 }
