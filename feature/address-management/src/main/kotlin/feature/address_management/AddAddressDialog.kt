@@ -1,7 +1,5 @@
 package feature.address_management
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,32 +13,34 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.android.core.model.Address
-import core.datastore.SettingStore
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddAddressDialog(onDismissRequest: () -> Unit, onAdd: () -> Unit) {
-    val context = LocalContext.current
+fun AddAddressDialog(
+    onDismissRequest: () -> Unit,
+    onAdd: (address: Address) -> Boolean,
+    address: Address? = null,
+    onDelete: ((address: Address) -> Unit)? = null
+) {
     val scope = rememberCoroutineScope()
     var name by remember {
-        mutableStateOf("")
+        mutableStateOf(address?.name ?: "")
     }
     var phone by remember {
-        mutableStateOf("")
+        mutableStateOf(address?.phone ?: "")
     }
-    var address by remember {
-        mutableStateOf("")
+    var address0 by remember {
+        mutableStateOf(address?.address ?: "")
     }
     var detailAddress by remember {
-        mutableStateOf("")
+        mutableStateOf(address?.address ?: "")
     }
     var isQuitAlertDialogVisible by remember {
         mutableStateOf(false)
@@ -49,7 +49,7 @@ fun AddAddressDialog(onDismissRequest: () -> Unit, onAdd: () -> Unit) {
         mutableStateOf(false)
     }
     Dialog(onDismissRequest = {
-        if (name.isNotEmpty() || phone.isNotEmpty() || address.isNotEmpty() || detailAddress.isNotEmpty()) {
+        if (name.isNotEmpty() || phone.isNotEmpty() || address0.isNotEmpty() || detailAddress.isNotEmpty()) {
             isQuitAlertDialogVisible = true
         } else {
             onDismissRequest()
@@ -62,7 +62,7 @@ fun AddAddressDialog(onDismissRequest: () -> Unit, onAdd: () -> Unit) {
                 .padding(14.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Text(text = "添加地址", style = MaterialTheme.typography.displayMedium)
+            Text(text = if (address == null) "编辑地址" else "添加地址", style = MaterialTheme.typography.displayMedium)
             TextField(
                 value = name,
                 onValueChange = { name = it },
@@ -82,8 +82,8 @@ fun AddAddressDialog(onDismissRequest: () -> Unit, onAdd: () -> Unit) {
                 )
             )
             TextField(
-                value = address,
-                onValueChange = { address = it },
+                value = address0,
+                onValueChange = { address0 = it },
                 singleLine = true,
                 label = { Text(text = "所在地区") },
                 trailingIcon = {
@@ -101,15 +101,44 @@ fun AddAddressDialog(onDismissRequest: () -> Unit, onAdd: () -> Unit) {
                 label = { Text(text = "详细地址") },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
             )
-            Button(
-                onClick = {
-                    scope.launch {
-                        checkInformation(context, name, phone, address, detailAddress)
-                    }
-                },
-                modifier = Modifier.align(Alignment.End)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.End)
             ) {
-                Text(text = "保存")
+                if (address != null) {
+                    Button(
+                        onClick = {
+                            if (onDelete != null && address != null) {
+                                onDelete(address)
+                            }
+                            onDismissRequest()
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                        )
+                    ) {
+                        Text("删除")
+                    }
+                }
+                Button(
+                    onClick = {
+                        scope.launch {
+                            val address = Address(
+                                id = address?.id ?: System.currentTimeMillis(),
+                                name = name,
+                                phone = phone,
+                                address = address0,
+                                detailAddress = detailAddress
+                            )
+                            if (onAdd(address)) {
+                                onDismissRequest()
+                            }
+                        }
+                    },
+                ) {
+                    Text(text = "保存")
+                }
             }
             if (isAddressSelectBottomSheetVisible) {
                 AddressSelectBottomSheet(onDismissRequest = {
@@ -139,6 +168,7 @@ fun AddAddressDialog(onDismissRequest: () -> Unit, onAdd: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@Deprecated("no finished")
 fun AddressSelectBottomSheet(modifier: Modifier = Modifier, onDismissRequest: () -> Unit) {
     ModalBottomSheet(onDismissRequest = onDismissRequest) {
         var s0 by remember {
@@ -186,31 +216,4 @@ fun AddressSelectBottomSheet(modifier: Modifier = Modifier, onDismissRequest: ()
             }
         }
     }
-}
-
-
-private suspend fun checkInformation(
-    context: Context,
-    name: String,
-    phone: String,
-    address: String,
-    detailAddress: String
-) {
-    if (name.isEmpty()) {
-        Toast.makeText(context, "请输入收货人姓名", Toast.LENGTH_SHORT).show()
-        return
-    }
-    if (phone.isEmpty()) {
-        Toast.makeText(context, "请输入收货人手机号", Toast.LENGTH_SHORT).show()
-        return
-    }
-    if (address.isEmpty()) {
-        Toast.makeText(context, "请选择收货人地址", Toast.LENGTH_SHORT).show()
-        return
-    }
-    if (detailAddress.isEmpty()) {
-        Toast.makeText(context, "请输入收货人详细地址", Toast.LENGTH_SHORT).show()
-        return
-    }
-    SettingStore.AddressList().add(Address(name, phone, address, detailAddress))
 }

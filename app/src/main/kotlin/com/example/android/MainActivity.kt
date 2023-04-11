@@ -13,7 +13,6 @@ import com.example.android.navigation.RootComponent
 import com.example.android.navigation.RootContent
 import com.example.android.ui.theme.AndroidTheme
 import com.example.core.design_system.LocalRootSnackBarHostState
-import core.common.commonApplicationContext
 
 class MainActivity : ComponentActivity() {
 
@@ -22,7 +21,6 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        commonApplicationContext = this
         val root = RootComponent(defaultComponentContext())
         setContent {
             AndroidTheme {
