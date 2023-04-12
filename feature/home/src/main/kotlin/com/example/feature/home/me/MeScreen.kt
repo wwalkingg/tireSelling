@@ -17,28 +17,46 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.router.stack.push
-import com.example.feature.home.UserInfoBlock
+import com.arkivanov.decompose.router.stack.replaceAll
+import com.example.android.core.model.UserInfo
 import core.common.NavConfig
 import core.common.navigation
+import core.component_base.LoadUIState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MeScreen(modifier: Modifier = Modifier, component: MeComponent) {
     Scaffold(modifier.padding(top = 10.dp)) { padding ->
+        val loadUserInfoUIState by component.model.loadUserInfoUIStateFlow.collectAsState()
         Column(
             Modifier
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            UserInfoBlock(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp)
-            )
+            when (loadUserInfoUIState) {
+                is LoadUIState.Error -> {
+                    Text("Error")
+                }
+
+                is LoadUIState.Loaded -> {
+                    UserInfoBlock(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 10.dp),
+                        userInfo = (loadUserInfoUIState as LoadUIState.Loaded<UserInfo>).data
+                    )
+                }
+
+                LoadUIState.Loading -> {
+                    Text("Loading")
+                }
+            }
             Spacer(modifier = Modifier.height(10.dp))
             SettingItem(
                 title = "收货地址",
@@ -57,7 +75,7 @@ fun MeScreen(modifier: Modifier = Modifier, component: MeComponent) {
                 navigation.push(NavConfig.OrderManagement)
             })
             SettingItem(title = "退出登录", onClick = {
-                navigation.push(NavConfig.Login)
+                navigation.replaceAll(NavConfig.Login)
             })
         }
     }

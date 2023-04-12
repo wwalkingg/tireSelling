@@ -1,4 +1,4 @@
-package com.example.feature.home
+package com.example.feature.home.me
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,9 +21,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.android.core.model.UserInfo
 
 @Composable
-fun UserInfoBlock(modifier: Modifier = Modifier) {
+fun UserInfoBlock(modifier: Modifier = Modifier, userInfo: UserInfo) {
     Row(
         modifier
             .clip(MaterialTheme.shapes.medium)
@@ -36,14 +37,14 @@ fun UserInfoBlock(modifier: Modifier = Modifier) {
                 .clip(CircleShape)
                 .size(70.dp)
                 .background(Color.LightGray),
-            model = "https://source.unsplash.com/featured/?dog+running+beach",
+            model = userInfo.avatar,
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.width(10.dp))
         Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceAround) {
-            Text(text = "测试用户", style = MaterialTheme.typography.titleMedium)
-            Text(text = "1323405234", style = MaterialTheme.typography.labelLarge)
+            Text(text = userInfo.username ?: "未设置名字", style = MaterialTheme.typography.titleMedium)
+            Text(text = userInfo.phoneNumber ?: "未设置电话号码", style = MaterialTheme.typography.labelLarge)
         }
     }
 }

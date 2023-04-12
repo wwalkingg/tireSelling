@@ -4,6 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.example.android.core.model.Article
 import core.component_base.LoadUIState
 import core.component_base.ModelState
+import core.network.api.Apis
 import core.network.api.getArticles
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,7 +28,7 @@ internal class AllArticlesModelState : ModelState() {
     fun loadAllArticles() {
         coroutineScope.launch {
             _loadAllArticlesUIStateFlow.value = LoadUIState.Loading
-            getArticles().catch {
+            Apis.Article.getArticles().catch {
                 _loadAllArticlesUIStateFlow.value = LoadUIState.Error(it)
             }.collect {
                 val map = mutableMapOf<String, List<Article>>()

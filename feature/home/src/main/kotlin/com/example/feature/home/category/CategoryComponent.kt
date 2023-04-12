@@ -9,6 +9,7 @@ import com.example.android.core.model.Category
 import com.example.android.core.model.Product
 import core.component_base.LoadUIState
 import core.component_base.ModelState
+import core.network.api.Apis
 import core.network.api.getAllCategories
 import core.network.api.getProducts
 import kotlinx.coroutines.cancel
@@ -47,7 +48,7 @@ internal class CategoryModelState : ModelState() {
     fun loadCategories() {
         coroutineScope.launch {
             _loadCategoriesUIStateFlow.emit(LoadUIState.Loading)
-            getAllCategories().catch {
+            Apis.Category.getAllCategories().catch {
                 _loadCategoriesUIStateFlow.emit(LoadUIState.Error(it))
             }.collect {
                 _loadCategoriesUIStateFlow.emit(LoadUIState.Loaded(it))
@@ -71,7 +72,7 @@ internal class CategoryModelState : ModelState() {
                 cancel()
             }
             Log.i("CategoryModelState", "loadProducts: $categoryId")
-            getProducts(categoryId).catch {
+            Apis.Product.getProducts(categoryId).catch {
                 _loadProductsUIStateFlow.emit(LoadUIState.Error(it))
                 Log.e("CategoryModelState", "loadProducts: ", it)
             }.collect {

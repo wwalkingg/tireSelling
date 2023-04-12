@@ -43,7 +43,6 @@ internal fun Swiper(
         while (true) {
             if (isActive) {
                 delay(delay)
-                Log.i("Swiper", "Swiper:$isActive")
                 state.animateScrollToPage((state.currentPage + 1) % list.size)
             }
         }

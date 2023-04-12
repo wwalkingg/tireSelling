@@ -6,6 +6,7 @@ import com.example.android.core.model.Category
 import com.example.android.core.model.Product
 import core.component_base.LoadUIState
 import core.component_base.ModelState
+import core.network.api.Apis
 import core.network.api.getAllCategories
 import core.network.api.getHotArticles
 import core.network.api.getHotProducts
@@ -45,7 +46,7 @@ internal class RecommendsModelState : ModelState() {
 
     fun loadHotCategories() {
         coroutineScope.launch {
-            getAllCategories()
+            Apis.Category.getAllCategories()
                 .onStart { _loadHotCategoriesUIStateFlow.emit(LoadUIState.Loading) }
                 .catch { _loadHotCategoriesUIStateFlow.emit(LoadUIState.Error(it)) }
                 .collect { _loadHotCategoriesUIStateFlow.emit(LoadUIState.Loaded(it)) }
@@ -54,7 +55,7 @@ internal class RecommendsModelState : ModelState() {
 
     fun loadHotArticles() {
         coroutineScope.launch {
-            getHotArticles()
+            Apis.Article.getHotArticles()
                 .onStart { _loadHotArticlesUIStateFlow.emit(LoadUIState.Loading) }
                 .catch { _loadHotArticlesUIStateFlow.emit(LoadUIState.Error(it)) }
                 .collect { _loadHotArticlesUIStateFlow.emit(LoadUIState.Loaded(it)) }
@@ -63,7 +64,7 @@ internal class RecommendsModelState : ModelState() {
 
     fun loadHotProducts() {
         coroutineScope.launch {
-            getHotProducts()
+            Apis.Product.getHotProducts()
                 .onStart { _loadHotProductsUIStateFlow.emit(LoadUIState.Loading) }
                 .catch { _loadHotProductsUIStateFlow.emit(LoadUIState.Error(it)) }
                 .collect { _loadHotProductsUIStateFlow.emit(LoadUIState.Loaded(it)) }

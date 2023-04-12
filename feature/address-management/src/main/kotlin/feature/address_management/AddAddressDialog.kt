@@ -105,6 +105,13 @@ fun AddAddressDialog(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.End)
             ) {
+                Button(
+                    onClick = {
+                        scope.launch { isQuitAlertDialogVisible = true }
+                    },
+                ) {
+                    Text(text = "取消")
+                }
                 if (address != null) {
                     Button(
                         onClick = {

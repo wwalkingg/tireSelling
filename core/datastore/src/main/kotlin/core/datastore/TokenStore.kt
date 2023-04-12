@@ -1,18 +1,14 @@
 package core.datastore
 
-import com.example.android.core.model.Address
 import com.russhwolf.settings.set
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-const val SPTag = "Addresses"
-
 @Serializable
-data class AddressStore(
-    val addresses: List<Address>
-) {
+data class TokenStore(val token: String?) {
+    private val SPTag = "token"
     fun store(): Boolean = try {
         val jsonString = Json.encodeToString(this)
         settings[SPTag] = jsonString
@@ -22,10 +18,9 @@ data class AddressStore(
     }
 
     companion object {
-        fun retrieve(): AddressStore {
-            val jsonString = settings.getStringOrNull(SPTag) ?: return AddressStore(emptyList())
-            return Json.decodeFromString<AddressStore>(jsonString)
+        fun retrieve(): TokenStore {
+            val jsonString = settings.getStringOrNull(SPTag) ?: return TokenStore(null)
+            return Json.decodeFromString<TokenStore>(jsonString)
         }
     }
 }
-

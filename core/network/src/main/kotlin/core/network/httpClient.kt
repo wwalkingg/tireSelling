@@ -1,5 +1,4 @@
-
-import core.common.Config.baseUrl
+import core.common.Config
 import core.network.RespWithoutData
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -9,15 +8,18 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
 private val json = Json { ignoreUnknownKeys = true }
 
-//val token = settings.getStringOrNull("token") ?: ""
 val httpClient = HttpClient(CIO) {
     defaultRequest {
-        url(baseUrl)
+        url {
+            url(Config.baseUrl)
+            path(Config.basePath)
+        }
     }
     install(ContentNegotiation) {
         json(json = Json {

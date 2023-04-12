@@ -10,8 +10,8 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 
-suspend fun getAllCategories() = callbackFlow {
-    httpClient.get("/categories").apply {
+suspend fun Apis.Category.getAllCategories() = callbackFlow {
+    httpClient.get("categories").apply {
         if (status.isSuccess()) {
             val resp = body<Resp<List<Category>>>()
             if (resp.code == 200) {
@@ -23,4 +23,4 @@ suspend fun getAllCategories() = callbackFlow {
 }
 
 // todo
-suspend fun getHotCategorise() = getAllCategories()
+suspend fun Apis.Category.getHotCategorise() = getAllCategories()

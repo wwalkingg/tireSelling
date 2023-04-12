@@ -8,6 +8,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.example.android.core.model.Article
 import core.component_base.LoadUIState
 import core.component_base.ModelState
+import core.network.api.Apis
 import core.network.api.getArticleDetail
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,7 +34,7 @@ internal class ArticleDetailModelState(val id: Int, title: String? = null) : Mod
     fun loadArticleDetail(id: Int) {
         coroutineScope.launch {
             _loadArticleDetailUIStateFlow.emit(LoadUIState.Loading)
-            getArticleDetail(id).catch {
+            Apis.Article.getArticleDetail(id).catch {
                 _loadArticleDetailUIStateFlow.emit(LoadUIState.Error(it))
                 Log.e("ArticleDetail", "loadArticleDetail: $it")
             }.collect {
