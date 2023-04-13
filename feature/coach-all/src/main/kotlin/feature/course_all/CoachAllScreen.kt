@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -21,7 +23,7 @@ import core.design_system.component.loading
 import core.ui.component.CoachSquareCard
 import core.ui.status_page.ErrorPage
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun CoachAllScreen(modifier: Modifier = Modifier, component: CoachAllComponent) {
     val loadAllCourseUIState by component.modelState.loadAllCoachUIState.collectAsState()
@@ -38,15 +40,15 @@ fun CoachAllScreen(modifier: Modifier = Modifier, component: CoachAllComponent) 
 
             is LoadAllCoachUIState.Success -> {
                 val list = (loadAllCourseUIState as LoadAllCoachUIState.Success).data
-                LazyHorizontalGrid(
-                    modifier = Modifier.padding(paddingValues).fillMaxSize(),
-                    rows = GridCells.Fixed(2)
+                Column(
+                    Modifier.padding(paddingValues).padding(horizontal = 10.dp).fillMaxSize().verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    items(list.size) {
+                    list.forEach {
                         CoachSquareCard(
-                            modifier = Modifier.padding(10.dp).background(Color.Red),
-                            coach = list[it],
-                            onClick = { rootNavigation.push(Config.RootConfig.CoachDetail(it)) })
+                            modifier = Modifier.fillMaxWidth(),
+                            coach = it,
+                            onClick = { rootNavigation.push(Config.RootConfig.CoachDetail(it.id)) })
                     }
                 }
             }

@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-internal fun UserTag(modifier: Modifier = Modifier, text: String, color: Color = Color.Blue) {
+internal fun UserTag(modifier: Modifier = Modifier, text: String, color: Color = MaterialTheme.colorScheme.primaryContainer) {
     Text(
         text,
         modifier = modifier.clip(RoundedCornerShape(4.dp)).background(color).padding(4.dp, 2.dp),

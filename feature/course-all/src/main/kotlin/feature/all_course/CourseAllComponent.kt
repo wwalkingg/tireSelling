@@ -53,13 +53,14 @@ internal class CourseAllModelState : ModelState() {
 
 
     fun onOrderMethodClick(orderMethod: OrderMethods) {
-        if (orderMethod == orderMethods) {
+        if (orderMethod != orderMethods) {
             loadCourseAll()
         }
         orderMethods = orderMethod
     }
 
     fun loadCourseAll() {
+        println("++")
         coroutineScope.launch {
             _loadAllCourseFlow.emit(LoadAllCourseUIState.Loading)
             val isLoadAllCourse = selectedCourseTypeId == 0

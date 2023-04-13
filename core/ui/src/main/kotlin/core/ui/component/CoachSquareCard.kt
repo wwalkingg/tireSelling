@@ -1,32 +1,35 @@
 package core.ui.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import core.common.baseUrl
 import core.model.Coach
-import kotlin.math.roundToInt
 
 @Composable
 fun CoachSquareCard(modifier: Modifier = Modifier, coach: Coach, onClick: () -> Unit) {
-    Column(modifier) {
-        Box(Modifier.clip(MaterialTheme.shapes.medium).fillMaxWidth().weight(7f)){
+    Row(modifier.height(IntrinsicSize.Max).clickable { onClick() }) {
+        Box(Modifier.clip(MaterialTheme.shapes.medium).fillMaxHeight().fillMaxWidth(.4f)) {
             AsyncImage(
                 model = baseUrl + coach.avatar,
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.size(100.dp),
                 contentScale = ContentScale.Crop
             )
         }
-        Text("${coach.name}·${coach.workYear}年教练")
+        Column(modifier = Modifier.fillMaxHeight().weight(1f), verticalArrangement = Arrangement.SpaceAround) {
+            Text(coach.name, style = MaterialTheme.typography.titleMedium)
+            Text("${coach.workYear}年教练",style = MaterialTheme.typography.labelLarge)
+        }
     }
 }
 

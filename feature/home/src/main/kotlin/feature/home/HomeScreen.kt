@@ -59,10 +59,10 @@ fun HomeScreen(modifier: Modifier = Modifier, component: HomeComponent) {
                 .fillMaxSize()
         ) {
             when (it) {
-                0 -> RecommendScreen(component = RecommendComponent(component))
-                1 -> MySubscribeScreen(component = MySubscribeComponent(component))
-                2 -> StatisticScreen(component = StatisticComponent(component))
-                3 -> MeScreen(component = MeComponent(component))
+                0 -> RecommendScreen(component = component.recommendComponent)
+                1 -> MySubscribeScreen(component = component.myScripeComponent)
+                2 -> StatisticScreen(component = component.statisticComponent)
+                3 -> MeScreen(component = component.meComponent)
             }
         }
     }

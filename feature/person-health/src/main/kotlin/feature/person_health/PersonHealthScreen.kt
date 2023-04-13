@@ -63,6 +63,6 @@ private fun TopBar(bmi: Float) {
         }
     }, actions = {
         Text("BMI", style = MaterialTheme.typography.labelMedium)
-        Text(String.format("%.2f", bmi), style = MaterialTheme.typography.titleLarge)
+        Text(String.format("%.2f", bmi), style = MaterialTheme.typography.displayMedium)
     })
 }

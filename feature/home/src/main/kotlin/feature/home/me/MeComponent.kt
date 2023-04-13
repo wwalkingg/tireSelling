@@ -4,6 +4,7 @@ import ModelState
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceAll
+import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.lifecycle.subscribe
 import core.common.navigation.Config
 import core.common.navigation.rootNavigation
@@ -19,13 +20,7 @@ import settings
 
 class MeComponent(componentContext: ComponentContext) : ComponentContext by componentContext {
 
-    internal val modelState = MeModelState()
-
-    init {
-        lifecycle.subscribe(
-            onResume = { modelState.loadUserInfo() }
-        )
-    }
+    internal val modelState = instanceKeeper.getOrCreate { MeModelState() }
 
 }
 
@@ -33,6 +28,9 @@ internal class MeModelState : ModelState() {
     private val _userInfoLoadStateFlow = MutableStateFlow<UserInfoLoadState>(UserInfoLoadState.Loading)
     val userInfoLoadStateFlow = _userInfoLoadStateFlow.asStateFlow()
 
+    init {
+        loadUserInfo()
+    }
 
     internal fun loadUserInfo() {
         coroutineScope.launch {

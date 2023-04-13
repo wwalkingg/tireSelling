@@ -7,7 +7,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.router.stack.pop
 import core.common.navigation.rootNavigation
 import core.design_system.Icons
@@ -48,7 +50,10 @@ fun CourseDetailScreen(modifier: Modifier = Modifier, component: CourseDetailCom
                 }
 
                 is CourseLoadState.Success -> {
-                    CourseDetailContent(course = (courseLoadState as CourseLoadState.Success).userCourseResp.course)
+                    CourseDetailContent(
+                        modifier = Modifier,
+                        course = (courseLoadState as CourseLoadState.Success).userCourseResp.course
+                    )
                 }
             }
         }
@@ -73,11 +78,15 @@ fun BottomBar(
     isSubscribe: Boolean,
     onSubscribeClick: () -> Unit
 ) {
-    Row(modifier, horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier.fillMaxWidth().padding(10.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         IconButton(onClick = onCollectClick) {
             if (isCollect)
-                Icon(painterResource(Icons.heartStraightFill), contentDescription = null)
-            else Icon(painterResource(Icons.heartStraight), contentDescription = null)
+                Icon(painterResource(Icons.heartStraightFill), contentDescription = null, tint = Color.Red)
+            else Icon(painterResource(Icons.heartStraight), contentDescription = null, tint = Color.Red)
         }
 
         Button(onClick = onSubscribeClick) {

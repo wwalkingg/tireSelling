@@ -2,6 +2,7 @@ package feature.home.statistic
 
 import ModelState
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.instancekeeper.getOrCreate
 import core.model.Statistics
 import core.network.utils.error
 import core.network.utils.success
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class StatisticComponent(componentContext: ComponentContext) : ComponentContext by componentContext {
-    internal val modelState = StatisticModelState()
+    internal val modelState = instanceKeeper.getOrCreate { StatisticModelState() }
 }
 
 internal class StatisticModelState : ModelState() {

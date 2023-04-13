@@ -54,6 +54,6 @@ fun MySubscribeScreen(modifier: Modifier = Modifier, component: MySubscribeCompo
 @Composable
 private fun TopBar() {
     TopAppBar(title = {
-        Text("我的订阅")
+        Text("我的计划")
     })
 }
