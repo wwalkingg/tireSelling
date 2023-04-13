@@ -2,6 +2,7 @@ package core.network.api
 
 import com.example.android.core.model.Product
 import core.network.Resp
+import core.network.RespWithoutData
 import httpClient
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -14,7 +15,6 @@ suspend fun Apis.Product.getHotProducts() = callbackFlow {
     httpClient.get("products/hot").apply {
         if (status.isSuccess()) {
             val resp = body<Resp<List<Product>>>()
-            println("++ ${resp}")
             if (resp.code == 200) {
                 send(resp.data)
             } else cancel(resp.msg)
@@ -29,6 +29,32 @@ suspend fun Apis.Product.getProducts(categoryId: Int? = null) = callbackFlow {
             val resp = body<Resp<List<Product>>>()
             if (resp.code == 200) {
                 send(resp.data)
+            } else cancel(resp.msg)
+        } else cancel(status.description)
+        awaitClose { }
+    }
+}
+
+suspend fun Apis.Product.getProduct(productId: Int) = callbackFlow {
+    httpClient.get("product/$productId").apply {
+        if (status.isSuccess()) {
+            val resp = body<Resp<Product>>()
+            if (resp.code == 200) {
+                send(resp.data)
+            } else cancel(resp.msg)
+        } else cancel(status.description)
+        awaitClose { }
+    }
+}
+
+suspend fun Apis.Product.collectProduct(productId: Int) = callbackFlow {
+    httpClient.post("filter/collectionProduct") {
+        parameter("productId", productId)
+    }.apply {
+        if (status.isSuccess()) {
+            val resp = body<RespWithoutData>()
+            if (resp.code == 200) {
+                send(null)
             } else cancel(resp.msg)
         } else cancel(status.description)
         awaitClose { }

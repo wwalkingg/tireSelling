@@ -22,7 +22,7 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
     private val _childStack =
         childStack(
             source = navigation,
-            initialConfiguration = NavConfig.Home,
+            initialConfiguration = NavConfig.ProductDetail(1),
             handleBackButton = true,
             childFactory = ::createChild,
         )
@@ -45,7 +45,8 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
                 ProductDetailComponent(
                     componentContext,
                     config.id,
-                    config.title
+                    config.title,
+                    config.image
                 )
             )
 
