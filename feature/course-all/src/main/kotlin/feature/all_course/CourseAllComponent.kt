@@ -60,14 +60,15 @@ internal class CourseAllModelState : ModelState() {
     }
 
     fun loadCourseAll() {
-        println("++")
         coroutineScope.launch {
             _loadAllCourseFlow.emit(LoadAllCourseUIState.Loading)
             val isLoadAllCourse = selectedCourseTypeId == 0
             val url =
                 if (isLoadAllCourse) "/course/getAllCourses" else "/getAllCoursesByType?type=${selectedCourseTypeId}"
             httpClient.get(url).success<List<Course>> {
-                _loadAllCourseFlow.emit(LoadAllCourseUIState.Success(it))
+                val orderedCourseList =
+                    if (orderMethods == OrderMethods.Difficulty) it.sortedBy { it.difficulty } else it
+                _loadAllCourseFlow.emit(LoadAllCourseUIState.Success(orderedCourseList))
             }.error {
                 _loadAllCourseFlow.emit(LoadAllCourseUIState.Error)
             }
@@ -79,7 +80,14 @@ internal class CourseAllModelState : ModelState() {
             _loadCourseTypeFlow.emit(LoadCourseTypeUIState.Loading)
             httpClient.get("/getAllCourseTypes").success<List<CourseSortType>> {
                 _loadCourseTypeFlow.emit(
-                    LoadCourseTypeUIState.Success(listOf(CourseSortType(id = 0, typeName = "全部")) + it)
+                    LoadCourseTypeUIState.Success(
+                        listOf(
+                            CourseSortType(
+                                id = 0,
+                                typeName = "全部"
+                            )
+                        ) + it
+                    )
                 )
             }.error {
                 _loadCourseTypeFlow.emit(LoadCourseTypeUIState.Error)

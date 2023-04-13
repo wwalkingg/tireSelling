@@ -6,12 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
 import core.design_system.component.rootSnackBarHostState
-import core.model.Course
 import core.model.UserCourseResp
 import core.network.utils.error
 import core.network.utils.success
 import httpClient
-import io.ktor.client.request.*
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
+import io.ktor.client.request.post
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -39,6 +40,7 @@ class CourseDetailModelState(val id: Int) : ModelState() {
             httpClient.get("/filter/getCoursesById?courseId=$id")
                 .success<UserCourseResp> {
                     courseId = it.course.id
+                    isCollect = it.isSubscribed
                     _courseLoadStateFlow.emit(CourseLoadState.Success(it))
                 }
                 .error {

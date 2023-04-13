@@ -9,18 +9,17 @@ import com.arkivanov.decompose.router.stack.replaceAll
 import com.russhwolf.settings.set
 import core.common.navigation.Config
 import core.common.navigation.rootNavigation
-import core.model.Course
 import core.model.LoginParameter
 import core.model.LoginResp
 import core.network.utils.error
 import core.network.utils.success
 import httpClient
-import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -31,8 +30,8 @@ class LoginComponent(componentContext: ComponentContext) : ComponentContext by c
 }
 
 class LoginModelState : ModelState() {
-    var id by mutableStateOf("123456")
-    var password by mutableStateOf("147258")
+    var id by mutableStateOf("7777")
+    var password by mutableStateOf("8888")
 
     private val _loginUIStateFlow = MutableStateFlow<LoginUIState>(LoginUIState.Wait)
     val loginUIStateFlow = _loginUIStateFlow.asStateFlow()

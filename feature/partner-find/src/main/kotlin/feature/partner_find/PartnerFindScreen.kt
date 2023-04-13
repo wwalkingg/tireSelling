@@ -1,14 +1,11 @@
 package feature.partner_find
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,13 +13,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.arkivanov.decompose.router.stack.pop
-import com.arkivanov.decompose.router.stack.push
 import core.common.baseUrl
-import core.common.navigation.Config
 import core.common.navigation.rootNavigation
 import core.design_system.Icons
 import core.design_system.component.loading
-import core.ui.component.PartnerCard
 import core.ui.status_page.ErrorPage
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,9 +44,50 @@ fun PartnerFindScreen(modifier: Modifier = Modifier, component: PartnerFindCompo
                         }
                     } else {
                         Text("我的伙伴", style = MaterialTheme.typography.titleLarge)
-                        Row {
+                        Column {
                             list.forEach {
-                                PartnerCard(partnerSimple = it, onClick = {})
+                                var isCancelConfirmDialogVisible by remember { mutableStateOf(false) }
+                                Row(
+                                    modifier = Modifier.fillMaxWidth().clickable { },
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        AsyncImage(
+                                            model = baseUrl + it.avatar,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(70.dp)
+                                                .background(MaterialTheme.colorScheme.primaryContainer)
+                                        )
+                                        Spacer(Modifier.width(10.dp))
+                                        Text(it.name, style = MaterialTheme.typography.titleLarge)
+                                    }
+                                    TextButton(onClick = { isCancelConfirmDialogVisible = true }) {
+                                        Text(
+                                            text = "取消关系",
+                                            color = MaterialTheme.colorScheme.error
+                                        )
+                                    }
+
+                                }
+                                Divider()
+                                if (isCancelConfirmDialogVisible) {
+                                    AlertDialog(
+                                        onDismissRequest = { isCancelConfirmDialogVisible = false },
+                                        title = {
+                                            Text("确认取消关系")
+                                        },
+                                        text = {
+                                            Text("确认取消关系？")
+                                        },
+                                        confirmButton = { Button(onClick = {}) { Text("确认取消") } },
+                                        dismissButton = {
+                                            Button(onClick = {
+                                                isCancelConfirmDialogVisible = false
+                                            }) { Text("取消") }
+                                        },
+                                    )
+                                }
                             }
                         }
                     }
