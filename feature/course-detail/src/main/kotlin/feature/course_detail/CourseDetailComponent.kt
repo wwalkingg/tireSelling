@@ -40,7 +40,8 @@ class CourseDetailModelState(val id: Int) : ModelState() {
             httpClient.get("/filter/getCoursesById?courseId=$id")
                 .success<UserCourseResp> {
                     courseId = it.course.id
-                    isCollect = it.isSubscribed
+                    isCollect = it.isPlaned
+                    isSubscribe = it.isSubscribed
                     _courseLoadStateFlow.emit(CourseLoadState.Success(it))
                 }
                 .error {
@@ -52,24 +53,24 @@ class CourseDetailModelState(val id: Int) : ModelState() {
     fun collect() {
         if (courseId == null) {
             coroutineScope.launch {
-                rootSnackBarHostState.showSnackbar("请等待加载")
+                rootSnackBarHostState.showSnackbar("请等待加载", withDismissAction = true)
             }
             return
         }
         isCollect = true
         coroutineScope.launch {
             httpClient.post("/filter/joinPlan") { parameter("courseId", courseId) }.success {
-                rootSnackBarHostState.showSnackbar("收藏成功")
-            }.error { rootSnackBarHostState.showSnackbar("收藏失败") }
+                rootSnackBarHostState.showSnackbar("收藏成功", withDismissAction = true)
+            }.error { rootSnackBarHostState.showSnackbar("收藏失败", withDismissAction = true) }
         }
     }
 
     fun cancelCollect() {
         isCollect = false
         coroutineScope.launch {
-            httpClient.get("/cancelPlanCourse").success {
-                rootSnackBarHostState.showSnackbar("取消收藏成功")
-            }.error { rootSnackBarHostState.showSnackbar("取消收藏失败") }
+            httpClient.post("/filter/cancelPlanCourse") { parameter("courseId", courseId) }.success {
+                rootSnackBarHostState.showSnackbar("取消收藏成功", withDismissAction = true)
+            }.error { rootSnackBarHostState.showSnackbar("取消收藏失败", withDismissAction = true) }
         }
     }
 
@@ -77,9 +78,11 @@ class CourseDetailModelState(val id: Int) : ModelState() {
         isSubscribe = !isSubscribe
         coroutineScope.launch {
             coroutineScope.launch {
-                httpClient.get("/joinSubscribe").success {
-                    rootSnackBarHostState.showSnackbar("订阅成功")
-                }.error { rootSnackBarHostState.showSnackbar("订阅失败") }
+                httpClient.post("/filter/joinSubscribe") {
+                    parameter("courseId", courseId)
+                }.success {
+                    rootSnackBarHostState.showSnackbar("订阅成功", withDismissAction = true)
+                }.error { rootSnackBarHostState.showSnackbar("订阅失败", withDismissAction = true) }
             }
         }
     }
@@ -88,9 +91,9 @@ class CourseDetailModelState(val id: Int) : ModelState() {
         isSubscribe = false
         coroutineScope.launch {
             coroutineScope.launch {
-                httpClient.get("/cancelSubscripeCourse").success {
-                    rootSnackBarHostState.showSnackbar("取消订阅成功")
-                }.error { rootSnackBarHostState.showSnackbar("取消订阅失败") }
+                httpClient.post("/filter/cancelSubscribe") { parameter("courseId", courseId) }.success {
+                    rootSnackBarHostState.showSnackbar("取消订阅成功", withDismissAction = true)
+                }.error { rootSnackBarHostState.showSnackbar("取消订阅失败", withDismissAction = true) }
             }
         }
     }

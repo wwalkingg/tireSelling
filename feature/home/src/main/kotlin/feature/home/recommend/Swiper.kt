@@ -2,6 +2,7 @@ package feature.home.recommend
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -21,6 +22,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.arkivanov.decompose.router.stack.push
+import core.common.navigation.Config
+import core.common.navigation.rootNavigation
 import core.model.SwiperResp
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
@@ -46,8 +50,9 @@ internal fun Swiper(modifier: Modifier = Modifier, list: List<SwiperResp>) {
             state = state
         ) { page ->
             AsyncImage(
-                model = "https://picsum.photos/200/300",
-                modifier = Modifier.fillMaxSize(),
+                model = list[page].imageUrl,
+                modifier = Modifier.fillMaxSize()
+                    .clickable { rootNavigation.push(Config.RootConfig.CourseDetail(list[page].id)) },
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds
             )

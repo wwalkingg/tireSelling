@@ -1,4 +1,6 @@
+import android.util.Log
 import core.common.baseUrl
+import core.network.MyLoggingPlugin
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
@@ -18,13 +20,21 @@ val httpClient = HttpClient(CIO) {
             append("Authorization", token)
         }
     }
+
     install(ContentNegotiation) {
         json(json = Json {
             ignoreUnknownKeys = true
         })
     }
     install(HttpTimeout) {
-        requestTimeoutMillis = 15000
+        requestTimeoutMillis = Long.MAX_VALUE
     }
-    install(Logging)
+//    install(Logging) {
+//        logger = object : Logger {
+//            override fun log(message: String) {
+//                Log.i("HttpClient", message)
+//            }
+//        }
+//    }
+    install(MyLoggingPlugin)
 }

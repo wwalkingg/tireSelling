@@ -56,11 +56,10 @@ private fun UserInfoSuccess(userInfo: UserInfo) {
             contentScale = ContentScale.FillBounds
         )
         Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceAround) {
-            Text(userInfo.name)
+            Text(userInfo.name ?: "还没设置名字")
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                repeat(2) {
-                    UserTag(text = "参与10个课程")
-                }
+                UserTag(text = "新人玩家")
+                UserTag(text = "黑铁会员")
             }
         }
     }

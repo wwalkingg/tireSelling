@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceAll
 import com.russhwolf.settings.set
 import core.common.navigation.Config
@@ -19,6 +20,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -44,8 +46,8 @@ class LoginModelState : ModelState() {
             }.success<LoginResp> {
                 settings["token"] = it.token
                 _loginUIStateFlow.emit(LoginUIState.Success(it))
-                launch(Dispatchers.Main) {
-                    rootNavigation.replaceAll(Config.RootConfig.Home)
+                MainScope().launch {
+                    rootNavigation.push(Config.RootConfig.Home)
                 }
             }.error {
                 _loginUIStateFlow.emit(LoginUIState.Error("登录失败"))

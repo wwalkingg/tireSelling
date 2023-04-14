@@ -10,7 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import core.design_system.Icons
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -21,12 +23,12 @@ fun MeScreen(modifier: Modifier = Modifier, component: MeComponent) {
             modifier = Modifier.fillMaxWidth().padding(10.dp, 20.dp),
             userInfoLoadState
         )
-        Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceVariant)) {
+        Column(modifier = Modifier.fillMaxSize()) {
             Spacer(Modifier.height(10.dp))
             SettingItem(
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text("收藏") },
-                icon = { Icon(androidx.compose.material.icons.Icons.Default.Info, contentDescription = null) },
+                icon = { Icon(painter = painterResource(Icons.heartHalf), contentDescription = null) },
                 onClick = component.modelState::onCollectClick
             )
             Divider(modifier = Modifier.background(MaterialTheme.colorScheme.surface).padding(start = 44.dp))

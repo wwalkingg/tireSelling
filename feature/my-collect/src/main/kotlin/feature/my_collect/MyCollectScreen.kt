@@ -1,13 +1,13 @@
 package feature.my_collect
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.router.stack.push
@@ -23,14 +23,16 @@ import core.ui.status_page.ErrorPage
 fun MyCollectScreen(modifier: Modifier = Modifier, component: MyCollectComponent) {
     val loadMyCollectUIState by component.modelState.loadMyPlanUIStateFlow.collectAsState()
     Scaffold(topBar = { NavigationTopBar(title = "我的收藏") }) { padding ->
-        Column(modifier = Modifier.padding(padding)) {
+        Column(modifier = Modifier.padding(padding).verticalScroll(rememberScrollState())) {
             when (loadMyCollectUIState) {
                 LoadMyPlanUIState.Error -> {
                     ErrorPage(onRefreshClick = { component.modelState.loadMyPlan() })
                 }
 
                 LoadMyPlanUIState.Loading -> {
-                    Box(Modifier.fillMaxSize().loading())
+                    Box(Modifier.fillMaxSize().padding(top = 50.dp)) {
+                        CircularProgressIndicator(Modifier.align(Alignment.Center))
+                    }
                 }
 
                 is LoadMyPlanUIState.Success -> {

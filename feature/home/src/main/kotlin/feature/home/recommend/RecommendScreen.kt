@@ -2,10 +2,9 @@ package feature.home.recommend
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -35,18 +34,14 @@ fun RecommendScreen(modifier: Modifier = Modifier, component: RecommendComponent
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
             Swiper(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(140.dp),
-                list = List(10) {
-                    SwiperResp(
-                        id = it,
-                        imageUrl = "https://picsum.photos/800/600",
-                        createTime = ""
-                    )
-                })
+                list = component.modelState.swiperList,
+            )
             FunctionalMenus(modifier = Modifier
                 .padding(5.dp)
                 .fillMaxWidth(), onClick = {
@@ -71,13 +66,19 @@ fun RecommendScreen(modifier: Modifier = Modifier, component: RecommendComponent
             val loadRecommendUIState by component.modelState.loadRecommendUIStateFlow.collectAsState()
             when (loadRecommendUIState) {
                 LoadRecommendUIState.Error -> ErrorPage { component.modelState.loadRecommend() }
-                LoadRecommendUIState.Loading -> Box(Modifier.fillMaxSize().loading())
+                LoadRecommendUIState.Loading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.padding(top = 50.dp).align(Alignment.CenterHorizontally)
+                    )
+                }
+
                 is LoadRecommendUIState.Success -> {
                     Recommends(
                         modifier = Modifier
                             .padding(10.dp)
                             .fillMaxWidth(),
-                        (loadRecommendUIState as LoadRecommendUIState.Success).data
+                        (loadRecommendUIState as LoadRecommendUIState.Success).data,
+                        onRefreshClick = { component.modelState.loadRecommend() }
                     )
                 }
             }

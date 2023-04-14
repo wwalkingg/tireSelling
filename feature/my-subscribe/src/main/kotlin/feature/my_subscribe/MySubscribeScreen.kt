@@ -1,11 +1,11 @@
 package feature.my_subscribe
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -21,7 +21,10 @@ import core.ui.status_page.ErrorPage
 @Composable
 fun MySubscribeScreen(modifier: Modifier = Modifier, component: MySubscribeComponent) {
     val loadMyCollectUIState by component.modelState.loadMyPlanUIStateFlow.collectAsState()
-    Scaffold(topBar = { TopBar() }) { padding ->
+    LaunchedEffect(Unit) {
+        component.modelState.loadMySubscribe()
+    }
+    Scaffold(topBar = { TopBar(onRefreshClick = { component.modelState.loadMySubscribe() }) }) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             when (loadMyCollectUIState) {
                 LoadMySubscribeUIState.Error -> {
@@ -52,8 +55,12 @@ fun MySubscribeScreen(modifier: Modifier = Modifier, component: MySubscribeCompo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBar() {
+private fun TopBar(onRefreshClick: () -> Unit) {
     TopAppBar(title = {
         Text("我的计划")
+    }, actions = {
+        IconButton(onClick = { onRefreshClick() }) {
+            Icon(Icons.Default.Refresh, contentDescription = null)
+        }
     })
 }

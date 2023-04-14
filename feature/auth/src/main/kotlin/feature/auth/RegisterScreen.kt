@@ -23,11 +23,11 @@ fun RegisterScreen(modifier: Modifier = Modifier, component: RegisterComponent) 
     LaunchedEffect(Unit) {
         when (loginUIState) {
             is RegisterUIState.Error -> {
-                snackbarHostState.showSnackbar("登录失败")
+                snackbarHostState.showSnackbar("登录失败", withDismissAction = true)
             }
 
             is RegisterUIState.Success -> {
-                snackbarHostState.showSnackbar("登录成功")
+                snackbarHostState.showSnackbar("登录成功", withDismissAction = true)
             }
 
             else -> {}

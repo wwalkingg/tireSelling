@@ -5,16 +5,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import core.common.navigation.Config
 import core.common.navigation.rootNavigation
-import core.design_system.Icons
-import core.design_system.component.loading
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,11 +20,11 @@ fun LoginScreen(modifier: Modifier = Modifier, component: LoginComponent) {
     LaunchedEffect(Unit) {
         when (loginUIState) {
             is LoginUIState.Error -> {
-                snackbarHostState.showSnackbar("登录失败")
+                snackbarHostState.showSnackbar("登录失败", withDismissAction = true)
             }
 
             is LoginUIState.Success -> {
-                snackbarHostState.showSnackbar("登录成功")
+                snackbarHostState.showSnackbar("登录成功", withDismissAction = true)
             }
 
             else -> {}
@@ -46,19 +42,17 @@ fun LoginScreen(modifier: Modifier = Modifier, component: LoginComponent) {
         }
     ) {
         Column(
-            modifier.padding(it),
+            modifier = Modifier.padding(it).fillMaxSize().padding(bottom = 70.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text("登录", style = MaterialTheme.typography.titleLarge)
-            Spacer(Modifier.height(20.dp))
-            TextField(
+            OutlinedTextField(
                 value = component.modelState.id,
                 onValueChange = { component.modelState.id = it },
                 label = { Text("账号") },
                 placeholder = { Text("请输入你的账号") }
             )
-            TextField(
+            OutlinedTextField(
                 value = component.modelState.password,
                 onValueChange = { component.modelState.password = it },
                 label = { Text("密码") },

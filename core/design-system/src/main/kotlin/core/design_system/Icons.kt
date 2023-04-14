@@ -33,5 +33,6 @@ object Icons {
     val heartStraight = R.drawable.ic_heart_straight
     val heartStraightFill = R.drawable.ic_heart_straight_fill
     val emptyBox = R.drawable.ic_empty_box
+    val heartHalf = R.drawable.ic_heart_half
 }
 

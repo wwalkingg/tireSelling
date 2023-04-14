@@ -1,12 +1,16 @@
 package feature.home.recommend
 
 import ModelState
+import androidx.compose.runtime.mutableStateListOf
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.essenty.instancekeeper.getOrCreate
+import core.common.baseUrl
 import core.common.navigation.Config
 import core.common.navigation.rootNavigation
+import core.model.Course
 import core.model.Recommend
+import core.model.SwiperResp
 import core.network.utils.error
 import core.network.utils.success
 import httpClient
@@ -40,12 +44,25 @@ class RecommendComponent(componentContext: ComponentContext) :
 }
 
 internal class RecommendModelState : ModelState() {
+    val swiperList = mutableStateListOf<SwiperResp>()
     private val _loadRecommendUIStateFlow = MutableStateFlow<LoadRecommendUIState>(LoadRecommendUIState.Loading)
     val loadRecommendUIStateFlow = _loadRecommendUIStateFlow.asStateFlow()
 
     init {
         loadRecommend()
+        // swiper
+        coroutineScope.launch {
+            httpClient.get("/course/getAllCourses").success<List<Course>> {
+                swiperList.clear()
+                swiperList.addAll(
+                    it.take(5).map { SwiperResp(it.id, baseUrl + it.cover, createTime = "") }
+                )
+            }.error {
+
+            }
+        }
     }
+
     fun loadRecommend() {
         coroutineScope.launch {
             _loadRecommendUIStateFlow.emit(LoadRecommendUIState.Loading)

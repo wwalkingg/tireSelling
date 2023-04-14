@@ -22,6 +22,14 @@ class MeComponent(componentContext: ComponentContext) : ComponentContext by comp
 
     internal val modelState = instanceKeeper.getOrCreate { MeModelState() }
 
+    init {
+        lifecycle.subscribe(
+            onResume = {
+                modelState.loadUserInfo()
+            }
+        )
+    }
+
 }
 
 internal class MeModelState : ModelState() {

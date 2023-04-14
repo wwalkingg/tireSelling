@@ -3,6 +3,7 @@ package feature.my_subscribe
 import ModelState
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
+import com.arkivanov.essenty.lifecycle.subscribe
 import core.model.Course
 import core.network.utils.error
 import core.network.utils.success

@@ -11,19 +11,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
 import com.arkivanov.decompose.router.stack.pop
 import core.common.baseUrl
 import core.common.navigation.rootNavigation
 import core.design_system.Icons
 import core.design_system.component.loading
+import core.model.PartnerSimple
 import core.ui.status_page.ErrorPage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PartnerFindScreen(modifier: Modifier = Modifier, component: PartnerFindComponent) {
     val loadMyPartnerUIState by component.modelState.loadMyPartnerUIState.collectAsState()
-    Scaffold(modifier, topBar = { TopBar() }) { paddingValues ->
+    Scaffold(
+        modifier,
+        snackbarHost = { SnackbarHost(component.modelState.snackBarState) },
+        topBar = { TopBar() }) { paddingValues ->
         when (loadMyPartnerUIState) {
             LoadMyPartnerUIState.Error -> ErrorPage { component.modelState.loadMyPartner() }
             LoadMyPartnerUIState.Loading -> Box(Modifier.fillMaxSize().loading())
@@ -48,7 +53,7 @@ fun PartnerFindScreen(modifier: Modifier = Modifier, component: PartnerFindCompo
                             list.forEach {
                                 var isCancelConfirmDialogVisible by remember { mutableStateOf(false) }
                                 Row(
-                                    modifier = Modifier.fillMaxWidth().clickable { },
+                                    modifier = Modifier.fillMaxWidth().clickable { }.padding(vertical = 5.dp),
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
@@ -56,13 +61,15 @@ fun PartnerFindScreen(modifier: Modifier = Modifier, component: PartnerFindCompo
                                         AsyncImage(
                                             model = baseUrl + it.avatar,
                                             contentDescription = null,
-                                            modifier = Modifier.size(70.dp)
+                                            modifier = Modifier.clip(CircleShape).size(60.dp)
                                                 .background(MaterialTheme.colorScheme.primaryContainer)
                                         )
                                         Spacer(Modifier.width(10.dp))
                                         Text(it.name, style = MaterialTheme.typography.titleLarge)
                                     }
-                                    TextButton(onClick = { isCancelConfirmDialogVisible = true }) {
+                                    TextButton(onClick = {
+                                        isCancelConfirmDialogVisible = true
+                                    }) {
                                         Text(
                                             text = "取消关系",
                                             color = MaterialTheme.colorScheme.error
@@ -80,7 +87,12 @@ fun PartnerFindScreen(modifier: Modifier = Modifier, component: PartnerFindCompo
                                         text = {
                                             Text("确认取消关系？")
                                         },
-                                        confirmButton = { Button(onClick = {}) { Text("确认取消") } },
+                                        confirmButton = {
+                                            Button(onClick = {
+                                                component.modelState.cancelPartner(it)
+                                                isCancelConfirmDialogVisible = false
+                                            }) { Text("确认取消") }
+                                        },
                                         dismissButton = {
                                             Button(onClick = {
                                                 isCancelConfirmDialogVisible = false
@@ -103,25 +115,72 @@ fun PartnerFindScreen(modifier: Modifier = Modifier, component: PartnerFindCompo
                         }
 
                         is LoadRecommendPartnerUIState.Success -> {
-                            val recommendPartners = (loadMyPartnerUIState as LoadMyPartnerUIState.Success).data
+                            val recommendPartners =
+                                (loadRecommendPartnerUIState as LoadRecommendPartnerUIState.Success).data
                             Text("推荐伙伴", style = MaterialTheme.typography.titleLarge)
                             Column {
                                 recommendPartners.forEach {
-                                    Row(modifier = Modifier.fillMaxWidth()) {
-                                        AsyncImage(
-                                            model = baseUrl + it.avatar,
-                                            contentDescription = null,
-                                            modifier = Modifier.size(50.dp)
-                                        )
-                                        Column {
-                                            Text(it.name)
+                                    var isDialogVisible by remember { mutableStateOf(false) }
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth().clickable { }.padding(vertical = 5.dp),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            AsyncImage(
+                                                model = baseUrl + it.avatar,
+                                                contentDescription = null,
+                                                modifier = Modifier.clip(CircleShape).size(60.dp)
+                                                    .background(MaterialTheme.colorScheme.primaryContainer)
+                                            )
+                                            Spacer(Modifier.width(10.dp))
+                                            Text(it.name, style = MaterialTheme.typography.titleLarge)
                                         }
+                                        TextButton(onClick = { isDialogVisible = true }) {
+                                            Text(
+                                                text = "添加关系",
+                                                color = MaterialTheme.colorScheme.error
+                                            )
+                                        }
+
+                                    }
+                                    Divider()
+                                    if (isDialogVisible) {
+                                        AlertDialog(
+                                            onDismissRequest = { isDialogVisible = false },
+                                            title = {
+                                                Text("确认添加关系")
+                                            },
+                                            text = {
+                                                Text("确认添加关系？")
+                                            },
+                                            confirmButton = {
+                                                Button(onClick = {
+                                                    component.modelState.bePartner(it)
+                                                    isDialogVisible = false
+                                                }) { Text("确认") }
+                                            },
+                                            dismissButton = {
+                                                Button(onClick = {
+                                                    isDialogVisible = false
+                                                }) { Text("取消") }
+                                            },
+                                        )
                                     }
                                 }
                             }
                         }
                     }
-
+                }
+            }
+        }
+        if (component.modelState.isLoading) {
+            Dialog(onDismissRequest = {}) {
+                Box(
+                    Modifier.clip(MaterialTheme.shapes.medium).fillMaxWidth(.5f).aspectRatio(1f)
+                        .background(MaterialTheme.colorScheme.surface)
+                ) {
+                    CircularProgressIndicator((Modifier.align(Alignment.Center)))
                 }
             }
         }

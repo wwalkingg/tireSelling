@@ -17,6 +17,7 @@ import httpClient
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -43,7 +44,7 @@ class RegisterModelState : ModelState() {
             }.success<LoginResp> {
                 settings["token"] = it.token
                 _registerUIStateFlow.emit(RegisterUIState.Success(it))
-                launch(Dispatchers.Main) {
+                MainScope().launch {
                     rootNavigation.replaceAll(Config.RootConfig.Home)
                 }
             }.error {

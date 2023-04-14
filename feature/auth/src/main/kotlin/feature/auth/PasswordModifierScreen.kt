@@ -25,12 +25,12 @@ fun PasswordModifierScreen(modifier: Modifier = Modifier, component: PasswordMod
         val modifierPasswordUIState by component.modelState.modifierPasswordUIStateFlow.collectAsState()
         when (modifierPasswordUIState) {
             is ModifierPasswordUIState.Error -> LaunchedEffect(Unit) {
-                snackbarHostState.showSnackbar("修改失败")
+                snackbarHostState.showSnackbar("修改失败", withDismissAction = true)
             }
 
             ModifierPasswordUIState.Loading -> Dialog(onDismissRequest = {}) { CircularProgressIndicator() }
             ModifierPasswordUIState.Success -> LaunchedEffect(Unit) {
-                snackbarHostState.showSnackbar("修改成功")
+                snackbarHostState.showSnackbar("修改成功", withDismissAction = true)
             }
 
             ModifierPasswordUIState.Wait -> {}

@@ -1,6 +1,7 @@
 package feature.auth
 
 import ModelState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -25,14 +26,21 @@ class UserInfoModifierComponent(componentContext: ComponentContext) : ComponentC
 }
 
 internal class UserInfoModifierModelState : ModelState() {
+    var isLoading by mutableStateOf(false)
+    val snackBarState = SnackbarHostState()
     private val _loadUserInfoUIStateFlow = MutableStateFlow<LoadUserInfoUIState>(LoadUserInfoUIState.Loading)
     val loadUserInfoUIStateFlow = _loadUserInfoUIStateFlow.asStateFlow()
 
     private val _modifierUserInfoUIStateFlow = MutableStateFlow<ModifierUserInfoUIState>(ModifierUserInfoUIState.Wait)
     val modifierUserInfoUIStateFlow = _modifierUserInfoUIStateFlow.asStateFlow()
 
-    var newAvatarInputStream by mutableStateOf<InputStream?>(null)
-    var newUserInfo by mutableStateOf<UserInfo?>(null)
+    var userInfo: UserInfo? = null
+    var name by mutableStateOf("")
+    var age by mutableStateOf("")
+    var sex by mutableStateOf("")
+    var height by mutableStateOf("")
+    var weight by mutableStateOf("")
+    var isPartner by mutableStateOf(false)
 
     init {
         loadUserInfo()
@@ -42,7 +50,13 @@ internal class UserInfoModifierModelState : ModelState() {
         coroutineScope.launch {
             _loadUserInfoUIStateFlow.emit(LoadUserInfoUIState.Loading)
             httpClient.get("/filter/getUserById").success<UserInfo> {
-                newUserInfo = it
+                name = it.name ?: "未设置"
+                age = it.age.toString()
+                sex = (it.sex ?: 1).toString()
+                height = (it.height ?: 180).toString()
+                weight = (it.weight ?: 80f).toString()
+                isPartner = it.isPartner
+                userInfo = it
                 _loadUserInfoUIStateFlow.emit(LoadUserInfoUIState.Success(it))
             }.error {
                 _loadUserInfoUIStateFlow.emit(LoadUserInfoUIState.Error)
@@ -50,47 +64,35 @@ internal class UserInfoModifierModelState : ModelState() {
         }
     }
 
-    fun update() {
-        coroutineScope.launch {
-            _modifierUserInfoUIStateFlow.emit(ModifierUserInfoUIState.Loading)
-            val updateAvatarResult = async { updateAvatar() }
-            val modifierUserInfoResult = async { modifierUserInfo() }
-            with(updateAvatarResult.await() to modifierUserInfoResult.await()) {
-                if (first && second) _modifierUserInfoUIStateFlow.emit(ModifierUserInfoUIState.Success)
-                else _modifierUserInfoUIStateFlow.emit(ModifierUserInfoUIState.Error)
-            }
-        }
-    }
-
-    suspend fun updateAvatar(): Boolean = suspendCoroutine { continuation ->
-        coroutineScope.launch {
-            if (newAvatarInputStream != null) {
-                httpClient.post("/filter/uploadAvatar") {
-                    setBody(MultiPartFormDataContent(
-                        formData {
-                            append(
-                                "file",
-                                newAvatarInputStream!!.readBytes()
-                            )
-                        }
-                    ))
+    fun modifierUserInfo() {
+        try {
+            coroutineScope.launch {
+                isLoading = true
+                httpClient.post("/filter/updateUserInfo") {
+                    contentType(ContentType.Application.Json)
+                    setBody(
+                        userInfo!!.copy(
+                            name = name,
+                            age = age.toInt(),
+                            sex = sex.toInt(),
+                            height = height.toInt(),
+                            weight = weight.toFloat(),
+                            isPartner = isPartner
+                        )
+                    )
                 }.success {
-                    continuation.resume(true)
-                }.error {
-                    continuation.resume(false)
+                    isLoading = false
+                    snackBarState.showSnackbar("修改成功", withDismissAction = true)
                 }
-            } else continuation.resume(true)
-        }
-    }
-
-    suspend fun modifierUserInfo(): Boolean = suspendCoroutine { continuation ->
-        coroutineScope.launch {
-            httpClient.post("/filter/updateUserInfo") {
-                contentType(ContentType.Application.Json)
-                setBody(newUserInfo)
-            }.success { continuation.resume(true) }.error {
-                continuation.resume(false)
             }
+        } catch (e: Exception) {
+            isLoading = false
+            e.printStackTrace()
+            coroutineScope.launch {
+                snackBarState.showSnackbar("数据格式错误", withDismissAction = true)
+            }
+        } finally {
+            isLoading = false
         }
     }
 }

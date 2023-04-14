@@ -32,7 +32,7 @@ internal enum class BottomMenu(
     val iconSelected: Int
 ) {
     Recommend("推荐", Icons.gift, Icons.giftDuotone),
-    Plan("计划", Icons.calendar, Icons.calendarDuotone),
+    Plan("订阅", Icons.calendar, Icons.calendarDuotone),
     Person("个人", Icons.userFocus, Icons.userFocusDuotone),
     Statistics("统计", Icons.chartLine, Icons.chartLineDuotone),
     User("我的", Icons.userFocus, Icons.userFocusDuotone),
