@@ -53,19 +53,19 @@ internal class ProductDetailModelState(private val id: Int, title: String, image
 
     private fun subscribeCollectProductFlow(){
        coroutineScope.launch {
-           collectClickFlow.transform { isCollected = !isCollected }.debounce(1000).collect{
-               coroutineScope.launch {
-                   Apis.Product.collectProduct(id)
-                       .catch {
-                           snackBarState.showSnackbar(message = "收藏失败，请重试")
-                           isCollected = false
-                       }
-                       .collect {
-                           snackBarState.showSnackbar(message = "收藏成功")
-                           isCollected = true
-                       }
-               }
-           }
+//           collectClickFlow.transform { isCollected = !isCollected }.debounce(1000).collect{
+//               coroutineScope.launch {
+//                   Apis.Product.collectProduct(id)
+//                       .catch {
+//                           snackBarState.showSnackbar(message = "收藏失败，请重试")
+//                           isCollected = false
+//                       }
+//                       .collect {
+//                           snackBarState.showSnackbar(message = "收藏成功")
+//                           isCollected = true
+//                       }
+//               }
+//           }
        }
     }
 }
