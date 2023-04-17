@@ -10,4 +10,5 @@ dependencies {
     api(libs.decompose)
     api(libs.decompose.compose.android)
     api(libs.kotlinx.coroutines.android)
+    api(libs.androidx.compose.runtime)
 }

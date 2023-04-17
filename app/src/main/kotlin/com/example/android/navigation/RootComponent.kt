@@ -44,9 +44,7 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
             is NavConfig.ProductDetail -> Child.ProductDetail(
                 ProductDetailComponent(
                     componentContext,
-                    config.id,
-                    config.title,
-                    config.image
+                    config.id
                 )
             )
 

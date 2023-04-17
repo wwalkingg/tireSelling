@@ -18,3 +18,9 @@ data class Product(
     @Transient
     val isFavorite: Boolean = false
 )
+
+@Serializable
+data class ProductAndStore(
+    val product: Product,
+    val store: Store
+)

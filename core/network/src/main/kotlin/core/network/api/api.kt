@@ -5,4 +5,5 @@ object Apis {
     object Auth
     object Category
     object Product
+    object Store
 }

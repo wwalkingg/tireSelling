@@ -1,6 +1,8 @@
 package core.network.api
 
 import com.example.android.core.model.Product
+import com.example.android.core.model.ProductAndStore
+import com.example.android.core.model.ProductComment
 import core.network.Resp
 import core.network.RespWithoutData
 import httpClient
@@ -38,7 +40,7 @@ suspend fun Apis.Product.getProducts(categoryId: Int? = null) = callbackFlow {
 suspend fun Apis.Product.getProduct(productId: Int) = callbackFlow {
     httpClient.get("product/$productId").apply {
         if (status.isSuccess()) {
-            val resp = body<Resp<Product>>()
+            val resp = body<Resp<ProductAndStore>>()
             if (resp.code == 200) {
                 send(resp.data)
             } else cancel(resp.msg)
@@ -53,6 +55,20 @@ suspend fun Apis.Product.collectProduct(productId: Int) = callbackFlow {
     }.apply {
         if (status.isSuccess()) {
             val resp = body<RespWithoutData>()
+            if (resp.code == 200) {
+                send(null)
+            } else cancel(resp.msg)
+        } else cancel(status.description)
+        awaitClose { }
+    }
+}
+
+suspend fun Apis.Product.getProductComments(productId: Int) = callbackFlow {
+    httpClient.post("productComment/findAllProductComments") {
+        parameter("productId", productId)
+    }.apply {
+        if (status.isSuccess()) {
+            val resp = body<Resp<List<ProductComment>>>()
             if (resp.code == 200) {
                 send(null)
             } else cancel(resp.msg)
