@@ -13,6 +13,8 @@ build/
 .externalNativeBuild
 .cxx
 local.properties
+sonarlint/
+
 
 # Project exclude paths
 /build-logic/convention/build/
@@ -27,3 +29,15 @@ local.properties
 /core/network/build/
 /core/ui/build/
 /feature/home/build/
+/.idea/sonarlint/issuestore/1/2/12c57d0474f9a88f017096997d65677d5ba1fea3
+/.idea/sonarlint/issuestore/3/3/33faeab8056c945e58d920d723c6a36420381b51
+/.idea/sonarlint/issuestore/3/6/36b7dded38ad24b69672b8675e08b32e110d7b59
+/.idea/sonarlint/issuestore/4/b/4be64890a6f658bf3cb6e1061a1ab80288453dfb
+/.idea/sonarlint/issuestore/b/0/b0836eca71e20710c3db94085671bdd93b1dd468
+/.idea/sonarlint/securityhotspotstore/1/2/12c57d0474f9a88f017096997d65677d5ba1fea3
+/.idea/sonarlint/securityhotspotstore/3/3/33faeab8056c945e58d920d723c6a36420381b51
+/.idea/sonarlint/securityhotspotstore/3/6/36b7dded38ad24b69672b8675e08b32e110d7b59
+/.idea/sonarlint/securityhotspotstore/4/b/4be64890a6f658bf3cb6e1061a1ab80288453dfb
+/.idea/sonarlint/securityhotspotstore/b/0/b0836eca71e20710c3db94085671bdd93b1dd468
+/.idea/git_toolbox_prj.xml
+/.idea/GrepConsole.xml
