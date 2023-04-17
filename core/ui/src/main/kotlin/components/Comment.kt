@@ -1,7 +1,11 @@
 package components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -13,12 +17,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import kotlinx.datetime.*
-import java.time.format.DateTimeFormatter
 
 @Composable
-fun Comment(modifier: Modifier = Modifier, avatar: String, username: String, content: String, datetime: LocalDateTime) {
-    Column {
+fun Comment(
+    modifier: Modifier = Modifier,
+    avatar: String,
+    username: String,
+    content: String,
+    datetime: String
+) {
+    Column(modifier) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -32,14 +40,16 @@ fun Comment(modifier: Modifier = Modifier, avatar: String, username: String, con
                     .background(MaterialTheme.colorScheme.outlineVariant)
             )
             Text(
-                text = username, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold
+                text = username,
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Bold
             )
         }
         Text(
             text = content, style = MaterialTheme.typography.bodyMedium
         )
         Text(
-            text = datetime.toJavaLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+            text = datetime,
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.outline
         )
@@ -54,6 +64,6 @@ private fun CommentPreview() {
         avatar = "",
         username = "test",
         content = "test",
-        datetime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+        datetime = "2021-10-10 10:10:10"
     )
 }

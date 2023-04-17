@@ -13,7 +13,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 
 suspend fun Apis.Store.getStoreComments(storeId: Int) = callbackFlow {
-    httpClient.post("productComment/findAllProductComments") {
+    httpClient.get("productComment/findAllProductComments") {
         parameter("storeId", storeId)
     }.apply {
         if (status.isSuccess()) {

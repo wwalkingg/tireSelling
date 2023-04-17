@@ -28,5 +28,4 @@ dependencies {
     api(libs.androidx.compose.runtime)
     api(libs.androidx.compose.runtime.livedata)
     api(libs.lottie.compose)
-
 }

@@ -5,11 +5,13 @@ import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
 import com.example.android.core.model.Product
 import com.example.android.core.model.ProductAndStore
+import com.example.android.core.model.ProductComment
 import core.component_base.LoadUIState
 import core.component_base.ModelState
 import core.network.api.Apis
 import core.network.api.collectProduct
 import core.network.api.getProduct
+import core.network.api.getProductComments
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -22,6 +24,11 @@ internal class ProductDetailModelState(private val id: Int) : ModelState() {
     private val _loadProductDetailUIStateFlow: MutableStateFlow<LoadUIState<ProductAndStore>> =
         MutableStateFlow(LoadUIState.Loading)
     val loadProductDetailUIStateFlow = _loadProductDetailUIStateFlow.asStateFlow()
+
+    private val _loadCommentsUIStateFlow: MutableStateFlow<LoadUIState<List<ProductComment>>> =
+        MutableStateFlow(LoadUIState.Loading)
+    val loadCommentsUIStateFlow = _loadCommentsUIStateFlow.asStateFlow()
+
     val collectClickFlow = MutableSharedFlow<Nothing?>()
 
     val snackBarState = SnackbarHostState()
@@ -30,6 +37,7 @@ internal class ProductDetailModelState(private val id: Int) : ModelState() {
 
     init {
         loadProductDetail()
+        loadProductComments()
         subscribeCollectProductFlow()
     }
 
@@ -45,10 +53,28 @@ internal class ProductDetailModelState(private val id: Int) : ModelState() {
         }
     }
 
+    fun loadProductComments() {
+        coroutineScope.launch {
+            Apis.Product.getProductComments(id)
+                .onStart { _loadCommentsUIStateFlow.emit(LoadUIState.Loading) }
+                .catch {
+                    _loadCommentsUIStateFlow.emit(LoadUIState.Error(it))
+                    it.printStackTrace()
+                }
+                .collect {
+                    _loadCommentsUIStateFlow.emit(LoadUIState.Loaded(it))
+                }
+        }
+    }
+
     fun collectProduct() {
         coroutineScope.launch {
             collectClickFlow.emit(null)
         }
+    }
+
+    fun buy() {
+
     }
 
     private fun subscribeCollectProductFlow() {

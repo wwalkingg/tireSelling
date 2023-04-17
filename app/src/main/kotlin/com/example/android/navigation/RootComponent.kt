@@ -74,6 +74,7 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
             )
 
             NavConfig.RewardPoints -> Child.RewardPoints(RewardPointsComponent(componentContext))
+            is NavConfig.StoreDetail -> Child.StoreDetail()
         }
 
 

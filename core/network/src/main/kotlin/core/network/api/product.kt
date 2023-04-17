@@ -64,13 +64,13 @@ suspend fun Apis.Product.collectProduct(productId: Int) = callbackFlow {
 }
 
 suspend fun Apis.Product.getProductComments(productId: Int) = callbackFlow {
-    httpClient.post("productComment/findAllProductComments") {
+    httpClient.get("productComment/findAllProductComments") {
         parameter("productId", productId)
     }.apply {
         if (status.isSuccess()) {
             val resp = body<Resp<List<ProductComment>>>()
             if (resp.code == 200) {
-                send(null)
+                send(resp.data)
             } else cancel(resp.msg)
         } else cancel(status.description)
         awaitClose { }

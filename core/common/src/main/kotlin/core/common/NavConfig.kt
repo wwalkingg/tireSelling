@@ -39,5 +39,8 @@ sealed class NavConfig : Parcelable {
     @Parcelize
     object Login : NavConfig()
 
+    @Parcelize
+    data class StoreDetail(val id: Int) : NavConfig()
+
 
 }
