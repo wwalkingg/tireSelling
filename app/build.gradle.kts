@@ -47,6 +47,7 @@ dependencies {
     implementation(project(":feature:login"))
     implementation(project(":feature:order-management"))
     implementation(project(":feature:reward-points"))
+    implementation(project(":feature:store-detail"))
 
     implementation(project(":core:common"))
     implementation(project(":core:ui"))

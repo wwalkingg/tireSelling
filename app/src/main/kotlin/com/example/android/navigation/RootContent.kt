@@ -16,6 +16,7 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackA
 import com.example.feature.home.HomeScreen
 import feature.all_articles.AllArticlesScreen
 import feature.article_detail.ArticleDetailScreen
+import feature.store_detail.StoreDetailScreen
 
 @Composable
 fun RootContent(component: RootComponent, modifier: Modifier = Modifier) {
@@ -35,6 +36,7 @@ fun RootContent(component: RootComponent, modifier: Modifier = Modifier) {
             is RootComponent.Child.OrderManagement -> OrderManagementScreen(component = child.component)
             is RootComponent.Child.ProductDetail -> ProductDetailScreen(component = child.component)
             is RootComponent.Child.RewardPoints -> RewardPointsScreen(component = child.component)
+            is RootComponent.Child.StoreDetail -> StoreDetailScreen(component = child.component)
         }
     }
 }

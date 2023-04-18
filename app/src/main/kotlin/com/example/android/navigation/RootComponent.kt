@@ -16,13 +16,14 @@ import core.common.NavConfig
 import core.common.navigation
 import feature.all_articles.AllArticlesComponent
 import feature.article_detail.ArticleDetailComponent
+import feature.store_detail.StoreDetailComponent
 
 class RootComponent(componentContext: ComponentContext) : ComponentContext by componentContext {
 
     private val _childStack =
         childStack(
             source = navigation,
-            initialConfiguration = NavConfig.ProductDetail(1),
+            initialConfiguration = NavConfig.StoreDetail(1),
             handleBackButton = true,
             childFactory = ::createChild,
         )
@@ -74,7 +75,7 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
             )
 
             NavConfig.RewardPoints -> Child.RewardPoints(RewardPointsComponent(componentContext))
-            is NavConfig.StoreDetail -> Child.StoreDetail()
+            is NavConfig.StoreDetail -> Child.StoreDetail(StoreDetailComponent(componentContext, config.id))
         }
 
 
@@ -90,5 +91,6 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
         data class Login(val component: LoginComponent) : Child
         data class OrderManagement(val component: OrderManagementComponent) : Child
         data class RewardPoints(val component: RewardPointsComponent) : Child
+        data class StoreDetail(val component: StoreDetailComponent) : Child
     }
 }
