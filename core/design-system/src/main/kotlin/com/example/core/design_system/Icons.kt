@@ -7,4 +7,5 @@ object Icons {
     val heat = R.drawable.ic_heart
     val heatFill = R.drawable.ic_heart_fill
     val store = R.drawable.ic_store
+    val shoppingBag = R.drawable.ic_shopping_bag
 }

@@ -5,7 +5,6 @@ import CollectionProductScreen
 import CollectionStoreScreen
 import LoginScreen
 import OrderManagementScreen
-import ProductDetailScreen
 import RewardPointsScreen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -16,6 +15,7 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackA
 import com.example.feature.home.HomeScreen
 import feature.all_articles.AllArticlesScreen
 import feature.article_detail.ArticleDetailScreen
+import feature.product_detail.ProductDetailScreen
 import feature.store_detail.StoreDetailScreen
 
 @Composable

@@ -1,6 +1,8 @@
 package components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Comment(
     modifier: Modifier = Modifier, avatar: String, username: String, content: String, datetime: String
@@ -22,7 +25,7 @@ fun Comment(
     Column(modifier) {
         Row(
             modifier = Modifier.height(IntrinsicSize.Max),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
@@ -35,7 +38,7 @@ fun Comment(
             )
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                 Text(
-                    text = content, style = MaterialTheme.typography.bodyLarge
+                    text = content, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.basicMarquee()
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),

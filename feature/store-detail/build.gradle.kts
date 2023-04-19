@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.android.feature.reward_points"
+    namespace = "com.example.android.feature.store_detail"
 }
 
 dependencies {

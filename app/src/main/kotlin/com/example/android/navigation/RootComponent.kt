@@ -5,7 +5,7 @@ import CollectionProductComponent
 import CollectionStoreComponent
 import LoginComponent
 import OrderManagementComponent
-import ProductDetailComponent
+import feature.product_detail.ProductDetailComponent
 import RewardPointsComponent
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -23,7 +23,7 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
     private val _childStack =
         childStack(
             source = navigation,
-            initialConfiguration = NavConfig.StoreDetail(1),
+            initialConfiguration = NavConfig.ProductDetail(1),
             handleBackButton = true,
             childFactory = ::createChild,
         )

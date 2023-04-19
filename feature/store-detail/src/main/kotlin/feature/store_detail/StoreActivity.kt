@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -14,13 +14,16 @@ import androidx.compose.ui.unit.dp
 import com.example.android.core.model.StoreActivity
 
 @Composable
-fun StoreActivity(modifier: Modifier = Modifier, activity: StoreActivity, onClick: () -> Unit) {
+fun StoreActivity(modifier: Modifier = Modifier, activity: StoreActivity) {
+    var isActivityDetailVisible by remember {
+        mutableStateOf(false)
+    }
     Row(
         modifier = modifier.padding(10.dp, 5.dp)
             .clip(MaterialTheme.shapes.medium)
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.secondaryContainer)
-            .clickable { onClick() }
+            .clickable { isActivityDetailVisible = true }
             .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -49,10 +52,24 @@ fun StoreActivity(modifier: Modifier = Modifier, activity: StoreActivity, onClic
             }
         }
         IconButton(
-            onClick = onClick,
+            onClick = { isActivityDetailVisible = true },
             colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
         ) {
             Icon(Icons.Default.KeyboardArrowRight, contentDescription = null)
         }
+    }
+    if (isActivityDetailVisible) {
+        AlertDialog(
+            onDismissRequest = { isActivityDetailVisible = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    isActivityDetailVisible = false
+                }) {
+                    Text("确定")
+                }
+            },
+            title = { Text(activity.title) },
+            text = { Text(activity.content) }
+        )
     }
 }

@@ -1,15 +1,15 @@
+package feature.product_detail
+
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
-import com.example.android.core.model.Product
 import com.example.android.core.model.ProductAndStore
 import com.example.android.core.model.ProductComment
 import core.component_base.LoadUIState
 import core.component_base.ModelState
 import core.network.api.Apis
-import core.network.api.collectProduct
 import core.network.api.getProduct
 import core.network.api.getProductComments
 import kotlinx.coroutines.flow.*

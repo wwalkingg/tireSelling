@@ -6,6 +6,7 @@ import com.example.android.core.model.Store
 import com.example.android.core.model.StoreActivity
 import com.example.android.core.model.StoreComment
 import com.example.core.design_system.Icons.store
+import core.component_base.BooleanAndLoadUIState
 import core.component_base.LoadUIState
 import core.component_base.ModelState
 import core.network.api.*
@@ -96,4 +97,5 @@ internal class StoreDetailModelState(val id: Int) : ModelState() {
                 }
         }
     }
+
 }

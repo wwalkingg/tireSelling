@@ -3,7 +3,6 @@ package feature.store_detail
 import LoadUIStateScaffold
 import SmallLoadUIStateScaffold
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,7 +13,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,19 +21,19 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.push
 import components.Comment
+import core.common.NavConfig
 import core.common.navigation
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -65,17 +63,6 @@ fun StoreDetailScreen(component: StoreDetailComponent) {
                         ) {
                             Icon(
                                 Icons.Filled.KeyboardArrowLeft,
-                                contentDescription = null,
-                            )
-                        }
-                    },
-                    actions = {
-                        IconButton(
-                            onClick = { navigation.pop() },
-                            colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surface)
-                        ) {
-                            Icon(
-                                painterResource(com.example.core.design_system.Icons.heat),
                                 contentDescription = null,
                             )
                         }
@@ -123,7 +110,7 @@ fun StoreDetailScreen(component: StoreDetailComponent) {
                                         Box(
                                             modifier = Modifier.clip(MaterialTheme.shapes.medium)
                                                 .size(200.dp, 160.dp)
-                                                .clickable { }
+                                                .clickable { navigation.push(NavConfig.ProductDetail(product.id)) }
                                         ) {
                                             AsyncImage(
                                                 model = product.image,
@@ -171,13 +158,14 @@ fun StoreDetailScreen(component: StoreDetailComponent) {
                                         modifier = Modifier.padding(10.dp, 10.dp)
                                     )
                                     storeActivities.forEach {
-                                        StoreActivity(modifier = Modifier.fillMaxWidth(), it, onClick = {})
+                                        StoreActivity(modifier = Modifier.fillMaxWidth(), it)
                                     }
                                 }
                             }
                         }
                     }
                     item {
+                        var isAllCommentsVisible by remember { mutableStateOf(false) }
                         SmallLoadUIStateScaffold(loadStoreCommentsUIState) { comments ->
                             Column(modifier = Modifier.fillMaxWidth().padding(10.dp)) {
                                 Row(
@@ -186,12 +174,12 @@ fun StoreDetailScreen(component: StoreDetailComponent) {
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text("店铺评价", style = MaterialTheme.typography.titleLarge)
-                                    TextButton(onClick = {}) {
+                                    TextButton(onClick = { isAllCommentsVisible = true }) {
                                         Text("查看全部")
                                     }
                                 }
                                 val firstFiveComments by remember { derivedStateOf { comments.take(5) } }
-                                Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                                     firstFiveComments.forEach {
                                         Comment(
                                             modifier = Modifier.fillMaxWidth(),
@@ -199,6 +187,34 @@ fun StoreDetailScreen(component: StoreDetailComponent) {
                                             content = it.content,
                                             datetime = it.createTime
                                         )
+                                    }
+                                }
+                            }
+                            if (isAllCommentsVisible) {
+                                Dialog(onDismissRequest = { isAllCommentsVisible = false }) {
+                                    Column(
+                                        modifier = Modifier.clip(MaterialTheme.shapes.medium)
+                                            .background(MaterialTheme.colorScheme.surface)
+                                            .padding(10.dp)
+                                    ) {
+                                        LazyColumn(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                                            items(items = comments) {
+                                                Comment(
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    avatar = it.avatar, username = it.name,
+                                                    content = it.content,
+                                                    datetime = it.createTime
+                                                )
+                                            }
+                                        }
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.End
+                                        ) {
+                                            Button(onClick = { isAllCommentsVisible = false }) {
+                                                Text("确定")
+                                            }
+                                        }
                                     }
                                 }
                             }
