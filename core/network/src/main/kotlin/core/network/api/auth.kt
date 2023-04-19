@@ -23,8 +23,8 @@ fun Apis.Auth.login(username: String, password: String) = callbackFlow {
                 val token = resp.data.get("token")
                 token?.let { send(it) } ?: cancel("token is null")
 
-            } else cancel(resp.msg)
-        } else cancel(status.description)
+            } else this@callbackFlow.cancel(status.description)
+        } else this@callbackFlow.cancel(status.description)
         awaitClose { }
     }
 }
@@ -38,8 +38,8 @@ fun Apis.Auth.register(username: String, password: String) = callbackFlow {
             val resp = body<RespWithoutData>()
             if (resp.code == 200) {
                 send(null)
-            } else cancel(resp.msg)
-        } else cancel(status.description)
+            } else this@callbackFlow.cancel(resp.msg)
+        } else this@callbackFlow.cancel(status.description)
         awaitClose { }
     }
 }
@@ -50,8 +50,8 @@ fun Apis.Auth.getUserInfo() = callbackFlow {
             val resp = body<Resp<UserInfo>>()
             if (resp.code == 200) {
                 send(resp.data)
-            } else cancel(resp.msg)
-        } else cancel(status.description)
+            } else this@callbackFlow.cancel(resp.msg)
+        } else this@callbackFlow.cancel(status.description)
         awaitClose { }
     }
 }

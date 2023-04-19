@@ -19,10 +19,6 @@ import kotlinx.coroutines.launch
 class RecommendsComponent(componentContext: ComponentContext) :
     ComponentContext by componentContext {
     internal val modelState = RecommendsModelState()
-
-    init {
-        println("reload")
-    }
 }
 
 internal class RecommendsModelState : ModelState() {
@@ -57,7 +53,10 @@ internal class RecommendsModelState : ModelState() {
         coroutineScope.launch {
             Apis.Article.getHotArticles()
                 .onStart { _loadHotArticlesUIStateFlow.emit(LoadUIState.Loading) }
-                .catch { _loadHotArticlesUIStateFlow.emit(LoadUIState.Error(it)) }
+                .catch {
+                    _loadHotArticlesUIStateFlow.emit(LoadUIState.Error(it))
+                    it.printStackTrace()
+                }
                 .collect { _loadHotArticlesUIStateFlow.emit(LoadUIState.Loaded(it)) }
         }
     }

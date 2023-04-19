@@ -37,7 +37,6 @@ fun HotArticlesContainer(
 ) {
     Column(
         modifier
-            .padding(10.dp)
             .clip(MaterialTheme.shapes.medium)
             .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(bottom = 10.dp, start = 10.dp, end = 10.dp)

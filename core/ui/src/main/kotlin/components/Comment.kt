@@ -1,11 +1,7 @@
 package components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -13,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,39 +17,42 @@ import coil.compose.AsyncImage
 
 @Composable
 fun Comment(
-    modifier: Modifier = Modifier,
-    avatar: String,
-    username: String,
-    content: String,
-    datetime: String
+    modifier: Modifier = Modifier, avatar: String, username: String, content: String, datetime: String
 ) {
     Column(modifier) {
         Row(
+            modifier = Modifier.height(IntrinsicSize.Max),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
                 model = avatar,
                 contentDescription = null,
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .size(16.dp)
-                    .background(MaterialTheme.colorScheme.outlineVariant)
+                modifier = Modifier.clip(CircleShape)
+                    .fillMaxHeight()
+                    .aspectRatio(1f)
+                    .background(MaterialTheme.colorScheme.outlineVariant), contentScale = ContentScale.Crop
             )
-            Text(
-                text = username,
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.Bold
-            )
+            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                Text(
+                    text = content, style = MaterialTheme.typography.bodyLarge
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(5.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = username, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = datetime,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.outline
+                    )
+                }
+            }
         }
-        Text(
-            text = content, style = MaterialTheme.typography.bodyMedium
-        )
-        Text(
-            text = datetime,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.outline
-        )
     }
 }
 

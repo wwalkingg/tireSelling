@@ -1,5 +1,6 @@
 package com.example.feature.home.recommends
 
+import SmallLoadUIStateScaffold
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -17,7 +18,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.router.stack.push
-import com.example.android.core.model.Article
 import com.example.android.core.model.Category
 import com.example.android.core.model.Product
 import core.common.NavConfig
@@ -72,32 +72,25 @@ fun RecommendsScreen(component: RecommendsComponent) {
             }
 
             val loadHotArticlesUIState by component.modelState.loadHotArticlesUIStateFlow.collectAsState()
-            when (loadHotArticlesUIState) {
-                LoadUIState.Loading -> {
-                    Text(text = "Loading")
-                }
-
-                is LoadUIState.Loaded -> {
-                    HotArticlesContainer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(170.dp),
-                        articles = (loadHotArticlesUIState as LoadUIState.Loaded<List<Article>>).data.toPersistentList(),
-                        onArticleClick = {
-                            navigation.push(
-                                NavConfig.ArticleDetail(
-                                    it.id,
-                                    it.title
-                                )
+            SmallLoadUIStateScaffold(
+                loadHotArticlesUIState, modifier = Modifier
+                    .padding(10.dp)
+            ) { articles ->
+                HotArticlesContainer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(170.dp),
+                    articles = articles.toPersistentList(),
+                    onArticleClick = {
+                        navigation.push(
+                            NavConfig.ArticleDetail(
+                                it.id,
+                                it.title
                             )
-                        },
-                        onMoreClick = { navigation.push(NavConfig.AllArticles) },
-                    )
-                }
-
-                is LoadUIState.Error -> {
-                    Text(text = (loadHotArticlesUIState as LoadUIState.Error).error.toString())
-                }
+                        )
+                    },
+                    onMoreClick = { navigation.push(NavConfig.AllArticles) },
+                )
             }
 
             val loadHotProductsUIState by component.modelState.loadHotProductsUIStateFlow.collectAsState()

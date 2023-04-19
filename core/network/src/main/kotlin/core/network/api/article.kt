@@ -17,8 +17,10 @@ suspend fun Apis.Article.getHotArticles() = callbackFlow {
             val resp = body<Resp<List<Article>>>()
             if (resp.code == 200) {
                 send(resp.data)
-            } else cancel(resp.msg)
-        } else cancel(status.description)
+            } else this@callbackFlow.cancel(resp.msg)
+        } else {
+            this@callbackFlow.cancel(status.description)
+        }
         awaitClose { }
     }
 }
@@ -29,8 +31,8 @@ suspend fun Apis.Article.getArticles() = callbackFlow {
             val resp = body<Resp<List<Article>>>()
             if (resp.code == 200) {
                 send(resp.data)
-            } else cancel(resp.msg)
-        } else cancel(status.description)
+            } else this@callbackFlow.cancel(resp.msg)
+        } else this@callbackFlow.cancel(status.description)
         awaitClose { }
     }
 }
@@ -41,8 +43,8 @@ suspend fun Apis.Article.getArticleDetail(id: Int) = callbackFlow {
             val resp = body<Resp<Article>>()
             if (resp.code == 200) {
                 send(resp.data)
-            } else cancel(resp.msg)
-        } else cancel(status.description)
+            } else this@callbackFlow.cancel(resp.msg)
+        } else this@callbackFlow.cancel(status.description)
         awaitClose { }
     }
 }

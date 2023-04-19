@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -41,7 +42,8 @@ fun CategoryItem(
                 .clip(CircleShape)
                 .background(imgBackground)
                 .aspectRatio(1f),
-            model = category.categoryImg, contentDescription = null
+            model = category.categoryImg, contentDescription = null,
+            contentScale = ContentScale.Crop
         )
         Text(
             text = category.name,

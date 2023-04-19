@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -38,7 +39,7 @@ fun ProductItem(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.primary),
                 model = product.image,
-                contentDescription = null,
+                contentDescription = null, contentScale = ContentScale.Crop
             )
             if (product.isHot) {
                 Text(

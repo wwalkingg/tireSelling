@@ -16,8 +16,8 @@ suspend fun Apis.Category.getAllCategories() = callbackFlow {
             val resp = body<Resp<List<Category>>>()
             if (resp.code == 200) {
                 send(resp.data)
-            } else cancel(resp.msg)
-        } else cancel(status.description)
+            } else this@callbackFlow.cancel(resp.msg)
+        } else this@callbackFlow.cancel(status.description)
         awaitClose {  }
     }
 }

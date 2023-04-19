@@ -19,8 +19,8 @@ suspend fun Apis.Product.getHotProducts() = callbackFlow {
             val resp = body<Resp<List<Product>>>()
             if (resp.code == 200) {
                 send(resp.data)
-            } else cancel(resp.msg)
-        } else cancel(status.description)
+            } else this@callbackFlow.cancel(resp.msg)
+        } else this@callbackFlow.cancel(status.description)
         awaitClose { }
     }
 }
@@ -31,8 +31,8 @@ suspend fun Apis.Product.getProducts(categoryId: Int? = null) = callbackFlow {
             val resp = body<Resp<List<Product>>>()
             if (resp.code == 200) {
                 send(resp.data)
-            } else cancel(resp.msg)
-        } else cancel(status.description)
+            } else this@callbackFlow.cancel(resp.msg)
+        } else this@callbackFlow.cancel(status.description)
         awaitClose { }
     }
 }
@@ -43,8 +43,8 @@ suspend fun Apis.Product.getProduct(productId: Int) = callbackFlow {
             val resp = body<Resp<ProductAndStore>>()
             if (resp.code == 200) {
                 send(resp.data)
-            } else cancel(resp.msg)
-        } else cancel(status.description)
+            } else this@callbackFlow.cancel(resp.msg)
+        } else this@callbackFlow.cancel(status.description)
         awaitClose { }
     }
 }
@@ -57,8 +57,8 @@ suspend fun Apis.Product.collectProduct(productId: Int) = callbackFlow {
             val resp = body<RespWithoutData>()
             if (resp.code == 200) {
                 send(null)
-            } else cancel(resp.msg)
-        } else cancel(status.description)
+            } else this@callbackFlow.cancel(resp.msg)
+        } else this@callbackFlow.cancel(status.description)
         awaitClose { }
     }
 }
@@ -71,8 +71,8 @@ suspend fun Apis.Product.getProductComments(productId: Int) = callbackFlow {
             val resp = body<Resp<List<ProductComment>>>()
             if (resp.code == 200) {
                 send(resp.data)
-            } else cancel(resp.msg)
-        } else cancel(status.description)
+            } else this@callbackFlow.cancel(resp.msg)
+        } else this@callbackFlow.cancel(status.description)
         awaitClose { }
     }
 }

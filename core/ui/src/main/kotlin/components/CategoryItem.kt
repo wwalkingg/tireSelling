@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -48,7 +49,7 @@ fun CategoryItem(
                     layout(placeable.width, placeable.height) {
                         placeable.placeRelative(0, 0)
                     }
-                }, model = category, contentDescription = null
+                }, model = category, contentDescription = null, contentScale = ContentScale.Crop
         )
         Text(text = category.name, style = textStyle)
     }
