@@ -29,8 +29,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.router.stack.push
 import com.example.android.core.model.Category
 import com.example.android.core.model.Product
+import core.common.NavConfig
+import core.common.navigation
 import core.component_base.LoadUIState
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
@@ -104,7 +107,7 @@ fun CategoryScreen(modifier: Modifier = Modifier, component: CategoryComponent) 
                     is LoadUIState.Loaded -> {
                         Products(
                             products = (loadProductsUIState as LoadUIState.Loaded<List<Product>>).data.toPersistentList(),
-                            onProductClick = {}
+                            onProductClick = { navigation.push(NavConfig.ProductDetail(it.id)) }
                         )
                     }
                 }

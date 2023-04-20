@@ -6,4 +6,5 @@ object Apis {
     object Category
     object Product
     object Store
+    object Order
 }

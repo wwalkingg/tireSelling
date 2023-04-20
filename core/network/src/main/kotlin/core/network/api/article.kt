@@ -12,7 +12,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 
 suspend fun Apis.Article.getHotArticles() = callbackFlow {
-    httpClient.get("plants/recommend").apply {
+    httpClient.get("plant/recommend").apply {
         if (status.isSuccess()) {
             val resp = body<Resp<List<Article>>>()
             if (resp.code == 200) {

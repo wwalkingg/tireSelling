@@ -32,6 +32,7 @@ import com.arkivanov.decompose.router.stack.push
 import components.Comment
 import core.common.NavConfig
 import core.common.navigation
+import kotlinx.collections.immutable.toPersistentList
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -204,6 +205,8 @@ fun ProductDetailScreen(component: ProductDetailComponent) {
                 }
             }
             if (isBuySheetVisible) {
+                val addressList = remember { component.modelState.loadAddressList().toPersistentList() }
+                var selectedAddress by remember { mutableStateOf(addressList.firstOrNull()) }
                 ModalBottomSheet(onDismissRequest = { isBuySheetVisible = false }) {
                     Text(
                         "确认订单",
@@ -251,18 +254,32 @@ fun ProductDetailScreen(component: ProductDetailComponent) {
                     var isAddressSelectDialogVisible by remember {
                         mutableStateOf(false)
                     }
-                    AssistChip(
-                        onClick = { isAddressSelectDialogVisible = true },
-                        label = { Text("装！") },
-                        modifier = Modifier.padding(horizontal = 10.dp)
-                    )
+                    if (addressList.isEmpty()) {
+                        AssistChip(
+                            onClick = { navigation.push(NavConfig.AddressManagement) },
+                            label = { Text("还未添加过地址,点击添加") },
+                            modifier = Modifier.padding(horizontal = 10.dp)
+                        )
+                    } else {
+                        AssistChip(
+                            onClick = { isAddressSelectDialogVisible = true },
+                            label = { Text(selectedAddress?.address ?: "空地址") },
+                            modifier = Modifier.padding(horizontal = 10.dp)
+                        )
+                    }
+
                     Row(modifier = Modifier.fillMaxWidth().padding(10.dp), horizontalArrangement = Arrangement.Center) {
                         Button(onClick = {}, modifier = Modifier.fillMaxWidth(.8f)) {
                             Text("结算")
                         }
                     }
                     if (isAddressSelectDialogVisible) {
-                        AddressSelectDialog(onDismissRequest = { isAddressSelectDialogVisible = false }, onSelect = {})
+                        AddressSelectDialog(
+                            onDismissRequest = { isAddressSelectDialogVisible = false },
+                            addressList = addressList,
+                            selectedAddress = selectedAddress,
+                            onSelect = { selectedAddress = it },
+                        )
                     }
                 }
             }

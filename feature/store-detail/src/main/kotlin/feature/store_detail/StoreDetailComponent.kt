@@ -1,20 +1,15 @@
 package feature.store_detail
 
 import com.arkivanov.decompose.ComponentContext
-import com.example.android.core.model.Product
-import com.example.android.core.model.Store
-import com.example.android.core.model.StoreActivity
-import com.example.android.core.model.StoreComment
-import com.example.core.design_system.Icons.store
-import core.component_base.BooleanAndLoadUIState
+import com.example.android.core.model.*
 import core.component_base.LoadUIState
 import core.component_base.ModelState
+import core.datastore.AddressStore
 import core.network.api.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class StoreDetailComponent(componentContext: ComponentContext, val id: Int) :
@@ -32,7 +27,8 @@ internal class StoreDetailModelState(val id: Int) : ModelState() {
     private val _loadStoreProductsUIStateFlow = MutableStateFlow<LoadUIState<List<Product>>>(LoadUIState.Loading)
     val loadStoreProductsUIStateFlow = _loadStoreProductsUIStateFlow.asStateFlow()
 
-    private val _loadStoreActivitiesUIStateFlow = MutableStateFlow<LoadUIState<List<StoreActivity>>>(LoadUIState.Loading)
+    private val _loadStoreActivitiesUIStateFlow =
+        MutableStateFlow<LoadUIState<List<StoreActivity>>>(LoadUIState.Loading)
     val loadStoreActivitiesUIStateFlow = _loadStoreActivitiesUIStateFlow.asStateFlow()
 
     init {
@@ -84,7 +80,7 @@ internal class StoreDetailModelState(val id: Int) : ModelState() {
         }
     }
 
-    fun loadStoreActivities(){
+    fun loadStoreActivities() {
         coroutineScope.launch {
             Apis.Store.getStoreActivities(id)
                 .onStart { _loadStoreActivitiesUIStateFlow.value = LoadUIState.Loading }
@@ -97,5 +93,4 @@ internal class StoreDetailModelState(val id: Int) : ModelState() {
                 }
         }
     }
-
 }

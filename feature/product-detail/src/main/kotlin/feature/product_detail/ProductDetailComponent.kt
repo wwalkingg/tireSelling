@@ -5,10 +5,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
+import com.example.android.core.model.Address
 import com.example.android.core.model.ProductAndStore
 import com.example.android.core.model.ProductComment
 import core.component_base.LoadUIState
 import core.component_base.ModelState
+import core.datastore.AddressStore
 import core.network.api.Apis
 import core.network.api.getProduct
 import core.network.api.getProductComments
@@ -94,4 +96,9 @@ internal class ProductDetailModelState(private val id: Int) : ModelState() {
 //           }
         }
     }
+
+    fun loadAddressList(): List<Address> {
+        return AddressStore.retrieve().addresses
+    }
+
 }

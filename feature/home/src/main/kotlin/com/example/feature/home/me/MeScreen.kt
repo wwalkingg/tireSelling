@@ -1,5 +1,6 @@
 package com.example.feature.home.me
 
+import SmallLoadUIStateScaffold
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,23 +40,13 @@ fun MeScreen(modifier: Modifier = Modifier, component: MeComponent) {
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            when (loadUserInfoUIState) {
-                is LoadUIState.Error -> {
-                    Text("Error")
-                }
-
-                is LoadUIState.Loaded -> {
-                    UserInfoBlock(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 10.dp),
-                        userInfo = (loadUserInfoUIState as LoadUIState.Loaded<UserInfo>).data
-                    )
-                }
-
-                LoadUIState.Loading -> {
-                    Text("Loading")
-                }
+            SmallLoadUIStateScaffold(loadUserInfoUIState){
+                UserInfoBlock(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp),
+                    userInfo = (loadUserInfoUIState as LoadUIState.Loaded<UserInfo>).data
+                )
             }
             Spacer(modifier = Modifier.height(10.dp))
             SettingItem(
