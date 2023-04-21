@@ -34,7 +34,7 @@ internal class AllArticlesModelState : ModelState() {
                 val map = mutableMapOf<String, List<Article>>()
                 map["全部"] = it
                 map.putAll(it.groupBy { it.productType })
-                _loadAllArticlesUIStateFlow.value = LoadUIState.Loaded(map.toMap())
+                _loadAllArticlesUIStateFlow.value = LoadUIState.Success(map.toMap())
             }
         }
     }

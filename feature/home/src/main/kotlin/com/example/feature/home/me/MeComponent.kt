@@ -29,7 +29,7 @@ internal class MeModelState : ModelState() {
             Apis.Auth.getUserInfo()
                 .onStart { _loadUserInfoUIStateFlow.emit(LoadUIState.Loading) }
                 .catch { _loadUserInfoUIStateFlow.emit(LoadUIState.Error(it)) }
-                .collect { _loadUserInfoUIStateFlow.emit(LoadUIState.Loaded(it)) }
+                .collect { _loadUserInfoUIStateFlow.emit(LoadUIState.Success(it)) }
         }
     }
 }

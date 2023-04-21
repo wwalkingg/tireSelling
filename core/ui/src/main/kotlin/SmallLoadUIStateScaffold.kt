@@ -46,7 +46,7 @@ fun <T> SmallLoadUIStateScaffold(
                 }
             }
 
-            is LoadUIState.Loaded -> {
+            is LoadUIState.Success -> {
                 val data = loadUIState.data
                 var isVisible by remember { mutableStateOf(true) }
                 if (data is Collection<*>) {

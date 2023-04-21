@@ -11,6 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.android.core.model.Order
+import core.common.Config
 
 @Composable
 fun OrderItem(modifier: Modifier = Modifier, order: Order) {
@@ -21,7 +22,7 @@ fun OrderItem(modifier: Modifier = Modifier, order: Order) {
     ) {
         Row(modifier = Modifier.height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             AsyncImage(
-                model = order.image,
+                model = Config.baseImgUrl+order.image,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxWidth(.2f)

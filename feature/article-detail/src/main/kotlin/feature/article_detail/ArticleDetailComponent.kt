@@ -39,7 +39,7 @@ internal class ArticleDetailModelState(val id: Int, title: String? = null) : Mod
                 Log.e("ArticleDetail", "loadArticleDetail: $it")
             }.collect {
                 title = it.title
-                _loadArticleDetailUIStateFlow.emit(LoadUIState.Loaded(it))
+                _loadArticleDetailUIStateFlow.emit(LoadUIState.Success(it))
             }
         }
     }

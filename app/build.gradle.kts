@@ -43,7 +43,7 @@ dependencies {
     implementation(project(":feature:product-detail"))
     implementation(project(":feature:address-management"))
     implementation(project(":feature:collection-product"))
-    implementation(project(":feature:collection-store"))
+    implementation(project(":feature:modifier-userinfo"))
     implementation(project(":feature:login"))
     implementation(project(":feature:order-management"))
     implementation(project(":feature:reward-points"))

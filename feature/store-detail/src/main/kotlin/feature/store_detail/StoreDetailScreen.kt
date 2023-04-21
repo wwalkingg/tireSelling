@@ -33,6 +33,8 @@ import coil.compose.AsyncImage
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import components.Comment
+import components.drawTitleBackground
+import core.common.Config
 import core.common.NavConfig
 import core.common.navigation
 
@@ -76,7 +78,7 @@ fun StoreDetailScreen(component: StoreDetailComponent) {
                 LazyColumn(modifier = Modifier.fillMaxSize(), state = listState) {
                     item {
                         AsyncImage(
-                            model = store.logo,
+                            model = Config.baseImgUrl+store.logo,
                             contentDescription = null,
                             modifier = Modifier.fillMaxWidth().aspectRatio(1f)
                                 .background(MaterialTheme.colorScheme.outlineVariant),
@@ -113,7 +115,7 @@ fun StoreDetailScreen(component: StoreDetailComponent) {
                                                 .clickable { navigation.push(NavConfig.ProductDetail(product.id)) }
                                         ) {
                                             AsyncImage(
-                                                model = product.image,
+                                                model = Config.baseImgUrl+product.image,
                                                 contentDescription = null,
                                                 modifier = Modifier.fillMaxSize()
                                                     .background(MaterialTheme.colorScheme.primaryContainer),
@@ -226,17 +228,3 @@ fun StoreDetailScreen(component: StoreDetailComponent) {
     }
 }
 
-
-fun Modifier.drawTitleBackground(): Modifier = composed {
-    val gray = MaterialTheme.colorScheme.outlineVariant
-    this.drawBehind {
-        drawRect(
-            brush = Brush.verticalGradient(
-                listOf(
-                    gray.copy(0f),
-                    gray
-                )
-            )
-        )
-    }
-}

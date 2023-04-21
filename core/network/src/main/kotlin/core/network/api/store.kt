@@ -15,11 +15,12 @@ import kotlinx.coroutines.flow.callbackFlow
 
 
 suspend fun Apis.Store.getStore(storeId: Int) = callbackFlow {
-    httpClient.get("stores/$storeId") {
+    httpClient.get("store/$storeId") {
         parameter("storeId", storeId)
     }.apply {
         if (status.isSuccess()) {
             val resp = body<Resp<Store>>()
+            println("++ $resp")
             if (resp.code == 200) {
                 send(resp.data)
             } else this@callbackFlow.cancel(resp.msg)

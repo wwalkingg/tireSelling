@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.android.core.model.Category
+import core.common.Config
 
 @Composable
 fun CategoryItem(
@@ -42,7 +43,7 @@ fun CategoryItem(
                 .clip(CircleShape)
                 .background(imgBackground)
                 .aspectRatio(1f),
-            model = category.categoryImg, contentDescription = null,
+            model = Config.baseImgUrl+category.categoryImg, contentDescription = null,
             contentScale = ContentScale.Crop
         )
         Text(

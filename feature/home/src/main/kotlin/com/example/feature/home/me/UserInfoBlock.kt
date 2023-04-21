@@ -22,6 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.android.core.model.UserInfo
+import core.common.Config
 
 @Composable
 fun UserInfoBlock(modifier: Modifier = Modifier, userInfo: UserInfo) {
@@ -37,13 +38,13 @@ fun UserInfoBlock(modifier: Modifier = Modifier, userInfo: UserInfo) {
                 .clip(CircleShape)
                 .size(70.dp)
                 .background(Color.LightGray),
-            model = userInfo.avatar,
+            model = Config.baseImgUrl+userInfo.avatar,
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.width(10.dp))
         Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceAround) {
-            Text(text = userInfo.username ?: "未设置名字", style = MaterialTheme.typography.titleMedium)
+            Text(text = userInfo.name ?: "未设置名字", style = MaterialTheme.typography.titleMedium)
             Text(text = userInfo.phoneNumber ?: "未设置电话号码", style = MaterialTheme.typography.labelLarge)
         }
     }

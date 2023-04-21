@@ -50,7 +50,7 @@ internal class RecommendsModelState : ModelState() {
             Apis.Category.getAllCategories()
                 .onStart { _loadHotCategoriesUIStateFlow.emit(LoadUIState.Loading) }
                 .catch { _loadHotCategoriesUIStateFlow.emit(LoadUIState.Error(it)) }
-                .collect { _loadHotCategoriesUIStateFlow.emit(LoadUIState.Loaded(it)) }
+                .collect { _loadHotCategoriesUIStateFlow.emit(LoadUIState.Success(it)) }
         }
     }
 
@@ -62,7 +62,7 @@ internal class RecommendsModelState : ModelState() {
                     _loadHotArticlesUIStateFlow.emit(LoadUIState.Error(it))
                     it.printStackTrace()
                 }
-                .collect { _loadHotArticlesUIStateFlow.emit(LoadUIState.Loaded(it)) }
+                .collect { _loadHotArticlesUIStateFlow.emit(LoadUIState.Success(it)) }
         }
     }
 
@@ -71,7 +71,7 @@ internal class RecommendsModelState : ModelState() {
             Apis.Product.getHotProducts()
                 .onStart { _loadHotProductsUIStateFlow.emit(LoadUIState.Loading) }
                 .catch { _loadHotProductsUIStateFlow.emit(LoadUIState.Error(it)) }
-                .collect { _loadHotProductsUIStateFlow.emit(LoadUIState.Loaded(it)) }
+                .collect { _loadHotProductsUIStateFlow.emit(LoadUIState.Success(it)) }
         }
     }
 
@@ -80,7 +80,7 @@ internal class RecommendsModelState : ModelState() {
             Apis.Product.getHotProducts()
                 .onStart { _loadSwiperDataUIStateFlow.emit(LoadUIState.Loading) }
                 .catch { _loadSwiperDataUIStateFlow.emit(LoadUIState.Error(it)) }
-                .collect { _loadSwiperDataUIStateFlow.emit(LoadUIState.Loaded(it)) }
+                .collect { _loadSwiperDataUIStateFlow.emit(LoadUIState.Success(it)) }
         }
     }
 

@@ -27,7 +27,7 @@ internal class OrderManagementModelState : ModelState() {
             Apis.Order.getOrders()
                 .onStart { _loadOrdersUIStateFlow.value = LoadUIState.Loading }
                 .catch { _loadOrdersUIStateFlow.value = LoadUIState.Error(it) }
-                .collect { _loadOrdersUIStateFlow.value = LoadUIState.Loaded(it) }
+                .collect { _loadOrdersUIStateFlow.value = LoadUIState.Success(it) }
         }
     }
 }

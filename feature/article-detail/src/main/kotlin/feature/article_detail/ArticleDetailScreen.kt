@@ -32,8 +32,8 @@ fun ArticleDetailScreen(
         val loadArticleDetailUIState by component.modelState.loadArticleDetailUIStateFlow.collectAsState()
         when (loadArticleDetailUIState) {
             is LoadUIState.Error -> {}
-            is LoadUIState.Loaded -> {
-                val articleDetail = (loadArticleDetailUIState as LoadUIState.Loaded).data
+            is LoadUIState.Success -> {
+                val articleDetail = (loadArticleDetailUIState as LoadUIState.Success).data
                 Column(Modifier.padding(padding)) {
                     Row(
                         modifier = Modifier

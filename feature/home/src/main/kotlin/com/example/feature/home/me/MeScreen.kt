@@ -45,22 +45,19 @@ fun MeScreen(modifier: Modifier = Modifier, component: MeComponent) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
-                    userInfo = (loadUserInfoUIState as LoadUIState.Loaded<UserInfo>).data
+                    userInfo = (loadUserInfoUIState as LoadUIState.Success<UserInfo>).data
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
+            SettingItem(title = "修改个人资料", description = "修改资料方便我们对你进行服务", onClick = {
+                navigation.push(NavConfig.ModifierUserinfo)
+            })
             SettingItem(
                 title = "收货地址",
                 description = "管理我的收获地址",
                 onClick = { navigation.push(NavConfig.AddressManagement) })
             SettingItem(title = "收藏的商品", description = "收藏的商品列表", onClick = {
                 navigation.push(NavConfig.CollectionProduct)
-            })
-            SettingItem(title = "关注的店铺", description = "关注的农名店铺", onClick = {
-                navigation.push(NavConfig.CollectionStore)
-            })
-            SettingItem(title = "我的积分", onClick = {
-                navigation.push(NavConfig.RewardPoints)
             })
             SettingItem(title = "我的订单", description = "我的订单", onClick = {
                 navigation.push(NavConfig.OrderManagement)

@@ -87,9 +87,7 @@ fun AddAddressDialog(
                 singleLine = true,
                 label = { Text(text = "所在地区") },
                 trailingIcon = {
-                    IconButton(onClick = { isAddressSelectBottomSheetVisible = true }) {
-                        Icon(imageVector = Icons.Default.List, contentDescription = null)
-                    }
+
                 },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
 
@@ -146,11 +144,6 @@ fun AddAddressDialog(
                 ) {
                     Text(text = "保存")
                 }
-            }
-            if (isAddressSelectBottomSheetVisible) {
-                AddressSelectBottomSheet(onDismissRequest = {
-                    isAddressSelectBottomSheetVisible = false
-                })
             }
         }
     }

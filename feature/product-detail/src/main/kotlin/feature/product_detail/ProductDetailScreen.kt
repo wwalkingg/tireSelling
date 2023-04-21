@@ -1,7 +1,10 @@
 package feature.product_detail
 
 import LoadUIStateScaffold
+import LoadingDialog
 import SmallLoadUIStateScaffold
+import SuccessDialog
+import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -20,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -30,9 +34,12 @@ import coil.compose.AsyncImage
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import components.Comment
+import core.common.Config
 import core.common.NavConfig
 import core.common.navigation
+import core.component_base.PostUIState
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -49,46 +56,13 @@ fun ProductDetailScreen(component: ProductDetailComponent) {
         }
         Scaffold(
             bottomBar = {
-                BottomAppBar {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        IconButton(onClick = { }) {
-                            val icon = if (productAndStore.product.isFavorite) {
-                                Icons.Filled.HeatPump
-                            } else Icons.Filled.HideImage
-                            Icon(
-                                icon,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.error
-                            )
-                        }
-
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                String.format("CNY %.2f", productAndStore.product.price),
-                                color = MaterialTheme.colorScheme.error,
-                                fontWeight = FontWeight.Bold,
-                                fontStyle = FontStyle.Italic
-                            )
-                            Spacer(Modifier.width(10.dp))
-                            Button(onClick = { isBuySheetVisible = true }) {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                                ) {
-                                    Icon(
-                                        painterResource(com.example.core.design_system.Icons.shoppingBag),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(22.dp)
-                                    )
-                                    Text("购买")
-                                }
-                            }
-                        }
-                    }
-                }
+                val context = LocalContext.current
+                ProductDetailBottomBar(
+                    isCollected = productAndStore.product.isFavorite,
+                    onCollectClick = { component.modelState.collectProduct(context) },
+                    price = productAndStore.product.price,
+                    onBuy = { isBuySheetVisible = true }
+                )
             }
         ) { padding ->
             val listState = rememberLazyListState()
@@ -99,7 +73,8 @@ fun ProductDetailScreen(component: ProductDetailComponent) {
                 TopAppBar(
                     modifier = Modifier.zIndex(10f),
                     title = {
-                        Text(productAndStore.store.name, modifier = Modifier.alpha(topBarTransparent))
+
+                        Text(productAndStore.product.name, modifier = Modifier.alpha(topBarTransparent))
                     },
                     navigationIcon = {
                         IconButton(
@@ -122,7 +97,7 @@ fun ProductDetailScreen(component: ProductDetailComponent) {
                 LazyColumn(modifier = Modifier.fillMaxSize(), state = listState) {
                     item {
                         AsyncImage(
-                            model = productAndStore.product.image,
+                            model = Config.baseImgUrl+productAndStore.product.image,
                             contentDescription = null,
                             modifier = Modifier.fillMaxWidth().aspectRatio(1f)
                                 .background(MaterialTheme.colorScheme.outlineVariant),
@@ -131,7 +106,7 @@ fun ProductDetailScreen(component: ProductDetailComponent) {
                     }
                     item {
                         Text(
-                            productAndStore.store.name,
+                            productAndStore.product.name,
                             style = MaterialTheme.typography.displaySmall,
                             modifier = Modifier.padding(10.dp, 10.dp)
                         )
@@ -221,7 +196,7 @@ fun ProductDetailScreen(component: ProductDetailComponent) {
                     ) {
                         Row(modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max)) {
                             AsyncImage(
-                                model = productAndStore.product.image,
+                                model = Config.baseImgUrl+productAndStore.product.image,
                                 contentDescription = null,
                                 modifier = Modifier.weight(3f).fillMaxHeight(),
                                 contentScale = ContentScale.FillHeight
@@ -269,7 +244,14 @@ fun ProductDetailScreen(component: ProductDetailComponent) {
                     }
 
                     Row(modifier = Modifier.fillMaxWidth().padding(10.dp), horizontalArrangement = Arrangement.Center) {
-                        Button(onClick = {}, modifier = Modifier.fillMaxWidth(.8f)) {
+                        Button(onClick = {
+                            component.modelState.buy(
+                                productAndStore.store.id,
+                                productAndStore.product.id,
+                                productAndStore.product.price.toFloat(),
+                                selectedAddress?.address ?: ""
+                            )
+                        }, modifier = Modifier.fillMaxWidth(.8f)) {
                             Text("结算")
                         }
                     }
@@ -280,6 +262,26 @@ fun ProductDetailScreen(component: ProductDetailComponent) {
                             selectedAddress = selectedAddress,
                             onSelect = { selectedAddress = it },
                         )
+                    }
+                    val createOrderUIState by component.modelState.createOrderUIStateFlow.collectAsState()
+                    val context = LocalContext.current
+                    when (createOrderUIState) {
+                        is PostUIState.Error -> {
+                            Toast.makeText(context, "下单失败", Toast.LENGTH_SHORT).show()
+                        }
+
+                        PostUIState.Loading -> {
+                            LoadingDialog()
+                        }
+
+                        PostUIState.None -> {}
+                        PostUIState.Success -> {
+                            SuccessDialog()
+                            LaunchedEffect(Unit){
+                                delay(1000L)
+                                navigation.push(NavConfig.OrderManagement)
+                            }
+                        }
                     }
                 }
             }

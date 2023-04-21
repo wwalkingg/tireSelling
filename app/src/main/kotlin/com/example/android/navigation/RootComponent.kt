@@ -2,10 +2,8 @@ package com.example.android.navigation
 
 import AddressManagementComponent
 import CollectionProductComponent
-import CollectionStoreComponent
 import LoginComponent
 import OrderManagementComponent
-import feature.product_detail.ProductDetailComponent
 import RewardPointsComponent
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -16,6 +14,8 @@ import core.common.NavConfig
 import core.common.navigation
 import feature.all_articles.AllArticlesComponent
 import feature.article_detail.ArticleDetailComponent
+import feature.modifier_userinfo.ModifierUserinfoComponent
+import feature.product_detail.ProductDetailComponent
 import feature.store_detail.StoreDetailComponent
 
 class RootComponent(componentContext: ComponentContext) : ComponentContext by componentContext {
@@ -61,8 +61,8 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
                 )
             )
 
-            NavConfig.CollectionStore -> Child.CollectionStore(
-                CollectionStoreComponent(
+            NavConfig.ModifierUserinfo -> Child.ModifierUserinfo(
+                ModifierUserinfoComponent(
                     componentContext
                 )
             )
@@ -87,7 +87,7 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
 
         data class AddressManagement(val component: AddressManagementComponent) : Child
         data class CollectionProduct(val component: CollectionProductComponent) : Child
-        data class CollectionStore(val component: CollectionStoreComponent) : Child
+        data class ModifierUserinfo(val component: ModifierUserinfoComponent) : Child
         data class Login(val component: LoginComponent) : Child
         data class OrderManagement(val component: OrderManagementComponent) : Child
         data class RewardPoints(val component: RewardPointsComponent) : Child

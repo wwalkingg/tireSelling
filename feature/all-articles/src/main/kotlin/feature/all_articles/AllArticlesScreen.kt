@@ -58,8 +58,8 @@ fun AllArticlesScreen(modifier: Modifier = Modifier, component: AllArticlesCompo
     }
 
     val loadAllArticles by component.modelState.loadAllArticlesUIStateFlow.collectAsState()
-    val tabs = if (loadAllArticles is LoadUIState.Loaded) {
-        (loadAllArticles as LoadUIState.Loaded).data.map { it.key }
+    val tabs = if (loadAllArticles is LoadUIState.Success) {
+        (loadAllArticles as LoadUIState.Success).data.map { it.key }
     } else listOf("全部")
 
     Scaffold(modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection), topBar = {
@@ -70,9 +70,9 @@ fun AllArticlesScreen(modifier: Modifier = Modifier, component: AllArticlesCompo
         ) {
             when (loadAllArticles) {
                 is LoadUIState.Error -> {}
-                is LoadUIState.Loaded -> {
+                is LoadUIState.Success -> {
                     items(
-                        items = (loadAllArticles as LoadUIState.Loaded<Map<String, List<Article>>>).data[selectedTab]!!,
+                        items = (loadAllArticles as LoadUIState.Success<Map<String, List<Article>>>).data[selectedTab]!!,
                         key = { article: Article -> article.id }
                     ) { article ->
                         Text(

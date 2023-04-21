@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import core.common.Config
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -55,7 +56,7 @@ internal fun Swiper(
             state = state
         ) { page ->
             AsyncImage(
-                model = list[page].imgUrl,
+                model = Config.baseImgUrl+list[page].imgUrl,
                 modifier = Modifier.fillMaxSize().clickable { list[page].onClick() },
                 contentDescription = null,
                 contentScale = ContentScale.Crop

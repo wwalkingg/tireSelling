@@ -55,3 +55,18 @@ fun Apis.Auth.getUserInfo() = callbackFlow {
         awaitClose { }
     }
 }
+
+fun Apis.Auth.modifierUserinfo(userInfo: UserInfo) = callbackFlow {
+    httpClient.post("filter/updateCustomer"){
+        contentType(ContentType.Application.Json)
+        setBody(userInfo)
+    }.apply {
+        if (status.isSuccess()) {
+            val resp = body<RespWithoutData>()
+            if (resp.code == 200) {
+                send(null)
+            } else this@callbackFlow.cancel(resp.msg)
+        } else this@callbackFlow.cancel(status.description)
+        awaitClose { }
+    }
+}

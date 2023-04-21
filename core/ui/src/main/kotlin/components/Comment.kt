@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import core.common.Config
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -29,7 +30,7 @@ fun Comment(
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
-                model = avatar,
+                model = Config.baseImgUrl+avatar,
                 contentDescription = null,
                 modifier = Modifier.clip(CircleShape)
                     .fillMaxHeight()

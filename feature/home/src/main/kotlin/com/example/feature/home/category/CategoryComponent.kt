@@ -50,7 +50,7 @@ internal class CategoryModelState(private val defaultSelectedCategoryId: Int? = 
             Apis.Category.getAllCategories().onStart { _loadCategoriesUIStateFlow.emit(LoadUIState.Loading) }.catch {
                 _loadCategoriesUIStateFlow.emit(LoadUIState.Error(it))
             }.collect {
-                _loadCategoriesUIStateFlow.emit(LoadUIState.Loaded(it))
+                _loadCategoriesUIStateFlow.emit(LoadUIState.Success(it))
                 loadProducts(it.first().id)
             }
 
@@ -64,7 +64,7 @@ internal class CategoryModelState(private val defaultSelectedCategoryId: Int? = 
             if (_productsLoaded.containsKey(categoryId)) {
                 Log.i("CategoryModelState", "loadProducts: $categoryId (from map)")
                 _loadProductsUIStateFlow.emit(
-                    LoadUIState.Loaded(
+                    LoadUIState.Success(
                         _productsLoaded[categoryId]!!
                     )
                 )
@@ -75,7 +75,7 @@ internal class CategoryModelState(private val defaultSelectedCategoryId: Int? = 
                 _loadProductsUIStateFlow.emit(LoadUIState.Error(it))
                 Log.e("CategoryModelState", "loadProducts: ", it)
             }.collect {
-                _loadProductsUIStateFlow.emit(LoadUIState.Loaded(it))
+                _loadProductsUIStateFlow.emit(LoadUIState.Success(it))
                 _productsLoaded[categoryId] = it
             }
         }

@@ -47,8 +47,8 @@ fun CategoryScreen(modifier: Modifier = Modifier, component: CategoryComponent) 
     Scaffold(modifier, topBar = { TopAppBar(title = { Text(text = "全部分类") }) }) { padding ->
         val loadCategoriesUIState by component.modelState.loadCategoriesUIStateFlow.collectAsState()
         val categories = when (loadCategoriesUIState) {
-            is LoadUIState.Loaded -> {
-                (loadCategoriesUIState as LoadUIState.Loaded<List<Category>>).data
+            is LoadUIState.Success -> {
+                (loadCategoriesUIState as LoadUIState.Success<List<Category>>).data
             }
 
             else -> {
@@ -104,9 +104,9 @@ fun CategoryScreen(modifier: Modifier = Modifier, component: CategoryComponent) 
                         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                     }
 
-                    is LoadUIState.Loaded -> {
+                    is LoadUIState.Success -> {
                         Products(
-                            products = (loadProductsUIState as LoadUIState.Loaded<List<Product>>).data.toPersistentList(),
+                            products = (loadProductsUIState as LoadUIState.Success<List<Product>>).data.toPersistentList(),
                             onProductClick = { navigation.push(NavConfig.ProductDetail(it.id)) }
                         )
                     }

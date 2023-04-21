@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.android.feature.collection_product"
+    namespace = "com.example.android.feature.modifier_userinfo"
 }
 
 dependencies {

@@ -27,7 +27,7 @@ sealed class NavConfig : Parcelable {
     object CollectionProduct : NavConfig()
 
     @Parcelize
-    object CollectionStore : NavConfig()
+    object ModifierUserinfo : NavConfig()
 
 
     @Parcelize

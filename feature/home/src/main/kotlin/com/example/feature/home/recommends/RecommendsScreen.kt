@@ -63,7 +63,7 @@ fun RecommendsScreen(component: RecommendsComponent, onCategoryClick: (id: Int) 
             SmallLoadUIStateScaffold(loadHotCategoriesUIState) {
                 HotCategoriesContainer(
                     modifier = Modifier,
-                    categories = (loadHotCategoriesUIState as LoadUIState.Loaded<List<Category>>).data.toPersistentList(),
+                    categories = (loadHotCategoriesUIState as LoadUIState.Success<List<Category>>).data.toPersistentList(),
                     onCategoryClick = { onCategoryClick(it.id) },
                 )
             }
@@ -96,12 +96,12 @@ fun RecommendsScreen(component: RecommendsComponent, onCategoryClick: (id: Int) 
                     Text(text = "Loading")
                 }
 
-                is LoadUIState.Loaded -> {
+                is LoadUIState.Success -> {
                     HotProductsFlowContainer(
                         modifier = Modifier
                             .padding(horizontal = 10.dp)
                             .fillMaxWidth(),
-                        products = (loadHotProductsUIState as LoadUIState.Loaded<List<Product>>).data.toPersistentList(),
+                        products = (loadHotProductsUIState as LoadUIState.Success<List<Product>>).data.toPersistentList(),
                         onProductClick = {
                             navigation.push(
                                 NavConfig.ProductDetail(

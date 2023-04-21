@@ -4,7 +4,6 @@ import com.arkivanov.decompose.ComponentContext
 import com.example.android.core.model.*
 import core.component_base.LoadUIState
 import core.component_base.ModelState
-import core.datastore.AddressStore
 import core.network.api.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,7 +46,7 @@ internal class StoreDetailModelState(val id: Int) : ModelState() {
                     it.printStackTrace()
                 }
                 .collect { store ->
-                    _loadStoreUIStateFlow.value = LoadUIState.Loaded(store)
+                    _loadStoreUIStateFlow.value = LoadUIState.Success(store)
                 }
         }
     }
@@ -61,7 +60,7 @@ internal class StoreDetailModelState(val id: Int) : ModelState() {
                     it.printStackTrace()
                 }
                 .collect { comments ->
-                    _loadStoreCommentsUIStateFlow.value = LoadUIState.Loaded(comments)
+                    _loadStoreCommentsUIStateFlow.value = LoadUIState.Success(comments)
                 }
         }
     }
@@ -75,7 +74,7 @@ internal class StoreDetailModelState(val id: Int) : ModelState() {
                     it.printStackTrace()
                 }
                 .collect { comments ->
-                    _loadStoreProductsUIStateFlow.value = LoadUIState.Loaded(comments)
+                    _loadStoreProductsUIStateFlow.value = LoadUIState.Success(comments)
                 }
         }
     }
@@ -89,7 +88,7 @@ internal class StoreDetailModelState(val id: Int) : ModelState() {
                     it.printStackTrace()
                 }
                 .collect { comments ->
-                    _loadStoreActivitiesUIStateFlow.value = LoadUIState.Loaded(comments)
+                    _loadStoreActivitiesUIStateFlow.value = LoadUIState.Success(comments)
                 }
         }
     }

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.android.core.model.Category
+import core.common.Config
 
 @Composable
 fun CategoryItem(
@@ -49,7 +50,7 @@ fun CategoryItem(
                     layout(placeable.width, placeable.height) {
                         placeable.placeRelative(0, 0)
                     }
-                }, model = category, contentDescription = null, contentScale = ContentScale.Crop
+                }, model = Config.baseImgUrl+category.categoryImg, contentDescription = null, contentScale = ContentScale.Crop
         )
         Text(text = category.name, style = textStyle)
     }

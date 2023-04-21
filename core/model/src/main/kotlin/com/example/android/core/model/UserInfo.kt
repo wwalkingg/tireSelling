@@ -1,7 +1,9 @@
 package com.example.android.core.model
 
+import kotlinx.serialization.Required
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
 data class UserInfo(
@@ -15,6 +17,6 @@ data class UserInfo(
     val avatar: String?,
     val registerTime: String?,
     val lastLoginTime: String?,
-    val isDeleted: Boolean = false
+    @Required val isDeleted: Boolean = false
 )
 

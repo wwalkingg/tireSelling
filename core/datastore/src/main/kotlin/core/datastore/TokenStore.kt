@@ -10,7 +10,7 @@ import kotlinx.serialization.json.Json
 data class TokenStore(val token: String?) {
     private val SPTag = "token"
     fun store(): Boolean = try {
-        val jsonString = Json.encodeToString(this)
+        val jsonString = Json.encodeToString(token)
         settings[SPTag] = jsonString
         true
     } catch (e: Exception) {

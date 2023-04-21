@@ -99,7 +99,7 @@ fun <T> LoadUIStateScaffold(
                 }
             }
 
-            is LoadUIState.Loaded -> {
+            is LoadUIState.Success -> {
                 val data = loadUIState.data
                 successContent(data)
             }

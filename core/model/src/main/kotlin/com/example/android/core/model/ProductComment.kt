@@ -14,6 +14,5 @@ data class ProductComment(
     val customerId: Int,
     val id: Int,
     val name: String,
-    val productId: Long,
     val storeId: Long
 )

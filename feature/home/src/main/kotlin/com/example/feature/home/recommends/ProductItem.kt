@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.android.core.model.Product
+import core.common.Config
 
 @Composable
 fun ProductItem(
@@ -38,7 +39,7 @@ fun ProductItem(
             AsyncImage(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.primary),
-                model = product.image,
+                model = Config.baseImgUrl+product.image,
                 contentDescription = null, contentScale = ContentScale.Crop
             )
             if (product.isHot) {
