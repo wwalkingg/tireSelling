@@ -34,10 +34,15 @@ internal class RecommendsModelState : ModelState() {
         MutableStateFlow<LoadUIState<List<Product>>>(LoadUIState.Loading)
     val loadHotProductsUIStateFlow = _loadHotProductsUIStateFlow.asStateFlow()
 
+    private val _loadSwiperDataUIStateFlow =
+        MutableStateFlow<LoadUIState<List<Product>>>(LoadUIState.Loading)
+    val loadSwiperDataUIStateFlow = _loadSwiperDataUIStateFlow.asStateFlow()
+
     init {
         loadHotCategories()
         loadHotArticles()
         loadHotProducts()
+        loadSwiperData()
     }
 
     fun loadHotCategories() {
@@ -67,6 +72,15 @@ internal class RecommendsModelState : ModelState() {
                 .onStart { _loadHotProductsUIStateFlow.emit(LoadUIState.Loading) }
                 .catch { _loadHotProductsUIStateFlow.emit(LoadUIState.Error(it)) }
                 .collect { _loadHotProductsUIStateFlow.emit(LoadUIState.Loaded(it)) }
+        }
+    }
+
+    fun loadSwiperData() {
+        coroutineScope.launch {
+            Apis.Product.getHotProducts()
+                .onStart { _loadSwiperDataUIStateFlow.emit(LoadUIState.Loading) }
+                .catch { _loadSwiperDataUIStateFlow.emit(LoadUIState.Error(it)) }
+                .collect { _loadSwiperDataUIStateFlow.emit(LoadUIState.Loaded(it)) }
         }
     }
 

@@ -3,6 +3,7 @@ package com.example.feature.home.recommends
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -29,7 +30,7 @@ import kotlinx.coroutines.isActive
 import kotlin.math.absoluteValue
 import kotlin.math.sign
 
-data class SwiperData(val imgUrl: String)
+data class SwiperData(val imgUrl: String, val onClick: () -> Unit)
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -54,8 +55,8 @@ internal fun Swiper(
             state = state
         ) { page ->
             AsyncImage(
-                model = "https://picsum.photos/200/300",
-                modifier = Modifier.fillMaxSize(),
+                model = list[page].imgUrl,
+                modifier = Modifier.fillMaxSize().clickable { list[page].onClick() },
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )

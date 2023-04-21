@@ -16,27 +16,27 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
-class CategoryComponent(componentContext: ComponentContext) : ComponentContext by componentContext {
-    internal val modelState = CategoryModelState()
+class CategoryComponent(componentContext: ComponentContext, private val defaultSelectedCategoryId: Int? = null) :
+    ComponentContext by componentContext {
+    internal val modelState = CategoryModelState(defaultSelectedCategoryId)
 }
 
-internal class CategoryModelState : ModelState() {
-    private var _selectedCategoryId by mutableStateOf(1)
+internal class CategoryModelState(private val defaultSelectedCategoryId: Int? = null) : ModelState() {
+    internal var _selectedCategoryId by mutableStateOf(defaultSelectedCategoryId)
     var selectedCategoryId
         get() = _selectedCategoryId
         set(value) {
             _selectedCategoryId = value
-            loadProducts(value)
+            value?.let { loadProducts(it) }
         }
 
-    private val _loadCategoriesUIStateFlow =
-        MutableStateFlow<LoadUIState<List<Category>>>(LoadUIState.Loading)
+    private val _loadCategoriesUIStateFlow = MutableStateFlow<LoadUIState<List<Category>>>(LoadUIState.Loading)
     val loadCategoriesUIStateFlow = _loadCategoriesUIStateFlow.asStateFlow()
 
-    private val _loadProductsUIStateFlow =
-        MutableStateFlow<LoadUIState<List<Product>>>(LoadUIState.Loading)
+    private val _loadProductsUIStateFlow = MutableStateFlow<LoadUIState<List<Product>>>(LoadUIState.Loading)
     val loadProductsUIStateFlow = _loadProductsUIStateFlow.asStateFlow()
 
     private val _productsLoaded = mutableMapOf<Int, List<Product>>()
@@ -47,8 +47,7 @@ internal class CategoryModelState : ModelState() {
 
     fun loadCategories() {
         coroutineScope.launch {
-            _loadCategoriesUIStateFlow.emit(LoadUIState.Loading)
-            Apis.Category.getAllCategories().catch {
+            Apis.Category.getAllCategories().onStart { _loadCategoriesUIStateFlow.emit(LoadUIState.Loading) }.catch {
                 _loadCategoriesUIStateFlow.emit(LoadUIState.Error(it))
             }.collect {
                 _loadCategoriesUIStateFlow.emit(LoadUIState.Loaded(it))

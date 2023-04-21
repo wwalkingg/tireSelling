@@ -27,7 +27,7 @@ import kotlinx.collections.immutable.toPersistentList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RecommendsScreen(component: RecommendsComponent) {
+fun RecommendsScreen(component: RecommendsComponent, onCategoryClick: (id: Int) -> Unit) {
     Scaffold(topBar = { RecommendsTopBar() }) { padding ->
         Column(
             Modifier
@@ -43,32 +43,29 @@ fun RecommendsScreen(component: RecommendsComponent) {
                 )
                 .verticalScroll(rememberScrollState())
         ) {
-            Swiper(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clip(MaterialTheme.shapes.small)
-                    .background(MaterialTheme.colorScheme.background)
-                    .height(100.dp)
-                    .fillMaxWidth(),
-                list = List(3) { SwiperData("") }.toPersistentList(),
-            )
+            val loadSwiperDataUIState by component.modelState.loadSwiperDataUIStateFlow.collectAsState()
+            SmallLoadUIStateScaffold(loadSwiperDataUIState) { porducts ->
+                Swiper(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .clip(MaterialTheme.shapes.small)
+                        .background(MaterialTheme.colorScheme.background)
+                        .height(100.dp)
+                        .fillMaxWidth(),
+                    list = porducts.map {
+                        SwiperData(imgUrl = it.image) {
+                            navigation.push(NavConfig.ProductDetail(it.id))
+                        }
+                    }.toPersistentList(),
+                )
+            }
             val loadHotCategoriesUIState by component.modelState.loadHotCategoriesUIStateFlow.collectAsState()
-            when (loadHotCategoriesUIState) {
-                LoadUIState.Loading -> {
-                    Text(text = "Loading")
-                }
-
-                is LoadUIState.Loaded -> {
-                    HotCategoriesContainer(
-                        modifier = Modifier,
-                        categories = (loadHotCategoriesUIState as LoadUIState.Loaded<List<Category>>).data.toPersistentList(),
-                        onCategoryClick = { },
-                    )
-                }
-
-                is LoadUIState.Error -> {
-                    println((loadHotCategoriesUIState as LoadUIState.Error).error)
-                }
+            SmallLoadUIStateScaffold(loadHotCategoriesUIState) {
+                HotCategoriesContainer(
+                    modifier = Modifier,
+                    categories = (loadHotCategoriesUIState as LoadUIState.Loaded<List<Category>>).data.toPersistentList(),
+                    onCategoryClick = { onCategoryClick(it.id) },
+                )
             }
 
             val loadHotArticlesUIState by component.modelState.loadHotArticlesUIStateFlow.collectAsState()

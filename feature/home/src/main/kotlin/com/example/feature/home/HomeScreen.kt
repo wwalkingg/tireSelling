@@ -9,10 +9,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.example.feature.home.category.CategoryScreen
 import com.example.feature.home.me.MeScreen
 import com.example.feature.home.recommends.RecommendsScreen
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -33,9 +35,12 @@ fun HomeScreen(modifier: Modifier = Modifier, component: HomeComponent) {
                 pageCount = BottomMenus.values().size,
                 state = component.modelState.pagerState,
                 userScrollEnabled = false
-            ) {
-                when (it) {
-                    0 -> RecommendsScreen(component = component.recommendsComponent)
+            ) { page ->
+                when (page) {
+                    0 -> RecommendsScreen(component = component.recommendsComponent, onCategoryClick = {
+                        component.jumpToCategory(it)
+                    })
+
                     1 -> CategoryScreen(component = component.categoryComponent)
                     2 -> MeScreen(component = component.meComponent)
                 }

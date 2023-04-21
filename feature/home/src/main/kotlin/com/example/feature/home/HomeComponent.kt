@@ -2,9 +2,7 @@ package com.example.feature.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
@@ -12,6 +10,8 @@ import com.example.feature.home.category.CategoryComponent
 import com.example.feature.home.me.MeComponent
 import com.example.feature.home.recommends.RecommendsComponent
 import core.component_base.ModelState
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeComponent(componentContext: ComponentContext) : ComponentContext by componentContext {
     internal val modelState = instanceKeeper.getOrCreate { HomeModelState() }
@@ -19,6 +19,11 @@ class HomeComponent(componentContext: ComponentContext) : ComponentContext by co
     internal val categoryComponent = CategoryComponent(childContext("category"))
     internal val meComponent = MeComponent(childContext("Me"))
     internal val recommendsComponent = RecommendsComponent(childContext("Recommends"))
+
+    fun jumpToCategory(id: Int) {
+        modelState.selected = BottomMenus.CATEGORY
+        categoryComponent.modelState._selectedCategoryId = id
+    }
 
 }
 

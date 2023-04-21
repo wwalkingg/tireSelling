@@ -1,7 +1,7 @@
 
 plugins {
     id("convention.android.library")
-    id("kotlinx-serialization")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
