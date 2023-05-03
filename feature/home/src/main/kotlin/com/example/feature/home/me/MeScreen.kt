@@ -3,14 +3,7 @@ package com.example.feature.home.me
 import SmallLoadUIStateScaffold
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -25,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceAll
-import com.example.android.core.model.UserInfo
+import com.example.android.core.model.User
 import core.common.NavConfig
 import core.common.navigation
 import core.component_base.LoadUIState
@@ -40,28 +33,32 @@ fun MeScreen(modifier: Modifier = Modifier, component: MeComponent) {
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            SmallLoadUIStateScaffold(loadUserInfoUIState){
+            SmallLoadUIStateScaffold(loadUserInfoUIState) {
                 UserInfoBlock(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
-                    userInfo = (loadUserInfoUIState as LoadUIState.Success<UserInfo>).data
+                    userInfo = (loadUserInfoUIState as LoadUIState.Success<User>).data
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
-            SettingItem(title = "修改个人资料", description = "修改资料方便我们对你进行服务", onClick = {
+            SettingItem(title = "我的个人资料", description = "可以进行更改或查看", onClick = {
                 navigation.push(NavConfig.ModifierUserinfo)
             })
+            Divider()
             SettingItem(
-                title = "收货地址",
+                title = "收货地址管理",
                 description = "管理我的收获地址",
                 onClick = { navigation.push(NavConfig.AddressManagement) })
+            Divider()
             SettingItem(title = "收藏的商品", description = "收藏的商品列表", onClick = {
                 navigation.push(NavConfig.CollectionProduct)
             })
+            Divider()
             SettingItem(title = "我的订单", description = "我的订单", onClick = {
                 navigation.push(NavConfig.OrderManagement)
             })
+            Divider()
             SettingItem(title = "退出登录", onClick = {
                 navigation.replaceAll(NavConfig.Login)
             })
@@ -81,8 +78,8 @@ fun SettingItem(
             .fillMaxWidth()
             .heightIn(min = 40.dp)
             .clickable { onClick() }
-            .padding(10.dp)
-            .background(MaterialTheme.colorScheme.surface),
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

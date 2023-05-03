@@ -1,23 +1,22 @@
 package feature.product_detail
 
-import android.content.Context
-import android.widget.Toast
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
-import com.example.android.core.model.*
+import com.example.android.core.model.Address
+import com.example.android.core.model.Product
+import com.example.android.core.model.ProductsDetail
 import core.component_base.LoadUIState
 import core.component_base.ModelState
 import core.component_base.PostUIState
 import core.datastore.AddressStore
-import core.network.api.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import core.datastore.ShopCar
+import core.network.api.Apis
+import core.network.api.getProductDetail
+import core.network.api.getRecommendProducts
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 @Stable
@@ -27,34 +26,24 @@ class ProductDetailComponent(componentContext: ComponentContext, id: Int) :
 }
 
 internal class ProductDetailModelState(private val id: Int) : ModelState() {
-    private val _loadProductDetailUIStateFlow: MutableStateFlow<LoadUIState<ProductAndStore>> =
+
+    private val _loadProductDetailUIStateFlow: MutableStateFlow<LoadUIState<ProductsDetail>> =
         MutableStateFlow(LoadUIState.Loading)
     val loadProductDetailUIStateFlow = _loadProductDetailUIStateFlow.asStateFlow()
-
-    private val _loadCommentsUIStateFlow: MutableStateFlow<LoadUIState<List<ProductComment>>> =
-        MutableStateFlow(LoadUIState.Loading)
-    val loadCommentsUIStateFlow = _loadCommentsUIStateFlow.asStateFlow()
 
     private val _createOrderUIStateFlow: MutableStateFlow<PostUIState> =
         MutableStateFlow(PostUIState.None)
     val createOrderUIStateFlow = _createOrderUIStateFlow.asStateFlow()
 
-    val collectClickFlow = MutableSharedFlow<Nothing?>()
+    private val _loadRecommendProductUIStateFlow: MutableStateFlow<LoadUIState<List<Product>>> =
+        MutableStateFlow(LoadUIState.Loading)
+    val loadRecommendProductUIStateFlow = _loadRecommendProductUIStateFlow.asStateFlow()
 
-    val snackBarState = SnackbarHostState()
-    var isCollected by mutableStateOf(false)
-
-    // -_-
     var storeId: Int = 0
-
-    init {
-        loadProductDetail()
-        loadProductComments()
-    }
 
     fun loadProductDetail() {
         coroutineScope.launch {
-            Apis.Product.getProduct(id)
+            Apis.Product.getProductDetail(id)
                 .onStart { _loadProductDetailUIStateFlow.emit(LoadUIState.Loading) }
                 .catch {
                     _loadProductDetailUIStateFlow.emit(LoadUIState.Error(it))
@@ -62,61 +51,64 @@ internal class ProductDetailModelState(private val id: Int) : ModelState() {
                 }
                 .collect {
                     storeId = it.store.id
-                    isCollected = it.product.isFavorite
                     _loadProductDetailUIStateFlow.emit(LoadUIState.Success(it))
                 }
         }
     }
 
-    fun loadProductComments() {
-        coroutineScope.launch {
-            Apis.Product.getProductComments(id)
-                .onStart { _loadCommentsUIStateFlow.emit(LoadUIState.Loading) }
-                .catch {
-                    _loadCommentsUIStateFlow.emit(LoadUIState.Error(it))
-                    it.printStackTrace()
-                }
-                .collect {
-                    _loadCommentsUIStateFlow.emit(LoadUIState.Success(it))
-                }
-        }
-    }
 
-    fun collectProduct(context: Context) {
-        GlobalScope.launch {
-            Apis.Product.collectProduct(CollectParam(null, id, storeId))
-                .catch {
-                    MainScope().launch {
-                        Toast.makeText(context, "操作失败，请重试", Toast.LENGTH_SHORT).show()
-                    }
-                    isCollected = !isCollected
-                }
-                .collect {
-                    MainScope().launch {
-                        Toast.makeText(context, "操作成功", Toast.LENGTH_SHORT).show()
-                    }
-                    isCollected = true
-                }
-        }
-    }
-
-    fun buy(storeId: Int, productId: Int, price: Float, address: String) {
+    fun buy(data: List<Pair<Product, Int>>, address: String) {
         coroutineScope.launch {
-            Apis.Order.createOrder(OrderParam(storeId, productId, price, address = address))
-                .onStart { _createOrderUIStateFlow.emit(PostUIState.Loading) }
-                .catch {
-                    _createOrderUIStateFlow.emit(PostUIState.Error(it))
-                    it.printStackTrace()
-                }
-                .collect {
-                    _createOrderUIStateFlow.emit(PostUIState.Success)
-                    delay(2000L)
-                    _createOrderUIStateFlow.emit(PostUIState.None)
-                }
+//            Apis.Order.createNewOrder()
+//                .onStart { _createOrderUIStateFlow.emit(PostUIState.Loading) }
+//                .catch {
+//                    _createOrderUIStateFlow.emit(PostUIState.Error(it))
+//                    it.printStackTrace()
+//                }
+//                .collect {
+//                    _createOrderUIStateFlow.emit(PostUIState.Success)
+//                    delay(2000L)
+//                    _createOrderUIStateFlow.emit(PostUIState.None)
+//                }
         }
     }
 
     fun loadAddressList(): List<Address> {
         return AddressStore.retrieve().addresses
     }
+
+    fun addToShopCar(product: Product) {
+        ShopCar.retrieve().apply {
+            val list = this.productList
+            val index = list.indexOfFirst { it.first == product }
+            if (index == -1) {
+                this.copy(productList = (list + (product to 1)).toMutableList()).store()
+            } else {
+                val newProduct = list[index].first
+                val newCount = list[index].second + 1
+                this.copy(productList = (list - list[index] + (newProduct to newCount)).toMutableList()).store()
+            }
+
+        }
+    }
+
+    fun loadRecommendProduct() {
+        coroutineScope.launch {
+            Apis.Product.getRecommendProducts()
+                .onStart { _loadRecommendProductUIStateFlow.emit(LoadUIState.Loading) }
+                .catch {
+                    it.printStackTrace()
+                    _loadRecommendProductUIStateFlow.emit(LoadUIState.Error(it))
+                }
+                .collect {
+                    _loadRecommendProductUIStateFlow.emit(LoadUIState.Success(it))
+                }
+        }
+    }
+
+    init {
+        loadProductDetail()
+        loadRecommendProduct()
+    }
+
 }

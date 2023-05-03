@@ -1,26 +1,36 @@
 package com.example.android.core.model
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 @Serializable
 data class Product(
+    val brand: String,
+    val discountId: Int,
     val id: Int,
-    val storeId: Int,
-    val categoryId: Int,
-    val name: String,
     val image: String,
-    val price: Double,
-    val description: String,
-    val createTime: String,
     val isDeleted: Boolean,
-    val isHot: Boolean,
-    @Transient
-    val isFavorite: Boolean = false
+    val model: String,
+    val modelId: Int,
+    val name: String,
+    val price: Double,
+    val productDescription: String,
+    val productNumber: String,
+    val storeId: Int,
+    val brandId: Int,
 )
 
 @Serializable
-data class ProductAndStore(
+data class ProductsDetail(
     val product: Product,
-    val store: Store
+    val store: Store,
+    val comments: List<Comment>
+)
+
+@Serializable
+data class Comment(
+    val commentTime: String,
+    val content: String,
+    val id: Int,
+    val productId: Int,
+    val userId: Int
 )

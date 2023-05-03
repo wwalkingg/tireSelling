@@ -1,9 +1,9 @@
 package com.example.feature.home.me
 
-import core.component_base.ModelState
 import com.arkivanov.decompose.ComponentContext
-import com.example.android.core.model.UserInfo
+import com.example.android.core.model.User
 import core.component_base.LoadUIState
+import core.component_base.ModelState
 import core.network.api.Apis
 import core.network.api.getUserInfo
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,7 @@ class MeComponent(componentContext: ComponentContext) : ComponentContext by comp
 }
 
 internal class MeModelState : ModelState() {
-    private val _loadUserInfoUIStateFlow = MutableStateFlow<LoadUIState<UserInfo>>(LoadUIState.Loading)
+    private val _loadUserInfoUIStateFlow = MutableStateFlow<LoadUIState<User>>(LoadUIState.Loading)
     val loadUserInfoUIStateFlow = _loadUserInfoUIStateFlow.asStateFlow()
 
     init {

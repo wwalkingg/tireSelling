@@ -1,9 +1,7 @@
 package com.example.feature.home
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Category
-import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.VerifiedUser
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -30,6 +28,7 @@ internal enum class BottomMenus(
     val selectedIcon: ImageVector
 ) {
     HOME("首页", Icons.Rounded.Home, Icons.Rounded.Home),
-    CATEGORY("分类", Icons.Rounded.Category, Icons.Rounded.Category),
-    ME("我的", Icons.Rounded.VerifiedUser, Icons.Rounded.VerifiedUser)
+    CATEGORY("分类", Icons.Rounded.TireRepair, Icons.Rounded.TireRepair),
+    COUPON_PACKAGE("卡包",Icons.Rounded.CardGiftcard,Icons.Rounded.CardGiftcard),
+    ME("我的", Icons.Rounded.SupervisedUserCircle, Icons.Rounded.SupervisedUserCircle)
 }

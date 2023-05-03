@@ -1,15 +1,20 @@
 package com.example.feature.home.recommends
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.childContext
+import com.arkivanov.decompose.router.stack.push
 import com.example.android.core.model.Article
-import com.example.android.core.model.Category
-import com.example.android.core.model.Product
+import com.example.android.core.model.Brand
+import com.example.android.core.model.Model
+import com.example.feature.home.recommends.page.ArticleComponent
+import core.common.NavConfig
+import core.common.navigation
 import core.component_base.LoadUIState
 import core.component_base.ModelState
-import core.network.api.Apis
-import core.network.api.getAllCategories
-import core.network.api.getHotArticles
-import core.network.api.getHotProducts
+import core.network.api.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -19,69 +24,85 @@ import kotlinx.coroutines.launch
 class RecommendsComponent(componentContext: ComponentContext) :
     ComponentContext by componentContext {
     internal val modelState = RecommendsModelState()
+    val articleComponent = ArticleComponent(this.childContext("article"))
 }
 
 internal class RecommendsModelState : ModelState() {
-    private val _loadHotCategoriesUIStateFlow =
-        MutableStateFlow<LoadUIState<List<Category>>>(LoadUIState.Loading)
-    val loadHotCategoriesUIStateFlow = _loadHotCategoriesUIStateFlow.asStateFlow()
+    var selectedTabIndex by mutableStateOf(0)
 
-    private val _loadHotArticlesUIStateFlow =
-        MutableStateFlow<LoadUIState<List<Article>>>(LoadUIState.Loading)
-    val loadHotArticlesUIStateFlow = _loadHotArticlesUIStateFlow.asStateFlow()
+    private val _loadSwiperUIStateFlow = MutableStateFlow<LoadUIState<List<SwiperData>>>(LoadUIState.Loading)
+    val loadSwiperUIStateFlow = _loadSwiperUIStateFlow.asStateFlow()
+    private val _loadHotBrandsUIStateFlow = MutableStateFlow<LoadUIState<List<Brand>>>(LoadUIState.Loading)
+    val loadHotBrandsUIStateFlow = _loadHotBrandsUIStateFlow.asStateFlow()
+    private val _loadHotModelsUIStateFlow = MutableStateFlow<LoadUIState<List<Model>>>(LoadUIState.Loading)
+    val loadHotModelsUIStateFlow = _loadHotModelsUIStateFlow.asStateFlow()
+    private val _loadArticleUIStateFlow = MutableStateFlow<LoadUIState<List<Article>>>(LoadUIState.Loading)
+    val loadArticleUIStateFlow = _loadArticleUIStateFlow.asStateFlow()
 
-    private val _loadHotProductsUIStateFlow =
-        MutableStateFlow<LoadUIState<List<Product>>>(LoadUIState.Loading)
-    val loadHotProductsUIStateFlow = _loadHotProductsUIStateFlow.asStateFlow()
+    fun loadSwiper() {
+        coroutineScope.launch {
+            Apis.Product.getSwiper()
+                .onStart { _loadSwiperUIStateFlow.emit(LoadUIState.Loading) }
+                .catch {
+                    it.printStackTrace()
+                    _loadSwiperUIStateFlow.emit(LoadUIState.Error(it))
+                }
+                .collect {
+                    _loadSwiperUIStateFlow.emit(LoadUIState.Success(it.map {
+                        SwiperData(
+                            it.image,
+                            onClick = { navigation.push(NavConfig.ProductDetail(it.id)) })
+                    }))
+                }
+        }
+    }
 
-    private val _loadSwiperDataUIStateFlow =
-        MutableStateFlow<LoadUIState<List<Product>>>(LoadUIState.Loading)
-    val loadSwiperDataUIStateFlow = _loadSwiperDataUIStateFlow.asStateFlow()
+    fun loadHotBrands() {
+        coroutineScope.launch {
+            Apis.Brand.getHotBrands()
+                .onStart { _loadHotBrandsUIStateFlow.emit(LoadUIState.Loading) }
+                .catch {
+                    it.printStackTrace()
+                    _loadHotBrandsUIStateFlow.emit(LoadUIState.Error(it))
+                }
+                .collect {
+                    _loadHotBrandsUIStateFlow.emit(LoadUIState.Success(it))
+                }
+        }
+    }
+
+    fun loadHotModels() {
+        coroutineScope.launch {
+            Apis.Model.getHotModels()
+                .onStart { _loadHotModelsUIStateFlow.emit(LoadUIState.Loading) }
+                .catch {
+                    it.printStackTrace()
+                    _loadHotModelsUIStateFlow.emit(LoadUIState.Error(it))
+                }
+                .collect {
+                    _loadHotModelsUIStateFlow.emit(LoadUIState.Success(it))
+                }
+        }
+    }
+
+    fun loadArticles() {
+        coroutineScope.launch {
+            Apis.Article.getAllArticle()
+                .onStart { _loadArticleUIStateFlow.emit(LoadUIState.Loading) }
+                .catch {
+                    it.printStackTrace()
+                    _loadArticleUIStateFlow.emit(LoadUIState.Error(it))
+                }
+                .collect {
+                    _loadArticleUIStateFlow.emit(LoadUIState.Success(it))
+                }
+        }
+    }
 
     init {
-        loadHotCategories()
-        loadHotArticles()
-        loadHotProducts()
-        loadSwiperData()
+        loadSwiper()
+        loadHotBrands()
+        loadHotModels()
+        loadArticles()
     }
-
-    fun loadHotCategories() {
-        coroutineScope.launch {
-            Apis.Category.getAllCategories()
-                .onStart { _loadHotCategoriesUIStateFlow.emit(LoadUIState.Loading) }
-                .catch { _loadHotCategoriesUIStateFlow.emit(LoadUIState.Error(it)) }
-                .collect { _loadHotCategoriesUIStateFlow.emit(LoadUIState.Success(it)) }
-        }
-    }
-
-    fun loadHotArticles() {
-        coroutineScope.launch {
-            Apis.Article.getHotArticles()
-                .onStart { _loadHotArticlesUIStateFlow.emit(LoadUIState.Loading) }
-                .catch {
-                    _loadHotArticlesUIStateFlow.emit(LoadUIState.Error(it))
-                    it.printStackTrace()
-                }
-                .collect { _loadHotArticlesUIStateFlow.emit(LoadUIState.Success(it)) }
-        }
-    }
-
-    fun loadHotProducts() {
-        coroutineScope.launch {
-            Apis.Product.getHotProducts()
-                .onStart { _loadHotProductsUIStateFlow.emit(LoadUIState.Loading) }
-                .catch { _loadHotProductsUIStateFlow.emit(LoadUIState.Error(it)) }
-                .collect { _loadHotProductsUIStateFlow.emit(LoadUIState.Success(it)) }
-        }
-    }
-
-    fun loadSwiperData() {
-        coroutineScope.launch {
-            Apis.Product.getHotProducts()
-                .onStart { _loadSwiperDataUIStateFlow.emit(LoadUIState.Loading) }
-                .catch { _loadSwiperDataUIStateFlow.emit(LoadUIState.Error(it)) }
-                .collect { _loadSwiperDataUIStateFlow.emit(LoadUIState.Success(it)) }
-        }
-    }
-
 }

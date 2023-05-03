@@ -48,7 +48,10 @@ dependencies {
     implementation(project(":feature:order-management"))
     implementation(project(":feature:reward-points"))
     implementation(project(":feature:store-detail"))
-
+    implementation(project(":feature:coupon-center"))
+    implementation(project(":feature:model-detail"))
+    implementation(project(":feature:brand-detail"))
+    implementation(project(":feature:search-result"))
     implementation(project(":core:common"))
     implementation(project(":core:ui"))
     implementation(project(":core:design-system"))

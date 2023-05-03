@@ -1,15 +1,11 @@
 package feature.article_detail
 
+import LoadUIStateScaffold
 import NavigationTopBar
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -17,10 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import core.component_base.LoadUIState
+import coil.compose.AsyncImage
+import com.example.android.core.model.Article
+import core.common.Config
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,42 +26,35 @@ fun ArticleDetailScreen(
     modifier: Modifier = Modifier,
     component: ArticleDetailComponent
 ) {
-    Scaffold(topBar = { NavigationTopBar(title = component.modelState.title) }) { padding ->
-        val loadArticleDetailUIState by component.modelState.loadArticleDetailUIStateFlow.collectAsState()
-        when (loadArticleDetailUIState) {
-            is LoadUIState.Error -> {}
-            is LoadUIState.Success -> {
-                val articleDetail = (loadArticleDetailUIState as LoadUIState.Success).data
-                Column(Modifier.padding(padding)) {
-                    Row(
-                        modifier = Modifier
-                            .padding(horizontal = 10.dp)
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.Bottom
-                    ) {
-                        AssistChip(
-                            onClick = { },
-                            label = { Text(text = articleDetail.productType) })
-                        Text(
-                            text = articleDetail.publishDate,
-                            style = MaterialTheme.typography.labelMedium
-                        )
-                    }
-                    Text(
-                        text = articleDetail.content,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.padding(horizontal = 10.dp)
-                    )
-                }
+    val loadArticleDetailUIState by component.modelState.loadArticleDetailUIStateFlow.collectAsState()
+    LoadUIStateScaffold(loadUIState = loadArticleDetailUIState) { article: Article ->
+        Scaffold(
+            topBar = {
+                NavigationTopBar(title = "")
             }
-
-            LoadUIState.Loading -> Box(
+        ) { padding ->
+            Column(
                 modifier = Modifier
                     .padding(padding)
                     .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                CircularProgressIndicator(Modifier.align(Alignment.Center))
+                Text(text = article.title, style = MaterialTheme.typography.titleLarge)
+                Text(text = article.content, style = MaterialTheme.typography.bodyMedium)
+                Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    article.images.forEach {
+                        AsyncImage(
+                            model = Config.baseImgUrl + it,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(1.5f)
+                                .background(Color.Gray.copy(.4f))
+                        )
+                    }
+                }
             }
         }
     }

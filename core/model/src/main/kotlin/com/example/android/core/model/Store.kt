@@ -1,16 +1,16 @@
 package com.example.android.core.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
 @Serializable
-data class Store(
+data class Store (
+    val address: String,
+    val contactNumber: String,
     val id: Int,
-    val farmerId: Int,
-    val name: String,
-    val logo: String,
-    val description: String,
-    val createTime: String,
-    @Transient
-    val isDeleted: Boolean = false
+    val isDeleted: Boolean,
+    val storeName: String,
+    val storeNumber: String,
+    val userId: Long
 )

@@ -10,13 +10,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import core.component_base.LoadUIState
 import core.component_base.PostUIState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -26,35 +27,31 @@ fun ModifierUserinfoScreen(modifier: Modifier = Modifier, component: ModifierUse
     LoadUIStateScaffold(loadUserInfoUIState) {
         Scaffold(modifier = modifier, topBar = { NavigationTopBar(title = "个人资料") }) { padding ->
             Column(
-                modifier = Modifier.padding(padding).verticalScroll(rememberScrollState()).padding(horizontal = 10.dp)
+                modifier = Modifier
+                    .padding(padding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 10.dp)
             ) {
                 UserInfoItem(
                     modifier = Modifier.fillMaxWidth(),
-                    label = "昵称",
-                    value = component.modelState.newUserinfo?.name ?: "未设置"
+                    label = "用户昵称",
+                    value = component.modelState.newUserinfo?.username ?: "未设置"
                 ) {
-                    component.modelState.newUserinfo = component.modelState.newUserinfo?.copy(name = it)
+                    component.modelState.newUserinfo = component.modelState.newUserinfo?.copy(username = it)
                 }
                 UserInfoItem(
                     modifier = Modifier.fillMaxWidth(),
-                    label = "邮箱",
-                    value = component.modelState.newUserinfo?.email ?: "未设置"
-                ) {
-                    component.modelState.newUserinfo = component.modelState.newUserinfo?.copy(email = it)
-                }
-                UserInfoItem(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = "电话",
+                    label = "电话号码",
                     value = component.modelState.newUserinfo?.phoneNumber ?: "未设置"
                 ) {
                     component.modelState.newUserinfo = component.modelState.newUserinfo?.copy(phoneNumber = it)
                 }
                 UserInfoItem(
                     modifier = Modifier.fillMaxWidth(),
-                    label = "用户名",
-                    value = component.modelState.newUserinfo?.username ?: "未设置"
+                    label = "用户邮箱",
+                    value = component.modelState.newUserinfo?.email ?: "未设置"
                 ) {
-                    component.modelState.newUserinfo = component.modelState.newUserinfo?.copy(username = it)
+                    component.modelState.newUserinfo = component.modelState.newUserinfo?.copy(email = it)
                 }
                 Spacer(Modifier.height(30.dp))
                 Button(onClick = { component.modelState.modifier() }) {
@@ -70,7 +67,10 @@ fun ModifierUserinfoScreen(modifier: Modifier = Modifier, component: ModifierUse
                     PostUIState.Loading -> {
                         Dialog(onDismissRequest = {}) {
                             Box(
-                                Modifier.fillMaxWidth(.8f).aspectRatio(1f).background(MaterialTheme.colorScheme.surface)
+                                Modifier
+                                    .fillMaxWidth(.8f)
+                                    .aspectRatio(1f)
+                                    .background(MaterialTheme.colorScheme.surface)
                             ) {
                                 CircularProgressIndicator(Modifier.align(Alignment.Center))
                             }
@@ -95,9 +95,14 @@ fun UserInfoItem(
     Column(modifier) {
         Row(modifier = Modifier.padding(vertical = 10.dp)) {
             Column {
-                Text(text = label, style = MaterialTheme.typography.labelLarge)
+                Text(text = label, style = MaterialTheme.typography.titleMedium)
                 Spacer(Modifier.height(5.dp))
-                BasicTextField(value, onValueChange, textStyle = MaterialTheme.typography.bodyLarge)
+                BasicTextField(
+                    value,
+                    onValueChange,
+                    textStyle = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
         Divider()

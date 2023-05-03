@@ -1,14 +1,19 @@
 package feature.all_articles
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
-import com.example.android.core.model.Article
+import com.example.android.core.model.Coupon
 import core.component_base.LoadUIState
 import core.component_base.ModelState
 import core.network.api.Apis
-import core.network.api.getArticles
+import core.network.api.getMyCoupons
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class AllArticlesComponent(componentContext: ComponentContext) :
@@ -17,25 +22,26 @@ class AllArticlesComponent(componentContext: ComponentContext) :
 }
 
 internal class AllArticlesModelState : ModelState() {
-    private val _loadAllArticlesUIStateFlow =
-        MutableStateFlow<LoadUIState<Map<String, List<Article>>>>(LoadUIState.Loading)
-    val loadAllArticlesUIStateFlow = _loadAllArticlesUIStateFlow.asStateFlow()
+    var selectedCoupon: Coupon? by  mutableStateOf(null)
 
-    init {
-        loadAllArticles()
+    private val _loadCouponsUIStateFlow = MutableStateFlow<LoadUIState<List<Coupon>>>(LoadUIState.Loading)
+    val loadCouponsUIStateFlow = _loadCouponsUIStateFlow.asStateFlow()
+
+    fun loadMyCoupons() {
+        coroutineScope.launch {
+            Apis.Coupons.getMyCoupons()
+                .onStart { _loadCouponsUIStateFlow.value = LoadUIState.Loading }
+                .catch {
+                    it.printStackTrace()
+                    _loadCouponsUIStateFlow.value = LoadUIState.Error(it)
+                }
+                .collect {
+                    _loadCouponsUIStateFlow.value = LoadUIState.Success(it)
+                }
+        }
     }
 
-    fun loadAllArticles() {
-        coroutineScope.launch {
-            _loadAllArticlesUIStateFlow.value = LoadUIState.Loading
-            Apis.Article.getArticles().catch {
-                _loadAllArticlesUIStateFlow.value = LoadUIState.Error(it)
-            }.collect {
-                val map = mutableMapOf<String, List<Article>>()
-                map["全部"] = it
-                map.putAll(it.groupBy { it.productType })
-                _loadAllArticlesUIStateFlow.value = LoadUIState.Success(map.toMap())
-            }
-        }
+    init {
+        loadMyCoupons()
     }
 }

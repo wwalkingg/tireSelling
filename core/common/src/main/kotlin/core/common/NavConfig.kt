@@ -42,5 +42,16 @@ sealed class NavConfig : Parcelable {
     @Parcelize
     data class StoreDetail(val id: Int) : NavConfig()
 
+    @Parcelize
+    object CouponCenter : NavConfig()
+
+    @Parcelize
+    data class ModelDetail(val id: Int) : NavConfig()
+
+    @Parcelize
+    data class BrandDetail(val id: Int) : NavConfig()
+
+    @Parcelize
+    object SearchResult : NavConfig()
 
 }

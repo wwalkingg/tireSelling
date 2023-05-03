@@ -1,31 +1,18 @@
 package com.example.feature.home.me
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import com.example.android.core.model.UserInfo
-import core.common.Config
+import com.example.android.core.model.User
 
 @Composable
-fun UserInfoBlock(modifier: Modifier = Modifier, userInfo: UserInfo) {
+fun UserInfoBlock(modifier: Modifier = Modifier, userInfo: User) {
     Row(
         modifier
             .clip(MaterialTheme.shapes.medium)
@@ -33,19 +20,23 @@ fun UserInfoBlock(modifier: Modifier = Modifier, userInfo: UserInfo) {
             .background(MaterialTheme.colorScheme.secondaryContainer)
             .padding(10.dp)
     ) {
-        AsyncImage(
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(70.dp)
-                .background(Color.LightGray),
-            model = Config.baseImgUrl+userInfo.avatar,
-            contentDescription = null,
-            contentScale = ContentScale.Crop
-        )
-        Spacer(modifier = Modifier.width(10.dp))
-        Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceAround) {
-            Text(text = userInfo.name ?: "未设置名字", style = MaterialTheme.typography.titleMedium)
-            Text(text = userInfo.phoneNumber ?: "未设置电话号码", style = MaterialTheme.typography.labelLarge)
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.tertiaryContainer)
+                    .padding(10.dp)
+            ) {
+                Text(text = userInfo.username.first().toString(), color = MaterialTheme.colorScheme.onTertiaryContainer)
+            }
+            Spacer(modifier = Modifier.width(10.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight(), verticalArrangement = Arrangement.SpaceAround
+            ) {
+                Text(text = userInfo.username ?: "未设置名字", style = MaterialTheme.typography.titleMedium)
+                Text(text = userInfo.phoneNumber ?: "未设置电话号码", style = MaterialTheme.typography.labelLarge)
+            }
         }
     }
 }

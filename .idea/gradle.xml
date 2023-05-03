@@ -37,13 +37,17 @@
             <option value="$PROJECT_DIR$/feature/address-management" />
             <option value="$PROJECT_DIR$/feature/all-articles" />
             <option value="$PROJECT_DIR$/feature/article-detail" />
+            <option value="$PROJECT_DIR$/feature/brand-detail" />
             <option value="$PROJECT_DIR$/feature/collection-product" />
+            <option value="$PROJECT_DIR$/feature/coupon-center" />
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/login" />
+            <option value="$PROJECT_DIR$/feature/model-detail" />
             <option value="$PROJECT_DIR$/feature/modifier-userinfo" />
             <option value="$PROJECT_DIR$/feature/order-management" />
             <option value="$PROJECT_DIR$/feature/product-detail" />
             <option value="$PROJECT_DIR$/feature/reward-points" />
+            <option value="$PROJECT_DIR$/feature/search-result" />
             <option value="$PROJECT_DIR$/feature/store-detail" />
           </set>
         </option>

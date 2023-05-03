@@ -1,3 +1,4 @@
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
@@ -15,9 +16,10 @@ import core.component_base.LoadUIState
 fun <T> SmallLoadUIStateScaffold(
     loadUIState: LoadUIState<T>,
     modifier: Modifier = Modifier,
+    contentPaddingValues: PaddingValues = PaddingValues(horizontal = 10.dp),
     successContent: @Composable (T) -> Unit
 ) {
-    Box(modifier) {
+    Box(modifier.animateContentSize()) {
         when (loadUIState) {
             is LoadUIState.Error -> {
                 val error = loadUIState.error
@@ -37,6 +39,7 @@ fun <T> SmallLoadUIStateScaffold(
             LoadUIState.Loading -> {
                 Box(
                     modifier = Modifier
+                        .padding(contentPaddingValues)
                         .clip(MaterialTheme.shapes.medium)
                         .fillMaxWidth()
                         .background(MaterialTheme.colorScheme.surface)

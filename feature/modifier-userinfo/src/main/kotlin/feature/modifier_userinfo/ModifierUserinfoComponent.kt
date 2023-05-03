@@ -4,14 +4,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
-import com.example.android.core.model.UserInfo
+import com.example.android.core.model.User
 import core.component_base.LoadUIState
 import core.component_base.ModelState
 import core.component_base.PostUIState
 import core.network.api.Apis
 import core.network.api.getUserInfo
-import core.network.api.modifierUserinfo
-import kotlinx.coroutines.flow.*
+import core.network.api.modifierUserInfo
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class ModifierUserinfoComponent(componentContext: ComponentContext) : ComponentContext by componentContext {
@@ -19,10 +22,10 @@ class ModifierUserinfoComponent(componentContext: ComponentContext) : ComponentC
 }
 
 internal class ModifierUserinfoModelState : ModelState() {
-    private val _loadUserInfoUIStateFlow = MutableStateFlow<LoadUIState<UserInfo>>(LoadUIState.Loading)
+    private val _loadUserInfoUIStateFlow = MutableStateFlow<LoadUIState<User>>(LoadUIState.Loading)
     val loadUserInfoUIStateFlow = _loadUserInfoUIStateFlow.asStateFlow()
 
-    var newUserinfo by mutableStateOf<UserInfo?>(null)
+    var newUserinfo by mutableStateOf<User?>(null)
     private val _modifierResultUIStateFlow = MutableStateFlow<PostUIState>(PostUIState.None)
     val modifierResultUIStateFlow = _modifierResultUIStateFlow.asStateFlow()
 
@@ -47,7 +50,7 @@ internal class ModifierUserinfoModelState : ModelState() {
 
     fun modifier() {
         coroutineScope.launch {
-            Apis.Auth.modifierUserinfo(newUserinfo!!)
+            Apis.Auth.modifierUserInfo(newUserinfo!!.id, newUserinfo!!)
                 .onStart { _modifierResultUIStateFlow.value = PostUIState.Loading }
                 .catch {
                     _modifierResultUIStateFlow.value = PostUIState.Error(it)

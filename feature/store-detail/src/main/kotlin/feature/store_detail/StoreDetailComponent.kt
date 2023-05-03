@@ -17,79 +17,76 @@ class StoreDetailComponent(componentContext: ComponentContext, val id: Int) :
 }
 
 internal class StoreDetailModelState(val id: Int) : ModelState() {
-    private val _loadStoreUIStateFlow = MutableStateFlow<LoadUIState<Store>>(LoadUIState.Loading)
-    val loadStoreUIStateFlow = _loadStoreUIStateFlow.asStateFlow()
-
-    private val _loadStoreCommentsUIStateFlow = MutableStateFlow<LoadUIState<List<StoreComment>>>(LoadUIState.Loading)
-    val loadStoreCommentsUIStateFlow = _loadStoreCommentsUIStateFlow.asStateFlow()
-
-    private val _loadStoreProductsUIStateFlow = MutableStateFlow<LoadUIState<List<Product>>>(LoadUIState.Loading)
-    val loadStoreProductsUIStateFlow = _loadStoreProductsUIStateFlow.asStateFlow()
-
-    private val _loadStoreActivitiesUIStateFlow =
-        MutableStateFlow<LoadUIState<List<StoreActivity>>>(LoadUIState.Loading)
-    val loadStoreActivitiesUIStateFlow = _loadStoreActivitiesUIStateFlow.asStateFlow()
-
-    init {
-        loadStoreDetail()
-        loadStoreComments()
-        loadStoreProducts()
-        loadStoreActivities()
-    }
-
-    fun loadStoreDetail() {
-        coroutineScope.launch {
-            Apis.Store.getStore(id)
-                .onStart { _loadStoreUIStateFlow.value = LoadUIState.Loading }
-                .catch {
-                    _loadStoreUIStateFlow.value = LoadUIState.Error(it)
-                    it.printStackTrace()
-                }
-                .collect { store ->
-                    _loadStoreUIStateFlow.value = LoadUIState.Success(store)
-                }
-        }
-    }
-
-    fun loadStoreComments() {
-        coroutineScope.launch {
-            Apis.Store.getStoreComments(id)
-                .onStart { _loadStoreCommentsUIStateFlow.value = LoadUIState.Loading }
-                .catch {
-                    _loadStoreCommentsUIStateFlow.value = LoadUIState.Error(it)
-                    it.printStackTrace()
-                }
-                .collect { comments ->
-                    _loadStoreCommentsUIStateFlow.value = LoadUIState.Success(comments)
-                }
-        }
-    }
-
-    fun loadStoreProducts() {
-        coroutineScope.launch {
-            Apis.Store.getStoreProducts(id)
-                .onStart { _loadStoreProductsUIStateFlow.value = LoadUIState.Loading }
-                .catch {
-                    _loadStoreProductsUIStateFlow.value = LoadUIState.Error(it)
-                    it.printStackTrace()
-                }
-                .collect { comments ->
-                    _loadStoreProductsUIStateFlow.value = LoadUIState.Success(comments)
-                }
-        }
-    }
-
-    fun loadStoreActivities() {
-        coroutineScope.launch {
-            Apis.Store.getStoreActivities(id)
-                .onStart { _loadStoreActivitiesUIStateFlow.value = LoadUIState.Loading }
-                .catch {
-                    _loadStoreActivitiesUIStateFlow.value = LoadUIState.Error(it)
-                    it.printStackTrace()
-                }
-                .collect { comments ->
-                    _loadStoreActivitiesUIStateFlow.value = LoadUIState.Success(comments)
-                }
-        }
-    }
+//    private val _loadStoreUIStateFlow = MutableStateFlow<LoadUIState<Store>>(LoadUIState.Loading)
+//    val loadStoreUIStateFlow = _loadStoreUIStateFlow.asStateFlow()
+//
+//    private val _loadStoreProductsUIStateFlow = MutableStateFlow<LoadUIState<List<Product>>>(LoadUIState.Loading)
+//    val loadStoreProductsUIStateFlow = _loadStoreProductsUIStateFlow.asStateFlow()
+//
+//    private val _loadStoreActivitiesUIStateFlow =
+//        MutableStateFlow<LoadUIState<List<StoreActivity>>>(LoadUIState.Loading)
+//    val loadStoreActivitiesUIStateFlow = _loadStoreActivitiesUIStateFlow.asStateFlow()
+//
+//    init {
+//        loadStoreDetail()
+//        loadStoreComments()
+//        loadStoreProducts()
+//        loadStoreActivities()
+//    }
+//
+//    fun loadStoreDetail() {
+//        coroutineScope.launch {
+//            Apis.Store.getStore(id)
+//                .onStart { _loadStoreUIStateFlow.value = LoadUIState.Loading }
+//                .catch {
+//                    _loadStoreUIStateFlow.value = LoadUIState.Error(it)
+//                    it.printStackTrace()
+//                }
+//                .collect { store ->
+//                    _loadStoreUIStateFlow.value = LoadUIState.Success(store)
+//                }
+//        }
+//    }
+//
+//    fun loadStoreComments() {
+//        coroutineScope.launch {
+//            Apis.Store.getStoreComments(id)
+//                .onStart { _loadStoreCommentsUIStateFlow.value = LoadUIState.Loading }
+//                .catch {
+//                    _loadStoreCommentsUIStateFlow.value = LoadUIState.Error(it)
+//                    it.printStackTrace()
+//                }
+//                .collect { comments ->
+//                    _loadStoreCommentsUIStateFlow.value = LoadUIState.Success(comments)
+//                }
+//        }
+//    }
+//
+//    fun loadStoreProducts() {
+//        coroutineScope.launch {
+//            Apis.Store.getStoreProducts(id)
+//                .onStart { _loadStoreProductsUIStateFlow.value = LoadUIState.Loading }
+//                .catch {
+//                    _loadStoreProductsUIStateFlow.value = LoadUIState.Error(it)
+//                    it.printStackTrace()
+//                }
+//                .collect { comments ->
+//                    _loadStoreProductsUIStateFlow.value = LoadUIState.Success(comments)
+//                }
+//        }
+//    }
+//
+//    fun loadStoreActivities() {
+//        coroutineScope.launch {
+//            Apis.Store.getStoreActivities(id)
+//                .onStart { _loadStoreActivitiesUIStateFlow.value = LoadUIState.Loading }
+//                .catch {
+//                    _loadStoreActivitiesUIStateFlow.value = LoadUIState.Error(it)
+//                    it.printStackTrace()
+//                }
+//                .collect { comments ->
+//                    _loadStoreActivitiesUIStateFlow.value = LoadUIState.Success(comments)
+//                }
+//        }
+//    }
 }

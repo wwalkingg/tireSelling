@@ -1,10 +1,14 @@
 package com.example.android.navigation
 
 import AddressManagementScreen
+import BrandDetailScreen
 import CollectionProductScreen
+import CouponCenterScreen
 import LoginScreen
+import ModelDetailScreen
 import OrderManagementScreen
 import RewardPointsScreen
+import SearchResultScreen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -37,6 +41,10 @@ fun RootContent(component: RootComponent, modifier: Modifier = Modifier) {
             is RootComponent.Child.ProductDetail -> ProductDetailScreen(component = child.component)
             is RootComponent.Child.RewardPoints -> RewardPointsScreen(component = child.component)
             is RootComponent.Child.StoreDetail -> StoreDetailScreen(component = child.component)
+            is RootComponent.Child.CouponCenter -> CouponCenterScreen(component = child.component)
+            is RootComponent.Child.BrandDetail -> BrandDetailScreen(component = child.component)
+            is RootComponent.Child.ModelDetail ->ModelDetailScreen(component = child.component)
+            is RootComponent.Child.SearchResult -> SearchResultScreen(component = child.component)
         }
     }
 }

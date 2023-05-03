@@ -1,19 +1,39 @@
 package core.network.api
 
-import com.example.android.core.model.CollectParam
 import com.example.android.core.model.Product
-import com.example.android.core.model.ProductAndStore
-import com.example.android.core.model.ProductComment
+import com.example.android.core.model.ProductsDetail
 import core.network.Resp
-import core.network.RespWithoutData
 import httpClient
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import io.ktor.client.utils.EmptyContent.status
 import io.ktor.http.*
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
+
+suspend fun Apis.Product.getSwiper() = callbackFlow {
+    httpClient.get("swiper").apply {
+        if (status.isSuccess()) {
+            val resp = body<Resp<List<Product>>>()
+            if (resp.code == 200) {
+                send(resp.data)
+            } else this@callbackFlow.cancel(resp.msg)
+        } else this@callbackFlow.cancel(status.description)
+        awaitClose { }
+    }
+}
+
+suspend fun Apis.Product.getAllProducts() = callbackFlow {
+    httpClient.get("findAllProduct").apply {
+        if (status.isSuccess()) {
+            val resp = body<Resp<List<Product>>>()
+            if (resp.code == 200) {
+                send(resp.data)
+            } else this@callbackFlow.cancel(resp.msg)
+        } else this@callbackFlow.cancel(status.description)
+        awaitClose { }
+    }
+}
 
 suspend fun Apis.Product.getHotProducts() = callbackFlow {
     httpClient.get("products/hot").apply {
@@ -27,8 +47,8 @@ suspend fun Apis.Product.getHotProducts() = callbackFlow {
     }
 }
 
-suspend fun Apis.Product.getProducts(categoryId: Int? = null) = callbackFlow {
-    httpClient.get("product/findAllProductByCategory") { parameter("categoryId", categoryId) }.apply {
+suspend fun Apis.Product.getProductsByStoreId(storeId: Int) = callbackFlow {
+    httpClient.get("findAllByStoreId") { parameter("storeId", storeId) }.apply {
         if (status.isSuccess()) {
             val resp = body<Resp<List<Product>>>()
             if (resp.code == 200) {
@@ -39,10 +59,10 @@ suspend fun Apis.Product.getProducts(categoryId: Int? = null) = callbackFlow {
     }
 }
 
-suspend fun Apis.Product.getProduct(productId: Int) = callbackFlow {
-    httpClient.get("product/$productId").apply {
+suspend fun Apis.Product.getRecommendProducts() = callbackFlow {
+    httpClient.get("productRecommend").apply {
         if (status.isSuccess()) {
-            val resp = body<Resp<ProductAndStore>>()
+            val resp = body<Resp<List<Product>>>()
             if (resp.code == 200) {
                 send(resp.data)
             } else this@callbackFlow.cancel(resp.msg)
@@ -51,40 +71,10 @@ suspend fun Apis.Product.getProduct(productId: Int) = callbackFlow {
     }
 }
 
-suspend fun Apis.Product.collectProduct(collectParam: CollectParam) = callbackFlow {
-    httpClient.post("filter/collection") {
-        contentType(ContentType.Application.Json)
-        setBody(collectParam)
-    }.apply {
+suspend fun Apis.Product.getProductDetail(productId: Int) = callbackFlow {
+    httpClient.get("products/${productId}").apply {
         if (status.isSuccess()) {
-            val resp = body<RespWithoutData>()
-            if (resp.code == 200) {
-                send(null)
-            } else this@callbackFlow.cancel(resp.msg)
-        } else this@callbackFlow.cancel(status.description)
-        awaitClose { }
-    }
-}
-
-
-suspend fun Apis.Product.cancelCollectProduct(id: Int) = callbackFlow {
-    httpClient.post("filter/cancelCollectionProduct/$id").apply {
-        if (status.isSuccess()) {
-            val resp = body<RespWithoutData>()
-            if (resp.code == 200) {
-                send(null)
-            } else this@callbackFlow.cancel(resp.msg)
-        } else this@callbackFlow.cancel(status.description)
-        awaitClose { }
-    }
-}
-
-suspend fun Apis.Product.getProductComments(productId: Int) = callbackFlow {
-    httpClient.get("productComment/findAllProductComments") {
-        parameter("productId", productId)
-    }.apply {
-        if (status.isSuccess()) {
-            val resp = body<Resp<List<ProductComment>>>()
+            val resp = body<Resp<ProductsDetail>>()
             if (resp.code == 200) {
                 send(resp.data)
             } else this@callbackFlow.cancel(resp.msg)
@@ -93,8 +83,8 @@ suspend fun Apis.Product.getProductComments(productId: Int) = callbackFlow {
     }
 }
 
-suspend fun Apis.Product.getCollectedProducts() = callbackFlow {
-    httpClient.get("filter/collectionProducts").apply {
+suspend fun Apis.Product.getRank() = callbackFlow {
+    httpClient.get("rank").apply {
         if (status.isSuccess()) {
             val resp = body<Resp<List<Product>>>()
             if (resp.code == 200) {

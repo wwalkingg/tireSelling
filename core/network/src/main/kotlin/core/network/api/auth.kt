@@ -1,6 +1,6 @@
 package core.network.api
 
-import com.example.android.core.model.UserInfo
+import com.example.android.core.model.User
 import core.network.Resp
 import core.network.RespWithoutData
 import httpClient
@@ -12,42 +12,10 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 
 
-fun Apis.Auth.login(username: String, password: String) = callbackFlow {
-    httpClient.post("customer/login") {
-        contentType(ContentType.Application.Json)
-        setBody(mapOf("username" to username, "password" to password))
-    }.apply {
-        if (status.isSuccess()) {
-            val resp = body<Resp<Map<String, String>>>()
-            if (resp.code == 200) {
-                val token = resp.data.get("token")
-                token?.let { send(it) } ?: cancel("token is null")
-
-            } else this@callbackFlow.cancel(status.description)
-        } else this@callbackFlow.cancel(status.description)
-        awaitClose { }
-    }
-}
-
-fun Apis.Auth.register(username: String, password: String) = callbackFlow {
-    httpClient.post("customer/register") {
-        contentType(ContentType.Application.Json)
-        setBody(mapOf("username" to username, "password" to password))
-    }.apply {
-        if (status.isSuccess()) {
-            val resp = body<RespWithoutData>()
-            if (resp.code == 200) {
-                send(null)
-            } else this@callbackFlow.cancel(resp.msg)
-        } else this@callbackFlow.cancel(status.description)
-        awaitClose { }
-    }
-}
-
 fun Apis.Auth.getUserInfo() = callbackFlow {
-    httpClient.get("filter/userInfo").apply {
+    httpClient.get("userInfo").apply {
         if (status.isSuccess()) {
-            val resp = body<Resp<UserInfo>>()
+            val resp = body<Resp<User>>()
             if (resp.code == 200) {
                 send(resp.data)
             } else this@callbackFlow.cancel(resp.msg)
@@ -56,11 +24,9 @@ fun Apis.Auth.getUserInfo() = callbackFlow {
     }
 }
 
-fun Apis.Auth.modifierUserinfo(userInfo: UserInfo) = callbackFlow {
-    httpClient.post("filter/updateCustomer"){
-        contentType(ContentType.Application.Json)
-        setBody(userInfo)
-    }.apply {
+
+fun Apis.Auth.modifierUserInfo(id: Int, user: User) = callbackFlow {
+    httpClient.put("user/${id}").apply {
         if (status.isSuccess()) {
             val resp = body<RespWithoutData>()
             if (resp.code == 200) {

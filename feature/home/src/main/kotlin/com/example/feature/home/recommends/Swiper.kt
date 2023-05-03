@@ -57,7 +57,7 @@ internal fun Swiper(
         ) { page ->
             AsyncImage(
                 model = Config.baseImgUrl+list[page].imgUrl,
-                modifier = Modifier.fillMaxSize().clickable { list[page].onClick() },
+                modifier = Modifier.fillMaxSize().background(Color.Gray.copy(.5f)).clickable { list[page].onClick() },
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )

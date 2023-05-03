@@ -7,7 +7,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-const val SPTag = "Addresses"
+private const val SPTag = "Addresses"
 
 @Serializable
 data class AddressStore(

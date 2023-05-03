@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
 import com.arkivanov.decompose.defaultComponentContext
 import com.example.android.navigation.RootComponent
 import com.example.android.navigation.RootContent

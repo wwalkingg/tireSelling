@@ -1,10 +1,14 @@
 package com.example.android.navigation
 
 import AddressManagementComponent
+import BrandDetailComponent
 import CollectionProductComponent
+import CouponCenterComponent
 import LoginComponent
+import ModelDetailComponent
 import OrderManagementComponent
 import RewardPointsComponent
+import SearchResultComponent
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
@@ -23,7 +27,7 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
     private val _childStack =
         childStack(
             source = navigation,
-            initialConfiguration = NavConfig.Home,
+            initialConfiguration = NavConfig.OrderManagement,
             handleBackButton = true,
             childFactory = ::createChild,
         )
@@ -75,7 +79,17 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
             )
 
             NavConfig.RewardPoints -> Child.RewardPoints(RewardPointsComponent(componentContext))
-            is NavConfig.StoreDetail -> Child.StoreDetail(StoreDetailComponent(componentContext, config.id))
+            is NavConfig.StoreDetail -> Child.StoreDetail(
+                StoreDetailComponent(
+                    componentContext,
+                    config.id
+                )
+            )
+
+            NavConfig.CouponCenter -> Child.CouponCenter(CouponCenterComponent(componentContext))
+            is NavConfig.BrandDetail -> Child.BrandDetail(BrandDetailComponent(componentContext, config.id))
+            is NavConfig.ModelDetail -> Child.ModelDetail(ModelDetailComponent(componentContext, config.id))
+            NavConfig.SearchResult -> Child.SearchResult(SearchResultComponent(componentContext))
         }
 
 
@@ -84,7 +98,6 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
         data class AllArticles(val component: AllArticlesComponent) : Child
         data class ArticleDetail(val component: ArticleDetailComponent) : Child
         data class ProductDetail(val component: ProductDetailComponent) : Child
-
         data class AddressManagement(val component: AddressManagementComponent) : Child
         data class CollectionProduct(val component: CollectionProductComponent) : Child
         data class ModifierUserinfo(val component: ModifierUserinfoComponent) : Child
@@ -92,5 +105,9 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
         data class OrderManagement(val component: OrderManagementComponent) : Child
         data class RewardPoints(val component: RewardPointsComponent) : Child
         data class StoreDetail(val component: StoreDetailComponent) : Child
+        data class CouponCenter(val component: CouponCenterComponent) : Child
+        data class ModelDetail(val component: ModelDetailComponent) : Child
+        data class BrandDetail(val component: BrandDetailComponent) : Child
+        data class SearchResult(val component: SearchResultComponent) : Child
     }
 }
