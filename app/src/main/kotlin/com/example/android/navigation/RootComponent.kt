@@ -16,6 +16,7 @@ import com.arkivanov.decompose.value.Value
 import com.example.feature.home.HomeComponent
 import core.common.NavConfig
 import core.common.navigation
+import core.datastore.TokenStore
 import feature.all_articles.AllArticlesComponent
 import feature.article_detail.ArticleDetailComponent
 import feature.modifier_userinfo.ModifierUserinfoComponent
@@ -23,11 +24,11 @@ import feature.product_detail.ProductDetailComponent
 import feature.store_detail.StoreDetailComponent
 
 class RootComponent(componentContext: ComponentContext) : ComponentContext by componentContext {
-
+    private var isLogin = TokenStore.retrieve().token != null
     private val _childStack =
         childStack(
             source = navigation,
-            initialConfiguration = NavConfig.OrderManagement,
+            initialConfiguration = if(isLogin) NavConfig.Home else NavConfig.Login,
             handleBackButton = true,
             childFactory = ::createChild,
         )

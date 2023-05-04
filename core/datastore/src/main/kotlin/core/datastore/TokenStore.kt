@@ -11,7 +11,7 @@ private const val SPTag = "token"
 data class TokenStore(val token: String?) {
 
     fun store(): Boolean = try {
-        val jsonString = Json.encodeToString(token)
+        val jsonString = Json.encodeToString(this)
         settings[SPTag] = jsonString
         true
     } catch (e: Exception) {
@@ -20,7 +20,7 @@ data class TokenStore(val token: String?) {
 
     companion object {
         fun retrieve(): TokenStore {
-            val jsonString = settings.getStringOrNull(SPTag) ?: return TokenStore(null)
+            val jsonString = settings.getStringOrNull(SPTag) ?: return TokenStore("{token:\"\"}")
             return Json.decodeFromString<TokenStore>(jsonString)
         }
     }

@@ -1,5 +1,6 @@
 import com.russhwolf.settings.get
 import core.common.Config
+import core.datastore.TokenStore
 import core.datastore.settings
 import core.network.RespWithoutData
 import io.ktor.client.*
@@ -23,6 +24,7 @@ val httpClient = HttpClient(CIO) {
             path(Config.basePath)
         }
         headers {
+            println("++ $token")
             append("Authorization", token)
         }
     }
@@ -38,8 +40,7 @@ val httpClient = HttpClient(CIO) {
 }
 
 val token
-    get() =
-        settings.get("token", "").replace("\"","")
+    get() = TokenStore.retrieve().token ?: ""
 
 
 internal suspend fun HttpResponse.resultSuccess(): Boolean {

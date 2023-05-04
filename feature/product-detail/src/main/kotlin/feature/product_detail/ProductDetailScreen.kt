@@ -1,5 +1,6 @@
 package feature.product_detail
 
+import DialogContent
 import LoadUIStateScaffold
 import SmallLoadUIStateScaffold
 import androidx.compose.animation.core.animateFloatAsState
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -17,6 +19,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import com.arkivanov.decompose.router.stack.pop
@@ -25,6 +28,7 @@ import components.RecommendProducts
 import core.common.Config
 import core.common.NavConfig
 import core.common.navigation
+import core.component_base.PostUIState
 import kotlinx.collections.immutable.toPersistentList
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,14 +36,14 @@ import kotlinx.collections.immutable.toPersistentList
 fun ProductDetailScreen(component: ProductDetailComponent) {
     val loadProductDetailUIState by component.modelState.loadProductDetailUIStateFlow.collectAsState()
     var isShopCarVisible by remember { mutableStateOf(false) }
+    var isBuySheetVisible by remember {
+        mutableStateOf(
+            false
+        )
+    }
     LoadUIStateScaffold(
         loadProductDetailUIState,
         onReload = { component.modelState.loadProductDetail() }) { productDetail ->
-        var isBuySheetVisible by remember {
-            mutableStateOf(
-                false
-            )
-        }
         Scaffold(
             bottomBar = {
                 ProductDetailBottomBar(
@@ -126,7 +130,10 @@ fun ProductDetailScreen(component: ProductDetailComponent) {
                                 .clickable { navigation.push(NavConfig.StoreDetail(productDetail.product.storeId)) }
                                 .padding(10.dp, 3.dp)) {
                                 Text(text = "店铺", style = MaterialTheme.typography.titleMedium, color = Color.Gray)
-                                Text(text = productDetail.store.storeName, style = MaterialTheme.typography.bodyMedium)
+                                Text(
+                                    text = productDetail.store?.storeName ?: "自营",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
                             Divider()
                         }
@@ -138,9 +145,10 @@ fun ProductDetailScreen(component: ProductDetailComponent) {
                             modifier = Modifier.padding(10.dp, 3.dp)
                         )
                         Text(
-                            text = productDetail.product.productDescription,
+                            text = "    ${productDetail.product.productDescription}",
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(10.dp, 4.dp)
+                            modifier = Modifier.padding(10.dp, 4.dp),
+                            lineHeight = 30.sp,
                         )
                     }
 
@@ -152,21 +160,41 @@ fun ProductDetailScreen(component: ProductDetailComponent) {
 
                     }
                 }
+                if (isShopCarVisible) {
+                    ShopCarButtonSheet(onDismissRequest = { isShopCarVisible = false }) { productAndIntList, address, coupon ->
+                        component.modelState.buy(productAndIntList, address, coupon)
+                    }
+                }
+                ProductSum(
+                    isVisible = isBuySheetVisible,
+                    onDismissRequest = { isBuySheetVisible = false },
+                    onBuy = { productAndIntList, address, coupon ->
+                        component.modelState.buy(productAndIntList, address, coupon)
+                        isBuySheetVisible = false
+                    },
+                    productAndNumbers = listOf(productDetail.product to 1).toPersistentList()
+                )
             }
-            if (isShopCarVisible) {
-                ShopCarButtonSheet { isShopCarVisible = false }
-            }
-
-            ProductSum(
-                isVisible = isBuySheetVisible,
-                onDismissRequest = { isBuySheetVisible = false },
-                onBuy = { productAndIntList,address ->
-//                    component.modelState.buy(productAndIntList, address)
-                    isBuySheetVisible = false
-                },
-                productAndNumbers = listOf(productDetail.product to 1).toPersistentList()
-            )
         }
     }
+
+    val createOrderUIState by component.modelState.createOrderUIStateFlow.collectAsState()
+    when (createOrderUIState) {
+        is PostUIState.Error -> DialogContent {
+            Text(text = "出错了")
+        }
+
+        PostUIState.Loading -> DialogContent {
+            CircularProgressIndicator()
+        }
+
+        PostUIState.None -> {}
+        PostUIState.Success -> {
+            DialogContent {
+                Icon(imageVector = Icons.Default.Check, contentDescription = null, tint = Color.Green)
+            }
+        }
+    }
+
 }
 

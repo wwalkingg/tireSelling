@@ -18,12 +18,18 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.android.core.model.Address
+import com.example.android.core.model.Coupon
+import com.example.android.core.model.Product
 import core.datastore.ShopCar
 import kotlinx.collections.immutable.toPersistentList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShopCarButtonSheet(onDismissRequest: () -> Unit) {
+fun ShopCarButtonSheet(
+    onDismissRequest: () -> Unit,
+    onBuy: (List<Pair<Product, Int>>, Address, coupon: Coupon?) -> Unit,
+) {
     var shopCar by remember { mutableStateOf(ShopCar.retrieve(), neverEqualPolicy()) }
     var isSumVisible by remember {
         mutableStateOf(false)
@@ -99,7 +105,7 @@ fun ShopCarButtonSheet(onDismissRequest: () -> Unit) {
     ProductSum(
         isVisible = isSumVisible,
         onDismissRequest = { isSumVisible = false },
-        onBuy = { _, _ -> },
+        onBuy = onBuy,
         productAndNumbers = shopCar.productList.toPersistentList()
     )
 }

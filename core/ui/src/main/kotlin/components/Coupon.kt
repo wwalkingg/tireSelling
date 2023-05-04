@@ -237,11 +237,11 @@ private fun Modifier.couponModifier() = composed {
 @Composable
 fun DiscountCouponPreview() {
     val coupon = Coupon(
-        cashback = 0,
-        discount = 85,
+        cashback = 0.0,
+        discount0 = 0.85,
         expiryDate = "2023-05-31",
         id = 12345,
-        miniAmount = 1000,
+        miniAmount = 1000.0,
         name = "20% off on all items",
         startDate = "2023-05-01",
         storeId = 67890,
@@ -256,11 +256,11 @@ fun DiscountCouponPreview() {
 @Composable
 fun CashCouponPreview() {
     val coupon = Coupon(
-        cashback = 500,
-        discount = 20,
+        cashback = 400.0,
+        discount0 = 0.85,
         expiryDate = "2023-05-31",
         id = 12345,
-        miniAmount = 1000,
+        miniAmount = 1000.0,
         name = "20% off on all items",
         startDate = "2023-05-01",
         storeId = 67890,

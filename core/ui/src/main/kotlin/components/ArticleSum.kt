@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,7 +41,8 @@ internal fun ArticleSumWithImage(modifier: Modifier = Modifier, article: Article
                 .clip(MaterialTheme.shapes.medium)
                 .background(Color.Gray.copy(.5f))
                 .fillMaxHeight()
-                .aspectRatio(1.4f)
+                .aspectRatio(1.4f),
+            contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.width(10.dp))
         Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
@@ -83,40 +85,4 @@ internal fun ArticleSumWithoutImage(modifier: Modifier = Modifier, article: Arti
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun ArticleSumWithImagePreview() {
-    val article = Article(
-        id = 123456,
-        title = "How to Train for a Marathon",
-        content = "Training for a marathon requires a combination of endurance, speed, and strength training. In this article, we provide tips and advice for runners who want to prepare for a marathon, including recommended training plans, nutrition tips, and gear recommendations.",
-        publishDate = "2022-01-01",
-        productType = "Sports",
-        images = listOf(
-            "https://example.com/marathon-training-1.jpg",
-            "https://example.com/marathon-training-2.jpg",
-            "https://example.com/marathon-training-3.jpg"
-        )
-    )
-    ArticleSumWithImage(article = article) {}
-}
-
-@Preview
-@Composable
-fun ArticleSumWithoutImagePreview() {
-    val article = Article(
-        id = 123456,
-        title = "How to Train for a Marathon",
-        content = "Training for a marathon requires a combination of endurance, speed, and strength training. In this article, we provide tips and advice for runners who want to prepare for a marathon, including recommended training plans, nutrition tips, and gear recommendations.",
-        publishDate = "2022-01-01",
-        productType = "Sports",
-        images = listOf(
-            "https://example.com/marathon-training-1.jpg",
-            "https://example.com/marathon-training-2.jpg",
-            "https://example.com/marathon-training-3.jpg"
-        )
-    )
-    ArticleSumWithoutImage(article = article) {}
 }

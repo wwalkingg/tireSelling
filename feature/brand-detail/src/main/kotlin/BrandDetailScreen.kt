@@ -32,7 +32,7 @@ fun BrandDetailScreen(modifier: Modifier = Modifier, component: BrandDetailCompo
                     .fillMaxSize()
             ) {
                 stickyHeader {
-                    Column(Modifier.padding(10.dp)) {
+                    Column(Modifier.background(MaterialTheme.colorScheme.surface).padding(10.dp)) {
                         Text(text = "品牌国家", style = MaterialTheme.typography.titleMedium, color = Color.Gray)
                         Text(text = brandDetail.brand.country, style = MaterialTheme.typography.bodyLarge)
                         Divider(Modifier.padding(vertical = 10.dp))

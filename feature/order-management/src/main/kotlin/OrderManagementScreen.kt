@@ -78,7 +78,7 @@ fun OrderManagementScreen(modifier: Modifier = Modifier, component: OrderManagem
                 OrderSortType.Number -> orders.sortedBy { it.orderNumber }
             }.let { if (isByDesc) it.reversed() else it }
             LazyColumn {
-                items(items = sortedOrders, key = { it.id }) { order ->
+                items(items = sortedOrders) { order ->
                     OrderItem(
                         modifier = Modifier
                             .padding(10.dp)

@@ -59,26 +59,46 @@ fun CashCouponDetail(coupon: Coupon, onReceiveClick: (() -> Unit)? = null) {
             ) {
                 Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
                     Text(
-                        text = "现金券",
+                        text = if (coupon.type == 1) "现金券" else "折扣券",
                         style = MaterialTheme.typography.displaySmall,
                         modifier = Modifier.alignByBaseline()
                     )
-                    Text(
-                        text = coupon.cashback.toString(),
-                        style = MaterialTheme.typography.displaySmall,
-                        fontFamily = FontFamily.Cursive,
-                        fontWeight = FontWeight.Black,
-                        textAlign = TextAlign.End,
-                        lineHeight = 20.sp,
-                        modifier = Modifier.alignByBaseline()
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Text(
-                        text = "元",
-                        style = MaterialTheme.typography.titleMedium,
-                        lineHeight = 20.sp,
-                        modifier = Modifier.alignByBaseline()
-                    )
+                    if (coupon.type == 1){
+                        Text(
+                            text = coupon.cashback.toString(),
+                            style = MaterialTheme.typography.displaySmall,
+                            fontFamily = FontFamily.Cursive,
+                            fontWeight = FontWeight.Black,
+                            textAlign = TextAlign.End,
+                            lineHeight = 20.sp,
+                            modifier = Modifier.alignByBaseline()
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Text(
+                            text = "元",
+                            style = MaterialTheme.typography.titleMedium,
+                            lineHeight = 20.sp,
+                            modifier = Modifier.alignByBaseline()
+                        )
+                    }else{
+                        Text(
+                            text = coupon.discount.toString(),
+                            style = MaterialTheme.typography.displaySmall,
+                            fontFamily = FontFamily.Cursive,
+                            fontWeight = FontWeight.Black,
+                            textAlign = TextAlign.End,
+                            lineHeight = 20.sp,
+                            modifier = Modifier.alignByBaseline()
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Text(
+                            text = "折",
+                            style = MaterialTheme.typography.titleMedium,
+                            lineHeight = 20.sp,
+                            modifier = Modifier.alignByBaseline()
+                        )
+                    }
+
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
                         text = coupon.name,
@@ -125,11 +145,11 @@ fun CashCouponDetail(coupon: Coupon, onReceiveClick: (() -> Unit)? = null) {
 @Composable
 fun CashCouponDetailPreview() {
     val coupon = Coupon(
-        cashback = 0,
-        discount = 85,
+        cashback = 0.0,
+        discount0 = 0.85,
         expiryDate = "2023-05-31",
         id = 12345,
-        miniAmount = 1000,
+        miniAmount = 1000.0,
         name = "20% off on all items",
         startDate = "2023-05-01",
         storeId = 67890,

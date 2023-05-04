@@ -15,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -34,8 +35,15 @@ fun ModifierUserinfoScreen(modifier: Modifier = Modifier, component: ModifierUse
             ) {
                 UserInfoItem(
                     modifier = Modifier.fillMaxWidth(),
-                    label = "用户昵称",
+                    label = "Username",
+                    readOnly = true,
                     value = component.modelState.newUserinfo?.username ?: "未设置"
+                ) {}
+                Text(text = "username不可更改",style = MaterialTheme.typography.labelSmall,color = Color.Gray)
+                UserInfoItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    label = "用户昵称",
+                    value = component.modelState.newUserinfo?.name ?: "未设置"
                 ) {
                     component.modelState.newUserinfo = component.modelState.newUserinfo?.copy(username = it)
                 }
@@ -90,7 +98,11 @@ fun ModifierUserinfoScreen(modifier: Modifier = Modifier, component: ModifierUse
 
 @Composable
 fun UserInfoItem(
-    modifier: Modifier = Modifier, label: String, value: String, onValueChange: (String) -> Unit
+    modifier: Modifier = Modifier,
+    label: String,
+    value: String,
+    readOnly: Boolean = false,
+    onValueChange: (String) -> Unit
 ) {
     Column(modifier) {
         Row(modifier = Modifier.padding(vertical = 10.dp)) {
@@ -100,6 +112,7 @@ fun UserInfoItem(
                 BasicTextField(
                     value,
                     onValueChange,
+                    readOnly = readOnly,
                     textStyle = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.fillMaxWidth()
                 )

@@ -1,6 +1,7 @@
 package com.example.feature.home.me
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.lifecycle.subscribe
 import com.example.android.core.model.User
 import core.component_base.LoadUIState
 import core.component_base.ModelState
@@ -14,6 +15,13 @@ import kotlinx.coroutines.launch
 
 class MeComponent(componentContext: ComponentContext) : ComponentContext by componentContext {
     internal val model = MeModelState()
+    init {
+        lifecycle.subscribe(
+            onResume = {
+                model.loadUserInfo()
+            }
+        )
+    }
 }
 
 internal class MeModelState : ModelState() {

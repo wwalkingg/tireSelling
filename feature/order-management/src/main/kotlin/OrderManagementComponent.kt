@@ -98,6 +98,7 @@ internal class OrderManagementModelState : ModelState() {
                     _changeOrderUIStateFlow.emit(PostUIState.Success)
                     delay(2000L)
                     _changeOrderUIStateFlow.emit(PostUIState.None)
+                    loadOrders()
                 }
         }
     }

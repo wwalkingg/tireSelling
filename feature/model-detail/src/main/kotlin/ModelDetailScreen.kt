@@ -33,7 +33,7 @@ fun ModelDetailScreen(modifier: Modifier = Modifier, component: ModelDetailCompo
                     .fillMaxSize()
             ) {
                 stickyHeader {
-                    Column(Modifier.padding(10.dp)) {
+                    Column(Modifier.background(MaterialTheme.colorScheme.surface).padding(10.dp)) {
                         Text(text = "适用", style = MaterialTheme.typography.titleMedium, color = Color.Gray)
                         Text(text = modelDetail.model.compatibleVehicles, style = MaterialTheme.typography.bodyLarge)
                         Divider(Modifier.padding(vertical = 10.dp))

@@ -80,7 +80,7 @@ fun RecommendsPage(modifier: Modifier = Modifier, component: RecommendsComponent
                                     navigation.push(NavConfig.BrandDetail(brand.id))
                                 }) {
                                 AsyncImage(
-                                    model = Config.baseImgUrl + brand,
+                                    model = Config.baseImgUrl + brand.icon,
                                     contentDescription = null,
                                     modifier = Modifier
                                         .clip(CircleShape)
@@ -125,7 +125,7 @@ fun RecommendsPage(modifier: Modifier = Modifier, component: RecommendsComponent
                                     navigation.push(NavConfig.ModelDetail(model.id))
                                 }) {
                                 AsyncImage(
-                                    model = Config.baseImgUrl,
+                                    model = Config.baseImgUrl ,
                                     contentDescription = null,
                                     modifier = Modifier
                                         .clip(CircleShape)

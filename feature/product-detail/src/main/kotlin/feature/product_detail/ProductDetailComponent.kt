@@ -2,17 +2,18 @@ package feature.product_detail
 
 import androidx.compose.runtime.Stable
 import com.arkivanov.decompose.ComponentContext
-import com.example.android.core.model.Address
-import com.example.android.core.model.Product
-import com.example.android.core.model.ProductsDetail
+import com.example.android.core.model.*
+import com.example.android.core.model.param.OrderParam
 import core.component_base.LoadUIState
 import core.component_base.ModelState
 import core.component_base.PostUIState
 import core.datastore.AddressStore
 import core.datastore.ShopCar
 import core.network.api.Apis
+import core.network.api.createNewOrder
 import core.network.api.getProductDetail
 import core.network.api.getRecommendProducts
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -39,7 +40,7 @@ internal class ProductDetailModelState(private val id: Int) : ModelState() {
         MutableStateFlow(LoadUIState.Loading)
     val loadRecommendProductUIStateFlow = _loadRecommendProductUIStateFlow.asStateFlow()
 
-    var storeId: Int = 0
+    var storeId: Int? = 0
 
     fun loadProductDetail() {
         coroutineScope.launch {
@@ -50,26 +51,37 @@ internal class ProductDetailModelState(private val id: Int) : ModelState() {
                     it.printStackTrace()
                 }
                 .collect {
-                    storeId = it.store.id
+                    storeId = it.store?.id
                     _loadProductDetailUIStateFlow.emit(LoadUIState.Success(it))
                 }
         }
     }
 
 
-    fun buy(data: List<Pair<Product, Int>>, address: String) {
+    fun buy(data: List<Pair<Product, Int>>, address: Address, coupon: Coupon?) {
         coroutineScope.launch {
-//            Apis.Order.createNewOrder()
-//                .onStart { _createOrderUIStateFlow.emit(PostUIState.Loading) }
-//                .catch {
-//                    _createOrderUIStateFlow.emit(PostUIState.Error(it))
-//                    it.printStackTrace()
-//                }
-//                .collect {
-//                    _createOrderUIStateFlow.emit(PostUIState.Success)
-//                    delay(2000L)
-//                    _createOrderUIStateFlow.emit(PostUIState.None)
-//                }
+            val param = OrderParam(
+                coupons = if (coupon == null) emptyList() else listOf(coupon),
+                note = "",
+                products = data.map { ProductAndCount(it.first, it.second) },
+                receiverAddress = address.address + address.detailAddress,
+                receiverName = address.name,
+                receiverPhone = address.phone
+            )
+            Apis.Order.createNewOrder(param)
+                .onStart { _createOrderUIStateFlow.emit(PostUIState.Loading) }
+                .catch {
+                    _createOrderUIStateFlow.emit(PostUIState.Error(it))
+                    it.printStackTrace()
+                    delay(2000L)
+                    _createOrderUIStateFlow.emit(PostUIState.None)
+
+                }
+                .collect {
+                    _createOrderUIStateFlow.emit(PostUIState.Success)
+                    delay(2000L)
+                    _createOrderUIStateFlow.emit(PostUIState.None)
+                }
         }
     }
 

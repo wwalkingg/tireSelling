@@ -24,7 +24,7 @@ fun OrderItem(
     order: Order,
     onConfirm: () -> Unit,
     onDelete: () -> Unit,
-    onChangeOrder: (name: String, address: String, phone: String,note:String) -> Unit
+    onChangeOrder: (name: String, address: String, phone: String, note: String) -> Unit
 ) {
     Surface(
         modifier,
@@ -89,6 +89,15 @@ fun OrderItem(
                 color = MaterialTheme.colorScheme.error,
                 fontStyle = FontStyle.Italic
             )
+            Divider()
+            val coupon = order.coupons.firstOrNull()
+            if (coupon != null) {
+                if(coupon.type == 1){
+                    Text(text = "${String.format("%.2f",coupon.cashback)} 现金券" )
+                }else{
+                    Text(text = "${String.format("%.2f",coupon.discount)} 折扣券" )
+                }
+            }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -217,7 +226,7 @@ fun OrderItem(
                         },
                         confirmButton = {
                             TextButton(onClick = {
-                                onChangeOrder(user, address, phone,note)
+                                onChangeOrder(user, address, phone, note)
                                 isVisible = false
                             }
                             ) {

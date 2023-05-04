@@ -22,7 +22,7 @@ data class Product(
 @Serializable
 data class ProductsDetail(
     val product: Product,
-    val store: Store,
+    val store: Store?,
     val comments: List<Comment>
 )
 

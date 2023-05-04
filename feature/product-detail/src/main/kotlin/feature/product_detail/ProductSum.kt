@@ -28,7 +28,7 @@ import kotlinx.collections.immutable.toPersistentList
 fun ProductSum(
     isVisible: Boolean,
     onDismissRequest: () -> Unit,
-    onBuy: (List<Pair<Product, Int>>, Address) -> Unit,
+    onBuy: (List<Pair<Product, Int>>, Address,coupon:Coupon?) -> Unit,
     productAndNumbers: PersistentList<Pair<Product, Int>>
 ) {
     val addressList = remember { AddressStore.retrieve().addresses }
@@ -36,7 +36,7 @@ fun ProductSum(
     if (isVisible) {
         ModalBottomSheet(onDismissRequest = onDismissRequest) {
             Text(
-                "确认订单",
+                text = "确认订单",
                 style = MaterialTheme.typography.displaySmall,
                 modifier = Modifier.padding(horizontal = 10.dp)
             )
@@ -69,7 +69,7 @@ fun ProductSum(
                                 modifier = Modifier
                                     .weight(3f)
                                     .fillMaxHeight(),
-                                contentScale = ContentScale.FillHeight
+                                contentScale = ContentScale.Crop
                             )
                             Spacer(Modifier.width(10.dp))
                             Column(modifier = Modifier.weight(9f)) {
@@ -162,7 +162,7 @@ fun ProductSum(
             ) {
                 Button(onClick = {
                     if (selectedAddress != null) {
-                        onBuy(productAndNumbers, selectedAddress!!)
+                        onBuy(productAndNumbers, selectedAddress!!,selectedCoupon)
                     }
 
                 }, modifier = Modifier.fillMaxWidth(.8f)) {

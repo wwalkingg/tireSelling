@@ -51,10 +51,6 @@ fun MeScreen(modifier: Modifier = Modifier, component: MeComponent) {
                 description = "管理我的收获地址",
                 onClick = { navigation.push(NavConfig.AddressManagement) })
             Divider()
-            SettingItem(title = "收藏的商品", description = "收藏的商品列表", onClick = {
-                navigation.push(NavConfig.CollectionProduct)
-            })
-            Divider()
             SettingItem(title = "我的订单", description = "我的订单", onClick = {
                 navigation.push(NavConfig.OrderManagement)
             })

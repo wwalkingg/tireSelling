@@ -12,11 +12,18 @@ import io.ktor.http.*
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 fun Apis.Order.createNewOrder(orderParam: OrderParam) = callbackFlow {
-    httpClient.post("filter/orders").apply {
+    println(Json.encodeToString(orderParam))
+    httpClient.post("filter/orders"){
+        contentType(ContentType.Application.Json)
+        setBody(orderParam)
+    }.apply {
         if (status.isSuccess()) {
-            val resp = body<Resp<ProductsDetail>>()
+            val resp = body<Resp<Order>>()
+            println(resp)
             if (resp.code == 200) {
                 send(resp.data)
             } else this@callbackFlow.cancel(resp.msg)
