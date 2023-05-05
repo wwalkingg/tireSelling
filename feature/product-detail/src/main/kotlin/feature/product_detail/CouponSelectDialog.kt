@@ -4,11 +4,14 @@ import SmallLoadUIStateScaffold
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.android.core.model.Coupon
@@ -43,13 +46,16 @@ fun CouponSelectDialog(onDismissRequest: () -> Unit, onCouponSelect: (Coupon) ->
         Column(
             modifier = Modifier
                 .padding(vertical = 40.dp)
+                .clip(MaterialTheme.shapes.medium)
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surface),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "选择优惠券", style = MaterialTheme.typography.displaySmall)
             SmallLoadUIStateScaffold(loadUIState = couponsUIState) { coupons ->
-                Column(modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Column(modifier = Modifier
+                    .padding(10.dp)
+                    .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     coupons.forEach { coupon ->
                         Box(modifier = Modifier
                             .height(100.dp)

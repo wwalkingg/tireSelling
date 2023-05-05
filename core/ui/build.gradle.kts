@@ -28,4 +28,7 @@ dependencies {
     api(libs.androidx.compose.runtime)
     api(libs.androidx.compose.runtime.livedata)
     api(libs.lottie.compose)
+    implementation(libs.zxing.core)
+    implementation(libs.zxing.android)
+    implementation("com.google.accompanist:accompanist-permissions:0.30.1")
 }

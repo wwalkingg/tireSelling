@@ -29,6 +29,7 @@ class RootComponent(componentContext: ComponentContext) : ComponentContext by co
         childStack(
             source = navigation,
             initialConfiguration = if(isLogin) NavConfig.Home else NavConfig.Login,
+//            initialConfiguration = NavConfig.OrderManagement,
             handleBackButton = true,
             childFactory = ::createChild,
         )

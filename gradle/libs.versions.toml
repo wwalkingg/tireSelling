@@ -57,6 +57,8 @@ ktor = "2.2.4"
 logback="1.2.11"
 multiplatform-settings = "1.0.0"
 lottie="6.0.0"
+zxing = "3.4.1"
+zxing-android = "3.3.0"
 [libraries]
 multiplatformSettings = { group = "com.russhwolf", name = "multiplatform-settings", version.ref = "multiplatform-settings" }
 multiplatformSettings-noArg = { group = "com.russhwolf", name = "multiplatform-settings-no-arg", version.ref = "multiplatform-settings" }
@@ -149,6 +151,9 @@ ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.r
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
+zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
+zxing-android = { group = "com.google.zxing", name = "android-core", version.ref = "zxing-android" }
+
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }

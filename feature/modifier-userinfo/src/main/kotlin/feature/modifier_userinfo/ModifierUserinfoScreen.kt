@@ -45,7 +45,7 @@ fun ModifierUserinfoScreen(modifier: Modifier = Modifier, component: ModifierUse
                     label = "用户昵称",
                     value = component.modelState.newUserinfo?.name ?: "未设置"
                 ) {
-                    component.modelState.newUserinfo = component.modelState.newUserinfo?.copy(username = it)
+                    component.modelState.newUserinfo = component.modelState.newUserinfo?.copy(name = it)
                 }
                 UserInfoItem(
                     modifier = Modifier.fillMaxWidth(),

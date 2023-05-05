@@ -53,7 +53,7 @@ fun ShopCarButtonSheet(
                 Button(onClick = {
                     isSumVisible = true
                 }) {
-                    Text("结算")
+                    Text("预约到店")
                 }
             }
             Divider(modifier = Modifier.padding(vertical = 4.dp))

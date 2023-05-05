@@ -112,28 +112,14 @@ fun RecommendsPage(modifier: Modifier = Modifier, component: RecommendsComponent
                 CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onPrimaryContainer) {
                     Text("热门型号")
                     Spacer(Modifier.height(10.dp))
-                    LazyVerticalGrid(
-                        modifier = Modifier.height(100.dp),
-                        columns = GridCells.Fixed(5),
-                        verticalArrangement = Arrangement.spacedBy(10.dp),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        items(items = models) { model ->
+                    Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(5.dp
+                    )) {
+                        models.forEach { model ->
                             Column(modifier = Modifier
-                                .weight(1f)
+                                .fillMaxWidth()
                                 .clickable {
                                     navigation.push(NavConfig.ModelDetail(model.id))
                                 }) {
-                                AsyncImage(
-                                    model = Config.baseImgUrl ,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .clip(CircleShape)
-                                        .fillMaxWidth()
-                                        .aspectRatio(1f)
-                                        .background(MaterialTheme.colorScheme.surface),
-                                    contentScale = ContentScale.Crop
-                                )
                                 Text(
                                     model.modelName,
                                     style = MaterialTheme.typography.labelMedium,

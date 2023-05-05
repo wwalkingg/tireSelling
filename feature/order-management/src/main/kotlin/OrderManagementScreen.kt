@@ -75,10 +75,10 @@ fun OrderManagementScreen(modifier: Modifier = Modifier, component: OrderManagem
             val sortedOrders = when (orderSortType) {
                 OrderSortType.Time -> orders.sortedBy { it.orderDate }
                 OrderSortType.Price -> orders.sortedBy { it.totalPrice }
-                OrderSortType.Number -> orders.sortedBy { it.orderNumber }
+                OrderSortType.Number -> orders.sortedBy { it.id }
             }.let { if (isByDesc) it.reversed() else it }
             LazyColumn {
-                items(items = sortedOrders) { order ->
+                items(items = sortedOrders, key = {it.id}) { order ->
                     OrderItem(
                         modifier = Modifier
                             .padding(10.dp)
@@ -97,62 +97,9 @@ fun OrderManagementScreen(modifier: Modifier = Modifier, component: OrderManagem
     val deleteOrderUIStateFlow by component.modelState.deleteOrderUIStateFlow.collectAsState()
     val confirmOrderUIStateFlow by component.modelState.confirmOrderUIStateFlow.collectAsState()
     val changeOrderUIStateFlow by component.modelState.changeOrderUIStateFlow.collectAsState()
-    when (deleteOrderUIStateFlow) {
-        is PostUIState.Error -> DialogContent {
-            Icon(imageVector = Icons.Default.Error, contentDescription = null)
-        }
-
-        PostUIState.Loading -> {
-            DialogContent {
-                CircularProgressIndicator()
-            }
-        }
-
-        PostUIState.None -> {}
-        PostUIState.Success -> {
-            DialogContent {
-                Icon(imageVector = Icons.Default.Check, contentDescription = null, tint = Color.Green)
-            }
-        }
-    }
-    when (confirmOrderUIStateFlow) {
-        is PostUIState.Error -> Dialog(onDismissRequest = {}) {
-            DialogContent {
-                Icon(imageVector = Icons.Default.Error, contentDescription = null)
-            }
-        }
-
-        PostUIState.Loading -> {
-            DialogContent {
-                CircularProgressIndicator()
-            }
-        }
-
-        PostUIState.None -> {}
-        PostUIState.Success -> {
-            DialogContent {
-                Icon(imageVector = Icons.Default.Check, contentDescription = null, tint = Color.Green)
-            }
-        }
-    }
-    when (changeOrderUIStateFlow) {
-        is PostUIState.Error -> DialogContent {
-            Icon(imageVector = Icons.Default.Error, contentDescription = null)
-        }
-
-        PostUIState.Loading -> {
-            DialogContent {
-                CircularProgressIndicator()
-            }
-        }
-
-        PostUIState.None -> {}
-        PostUIState.Success -> {
-            DialogContent {
-                Icon(imageVector = Icons.Default.Check, contentDescription = null, tint = Color.Green)
-            }
-        }
-    }
+    PostUIStateDialog(postUIState = deleteOrderUIStateFlow)
+    PostUIStateDialog(postUIState = confirmOrderUIStateFlow)
+    PostUIStateDialog(postUIState = changeOrderUIStateFlow)
 }
 
 private enum class OrderSortType {

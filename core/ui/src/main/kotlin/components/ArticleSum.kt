@@ -52,7 +52,7 @@ internal fun ArticleSumWithImage(modifier: Modifier = Modifier, article: Article
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            Text(text = article.content, maxLines = 3, overflow = TextOverflow.Ellipsis)
+            Text(text = article.content, maxLines = 3, overflow = TextOverflow.Ellipsis,style = MaterialTheme.typography.bodySmall)
             Text(
                 text = "发布于：${article.publishDate}",
                 style = MaterialTheme.typography.labelSmall,

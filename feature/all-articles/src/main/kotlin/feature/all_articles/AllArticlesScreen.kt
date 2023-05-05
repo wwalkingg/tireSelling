@@ -23,7 +23,7 @@ import core.datastore.ShopCar
 @Composable
 fun AllArticlesScreen(modifier: Modifier = Modifier, component: AllArticlesComponent) {
     Scaffold(
-        topBar = { NavigationTopBar(title = "结算") },
+        topBar = { NavigationTopBar(title = "预约到店") },
         floatingActionButton = {
             ExtendedFloatingActionButton(onClick = {}) {
                 Text("确定")

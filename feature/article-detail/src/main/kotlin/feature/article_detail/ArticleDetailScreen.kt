@@ -15,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.android.core.model.Article
@@ -51,7 +52,8 @@ fun ArticleDetailScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .aspectRatio(1.5f)
-                                .background(Color.Gray.copy(.4f))
+                                .background(Color.Gray.copy(.4f)),
+                            contentScale = ContentScale.Crop
                         )
                     }
                 }

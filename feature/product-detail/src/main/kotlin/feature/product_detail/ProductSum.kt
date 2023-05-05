@@ -12,27 +12,35 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.arkivanov.decompose.router.stack.push
 import com.example.android.core.model.Address
+import com.example.android.core.model.CarStore
 import com.example.android.core.model.Coupon
 import com.example.android.core.model.Product
 import core.common.Config
-import core.common.NavConfig
-import core.common.navigation
 import core.datastore.AddressStore
 import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.toPersistentList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductSum(
     isVisible: Boolean,
     onDismissRequest: () -> Unit,
-    onBuy: (List<Pair<Product, Int>>, Address,coupon:Coupon?) -> Unit,
+    onBuy: (List<Pair<Product, Int>>, Address, coupon: Coupon?) -> Unit,
     productAndNumbers: PersistentList<Pair<Product, Int>>
 ) {
     val addressList = remember { AddressStore.retrieve().addresses }
-    var selectedAddress by remember { mutableStateOf(addressList.firstOrNull()) }
+    var selectedAddress by remember {
+        mutableStateOf(
+            CarStore.stores.first().let {
+                Address(
+                    (0..Long.MAX_VALUE).random(),
+                    it.name,
+                    it.phone,
+                    it.address, ""
+                )
+            }
+        )
+    }
     if (isVisible) {
         ModalBottomSheet(onDismissRequest = onDismissRequest) {
             Text(
@@ -112,26 +120,18 @@ fun ProductSum(
                 modifier = Modifier.padding(10.dp),
             )
             Text(
-                "配送地址",
+                "预约门店",
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(horizontal = 10.dp)
             )
             var isAddressSelectDialogVisible by remember {
                 mutableStateOf(false)
             }
-            if (addressList.isEmpty()) {
-                AssistChip(
-                    onClick = { navigation.push(NavConfig.AddressManagement) },
-                    label = { Text("还未添加过地址,点击添加") },
-                    modifier = Modifier.padding(horizontal = 10.dp)
-                )
-            } else {
-                AssistChip(
-                    onClick = { isAddressSelectDialogVisible = true },
-                    label = { Text(selectedAddress?.address ?: "空地址") },
-                    modifier = Modifier.padding(horizontal = 10.dp)
-                )
-            }
+            AssistChip(
+                onClick = { isAddressSelectDialogVisible = true },
+                label = { Text(selectedAddress?.address ?: "空地址") },
+                modifier = Modifier.padding(horizontal = 10.dp)
+            )
             Text(
                 "选择优惠券",
                 style = MaterialTheme.typography.titleLarge,
@@ -162,17 +162,16 @@ fun ProductSum(
             ) {
                 Button(onClick = {
                     if (selectedAddress != null) {
-                        onBuy(productAndNumbers, selectedAddress!!,selectedCoupon)
+                        onBuy(productAndNumbers, selectedAddress!!, selectedCoupon)
                     }
 
                 }, modifier = Modifier.fillMaxWidth(.8f)) {
-                    Text("结算")
+                    Text("预约到店")
                 }
             }
             if (isAddressSelectDialogVisible) {
                 AddressSelectDialog(
                     onDismissRequest = { isAddressSelectDialogVisible = false },
-                    addressList = addressList.toPersistentList(),
                     selectedAddress = selectedAddress,
                     onSelect = { selectedAddress = it },
                 )

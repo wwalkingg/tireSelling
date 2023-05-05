@@ -52,6 +52,7 @@ internal class OrderManagementModelState : ModelState() {
                     _deleteOrderUIStateFlow.emit(PostUIState.Success)
                     delay(2000L)
                     _deleteOrderUIStateFlow.emit(PostUIState.None)
+                    loadOrders()
                 }
         }
     }

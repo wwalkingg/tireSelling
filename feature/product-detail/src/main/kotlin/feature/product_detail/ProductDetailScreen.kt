@@ -2,6 +2,7 @@ package feature.product_detail
 
 import DialogContent
 import LoadUIStateScaffold
+import PostUIStateDialog
 import SmallLoadUIStateScaffold
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -179,22 +180,6 @@ fun ProductDetailScreen(component: ProductDetailComponent) {
     }
 
     val createOrderUIState by component.modelState.createOrderUIStateFlow.collectAsState()
-    when (createOrderUIState) {
-        is PostUIState.Error -> DialogContent {
-            Text(text = "出错了")
-        }
-
-        PostUIState.Loading -> DialogContent {
-            CircularProgressIndicator()
-        }
-
-        PostUIState.None -> {}
-        PostUIState.Success -> {
-            DialogContent {
-                Icon(imageVector = Icons.Default.Check, contentDescription = null, tint = Color.Green)
-            }
-        }
-    }
-
+    PostUIStateDialog(postUIState = createOrderUIState)
 }
 

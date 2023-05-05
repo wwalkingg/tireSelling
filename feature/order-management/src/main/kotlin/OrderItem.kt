@@ -1,6 +1,8 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -12,7 +14,10 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.arkivanov.decompose.router.stack.push
+import com.example.android.core.model.CarStore
 import com.example.android.core.model.Order
+import components.CarStore
+import components.QRCodeImage
 import core.common.Config
 import core.common.NavConfig
 import core.common.navigation
@@ -27,19 +32,15 @@ fun OrderItem(
     onChangeOrder: (name: String, address: String, phone: String, note: String) -> Unit
 ) {
     Surface(
-        modifier,
-        shape = MaterialTheme.shapes.extraSmall
+        modifier, shape = MaterialTheme.shapes.extraSmall
     ) {
         Column(modifier = Modifier.padding(10.dp)) {
             Column(
-                modifier = Modifier
-                    .height(IntrinsicSize.Max), verticalArrangement = Arrangement.spacedBy(5.dp)
+                modifier = Modifier.height(IntrinsicSize.Max), verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
                 Row {
                     Text(
-                        text = "订单编号 ${order.id}",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Color.Gray
+                        text = "订单编号 ${order.id}", style = MaterialTheme.typography.titleMedium, color = Color.Gray
                     )
                 }
                 order.products.forEach { productAndCount ->
@@ -72,11 +73,11 @@ fun OrderItem(
                 }
             }
             Spacer(modifier = Modifier.height(5.dp))
-            Divider()
+            Divider(modifier = Modifier.padding(vertical = 4.dp))
             val totalPrice0 = order.products.sumOf {
                 it.product.price * it.count
             }
-            val totalPrice = if (order.coupons.size == 0) {
+            val totalPrice = if (order.coupons.isEmpty()) {
                 totalPrice0
             } else {
                 val coupon = order.coupons[0]
@@ -89,13 +90,23 @@ fun OrderItem(
                 color = MaterialTheme.colorScheme.error,
                 fontStyle = FontStyle.Italic
             )
-            Divider()
+            Divider(modifier = Modifier.padding(vertical = 4.dp))
+            Text(
+                text = "预约门店", style = MaterialTheme.typography.titleMedium, color = Color.Gray
+            )
+            val carStore = CarStore(
+                name = order.receiverName,
+                address = order.receiverAddress,
+                phone = order.receiverPhone,
+            )
+            CarStore(modifier = Modifier.fillMaxWidth(),carStore = carStore)
+            Divider(modifier = Modifier.padding(vertical = 4.dp))
             val coupon = order.coupons.firstOrNull()
             if (coupon != null) {
-                if(coupon.type == 1){
-                    Text(text = "${String.format("%.2f",coupon.cashback)} 现金券" )
-                }else{
-                    Text(text = "${String.format("%.2f",coupon.discount)} 折扣券" )
+                if (coupon.type == 1) {
+                    Text(text = "${String.format("%.2f", coupon.cashback)} 现金券")
+                } else {
+                    Text(text = "${String.format("%.2f", coupon.discount)} 折扣券")
                 }
             }
             Row(
@@ -123,25 +134,20 @@ fun OrderItem(
                         }
 
                         if (isShow) {
-                            AlertDialog(
-                                onDismissRequest = { isShow = false },
-                                confirmButton = {
-                                    Button(onClick = {
-                                        isShow = false
-                                        onDelete()
-                                    }) {
-                                        Text(text = "确定取消")
-                                    }
-                                },
-                                dismissButton = {
-                                    Button(onClick = { isShow = false }) {
-                                        Text(text = "取消操作")
-                                    }
-                                },
-                                title = {
-                                    Text(text = "是否取消订单")
+                            AlertDialog(onDismissRequest = { isShow = false }, confirmButton = {
+                                Button(onClick = {
+                                    isShow = false
+                                    onDelete()
+                                }) {
+                                    Text(text = "确定取消")
                                 }
-                            )
+                            }, dismissButton = {
+                                Button(onClick = { isShow = false }) {
+                                    Text(text = "取消操作")
+                                }
+                            }, title = {
+                                Text(text = "是否取消订单")
+                            })
                         }
                     }
 
@@ -155,25 +161,20 @@ fun OrderItem(
                             Text(text = "确认收货")
                         }
                         if (isShow) {
-                            AlertDialog(
-                                onDismissRequest = { isShow = false },
-                                confirmButton = {
-                                    Button(onClick = {
-                                        isShow = false
-                                        onConfirm()
-                                    }) {
-                                        Text(text = "确定")
-                                    }
-                                },
-                                dismissButton = {
-                                    Button(onClick = { isShow = false }) {
-                                        Text(text = "取消")
-                                    }
-                                },
-                                title = {
-                                    Text(text = "已确定收到货物")
+                            AlertDialog(onDismissRequest = { isShow = false }, confirmButton = {
+                                Button(onClick = {
+                                    isShow = false
+                                    onConfirm()
+                                }) {
+                                    Text(text = "确定")
                                 }
-                            )
+                            }, dismissButton = {
+                                Button(onClick = { isShow = false }) {
+                                    Text(text = "取消")
+                                }
+                            }, title = {
+                                Text(text = "已确定收到货物")
+                            })
                         }
 
                     }
@@ -186,56 +187,27 @@ fun OrderItem(
                 Button(onClick = {
                     isVisible = true
                 }) {
-                    Text(text = "修改订单")
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(5.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(imageVector = Icons.Default.QrCode, contentDescription = null)
+                        Text(text = "到店显示二维码")
+                    }
                 }
                 if (isVisible) {
-                    var user by remember {
-                        mutableStateOf(order.receiverName)
-                    }
-                    var address by remember {
-                        mutableStateOf(order.receiverAddress)
-                    }
-                    var phone by remember {
-                        mutableStateOf(order.receiverPhone)
-                    }
-                    var note by remember {
-                        mutableStateOf(order.receiverPhone)
-                    }
                     AlertDialog(
+                        containerColor = Color.White,
                         onDismissRequest = { isVisible = false },
-                        title = { Text(text = "修改订单信息") },
+                        title = {
+                            Text(text = "到店预约")
+                        },
                         text = {
-                            Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                                TextField(
-                                    value = user,
-                                    onValueChange = { user = it },
-                                    label = { Text(text = "收获联系人") })
-                                TextField(
-                                    value = address,
-                                    onValueChange = { address = it },
-                                    label = { Text(text = "收获地址") })
-                                TextField(
-                                    value = phone,
-                                    onValueChange = { phone = it },
-                                    label = { Text(text = "联系电话") })
-                                TextField(
-                                    value = note,
-                                    onValueChange = { note = it },
-                                    label = { Text(text = "备注") })
-                            }
+                            QRCodeImage(content = order.id.toString())
                         },
                         confirmButton = {
-                            TextButton(onClick = {
-                                onChangeOrder(user, address, phone, note)
-                                isVisible = false
-                            }
-                            ) {
-                                Text(text = "确定")
-                            }
-                        },
-                        dismissButton = {
                             TextButton(onClick = { isVisible = false }) {
-                                Text(text = "取消")
+                                Text(text = "确定")
                             }
                         }
                     )
