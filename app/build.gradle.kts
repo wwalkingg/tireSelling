@@ -6,7 +6,7 @@ plugins {
 
 android {
     defaultConfig {
-        applicationId = "com.example.android"
+        applicationId = "com.example.tireSelling"
         versionCode = 1
         versionName = "0.0.1" // X.Y.Z; X = Major, Y = minor, Z = Patch level
 
