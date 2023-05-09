@@ -24,21 +24,23 @@ import core.common.navigation
 fun CouponsPackageScreen(component: CouponsPackageComponent) {
     Scaffold(floatingActionButton = {
         Column(horizontalAlignment = Alignment.End) {
-            ExtendedFloatingActionButton(
-                onClick = {
-                    component.modelState.loadMyCoupons()
-                    component.modelState.loadMyCouponPackages()
-                },
-                containerColor = MaterialTheme.colorScheme.primaryContainer
-            ) {
-                Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
-            }
-            Spacer(modifier = Modifier.height(20.dp))
-            ExtendedFloatingActionButton(
-                onClick = { navigation.push(NavConfig.CouponCenter) },
-                containerColor = MaterialTheme.colorScheme.error
-            ) {
-                Text("前往领券中心", modifier = Modifier.padding(horizontal = 10.dp))
+            Row {
+                ExtendedFloatingActionButton(
+                    onClick = {
+                        component.modelState.loadMyCoupons()
+                        component.modelState.loadMyCouponPackages()
+                    },
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                ) {
+                    Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
+                }
+                Spacer(modifier = Modifier.width(20.dp))
+                ExtendedFloatingActionButton(
+                    onClick = { navigation.push(NavConfig.CouponCenter) },
+                    containerColor = MaterialTheme.colorScheme.error
+                ) {
+                    Text("前往领券中心", modifier = Modifier.padding(horizontal = 10.dp))
+                }
             }
         }
     }) { padding ->
