@@ -13,6 +13,6 @@ sealed interface LoadUIState<out T> {
 sealed interface PostUIState {
     object None:PostUIState
     object Loading : PostUIState
-    object Success : PostUIState
+    data class Success(val message:String = "") : PostUIState
     data class Error(val error: Throwable) : PostUIState
 }

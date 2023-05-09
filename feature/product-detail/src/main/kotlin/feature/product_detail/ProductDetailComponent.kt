@@ -78,7 +78,7 @@ internal class ProductDetailModelState(private val id: Int) : ModelState() {
 
                 }
                 .collect {
-                    _createOrderUIStateFlow.emit(PostUIState.Success)
+                    _createOrderUIStateFlow.emit(PostUIState.Success("预约成功"))
                     delay(2000L)
                     _createOrderUIStateFlow.emit(PostUIState.None)
                 }

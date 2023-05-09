@@ -42,11 +42,11 @@ fun MeScreen(modifier: Modifier = Modifier, component: MeComponent) {
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
-            SettingItem(title = "我的个人资料", description = "可以进行更改或查看", onClick = {
+            SettingItem(title = "我的个人资料", onClick = {
                 navigation.push(NavConfig.ModifierUserinfo)
             })
             Divider()
-            SettingItem(title = "我的订单", description = "我的订单", onClick = {
+            SettingItem(title = "我的订单",  onClick = {
                 navigation.push(NavConfig.OrderManagement)
             })
             Divider()
@@ -82,7 +82,7 @@ fun SettingItem(
                 }
             }
         }
-        IconButton(onClick = { }) {
+        IconButton(onClick = { onClick() }) {
             Icon(Icons.Default.KeyboardArrowRight, contentDescription = null)
         }
     }

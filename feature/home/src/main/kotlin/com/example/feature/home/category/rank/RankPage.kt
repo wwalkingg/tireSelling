@@ -61,7 +61,7 @@ fun RankPage(products: PersistentList<Product>) {
                     .background(backgroundColor)
                     .clickable { navigation.push(NavConfig.ProductDetail(product.id)) }) {
                 Text(
-                    text = index.toString(),
+                    text = "TOP ${index + 1}",
                     modifier = Modifier.padding(10.dp),
                     style = style
                 )

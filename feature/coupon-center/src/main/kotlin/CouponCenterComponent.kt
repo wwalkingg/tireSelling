@@ -68,7 +68,7 @@ internal class CouponCenterModelState : ModelState() {
                     _receiveCouponUIStateFlow.emit(PostUIState.None)
                 }
                 .collect {
-                    _receiveCouponUIStateFlow.emit(PostUIState.Success)
+                    _receiveCouponUIStateFlow.emit(PostUIState.Success("领取成功"))
                     delay(2000L)
                     _receiveCouponUIStateFlow.emit(PostUIState.None)
                     loadAllCoupons()
@@ -87,7 +87,7 @@ internal class CouponCenterModelState : ModelState() {
                     _receiveCouponUIStateFlow.emit(PostUIState.None)
                 }
                 .collect {
-                    _receiveCouponUIStateFlow.emit(PostUIState.Success)
+                    _receiveCouponUIStateFlow.emit(PostUIState.Success("领取成功"))
                     delay(2000L)
                     _receiveCouponUIStateFlow.emit(PostUIState.None)
                     loadAllCouponPackages()

@@ -98,15 +98,6 @@ fun CashCouponDetail(coupon: Coupon, onReceiveClick: (() -> Unit)? = null) {
                             modifier = Modifier.alignByBaseline()
                         )
                     }
-
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Text(
-                        text = coupon.name,
-                        style = MaterialTheme.typography.labelMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.alignByBaseline()
-                    )
                 }
                 Text(
                     text = "使用条件",
@@ -116,19 +107,13 @@ fun CashCouponDetail(coupon: Coupon, onReceiveClick: (() -> Unit)? = null) {
                     text = "满${coupon.miniAmount}元可用",
                     style = MaterialTheme.typography.bodyLarge,
                 )
-                Text(
-                    text = coupon.usageInstructions,
-                    style = MaterialTheme.typography.bodyLarge,
-                )
+
                 Text(
                     text = "${coupon.startDate}至${coupon.expiryDate}",
                     style = MaterialTheme.typography.bodyLarge,
                 )
 
                 Row(horizontalArrangement = Arrangement.End) {
-                    Button(onClick = {}) {
-                        Text(text = "确定")
-                    }
                     Spacer(modifier = Modifier.width(10.dp))
                     if (onReceiveClick != null) {
                         Button(onClick = onReceiveClick) {

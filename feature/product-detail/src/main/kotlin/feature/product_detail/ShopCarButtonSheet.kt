@@ -21,6 +21,7 @@ import coil.compose.AsyncImage
 import com.example.android.core.model.Address
 import com.example.android.core.model.Coupon
 import com.example.android.core.model.Product
+import core.common.Config
 import core.datastore.ShopCar
 import kotlinx.collections.immutable.toPersistentList
 
@@ -61,7 +62,7 @@ fun ShopCarButtonSheet(
                 items(items = shopCar.productList) { product ->
                     Row(modifier = Modifier.height(IntrinsicSize.Max)) {
                         AsyncImage(
-                            model = "",
+                            model = Config.baseImgUrl + product.first.image,
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier

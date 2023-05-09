@@ -49,7 +49,7 @@ internal class OrderManagementModelState : ModelState() {
                     _deleteOrderUIStateFlow.emit(PostUIState.None)
                 }
                 .collect {
-                    _deleteOrderUIStateFlow.emit(PostUIState.Success)
+                    _deleteOrderUIStateFlow.emit(PostUIState.Success("删除成功"))
                     delay(2000L)
                     _deleteOrderUIStateFlow.emit(PostUIState.None)
                     loadOrders()
@@ -73,7 +73,7 @@ internal class OrderManagementModelState : ModelState() {
                     _confirmOrderUIStateFlow.emit(PostUIState.None)
                 }
                 .collect {
-                    _confirmOrderUIStateFlow.emit(PostUIState.Success)
+                    _confirmOrderUIStateFlow.emit(PostUIState.Success("成功"))
                     delay(2000L)
                     _confirmOrderUIStateFlow.emit(PostUIState.None)
                 }
@@ -96,7 +96,7 @@ internal class OrderManagementModelState : ModelState() {
                     _changeOrderUIStateFlow.emit(PostUIState.None)
                 }
                 .collect {
-                    _changeOrderUIStateFlow.emit(PostUIState.Success)
+                    _changeOrderUIStateFlow.emit(PostUIState.Success("修改成功"))
                     delay(2000L)
                     _changeOrderUIStateFlow.emit(PostUIState.None)
                     loadOrders()

@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -22,6 +24,7 @@ import com.example.android.core.model.CouponPackage
 fun CouponPackage(modifier: Modifier = Modifier, couponPackage: CouponPackage, onClick: () -> Unit) {
     val mergeModifier =
         modifier
+            .fillMaxWidth()
             .clip(MaterialTheme.shapes.medium)
             .background(MaterialTheme.colorScheme.tertiaryContainer)
             .clickable { onClick() }
@@ -31,7 +34,10 @@ fun CouponPackage(modifier: Modifier = Modifier, couponPackage: CouponPackage, o
             style = MaterialTheme.typography.titleLarge.copy(brush = couponPackageTitleBrush),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(30.dp, 10.dp)
+            modifier = Modifier
+                .padding(30.dp, 10.dp)
+                .fillMaxWidth(),
+            textAlign = TextAlign.Center
         )
         Box(modifier = Modifier.padding(30.dp)) {
             couponPackage.coupons.forEachIndexed { index, coupon ->
@@ -62,16 +68,23 @@ fun CouponPackageBottomSheetWithReceive(
 ) {
     if (isVisible) {
         ModalBottomSheet(onDismissRequest = onDismissRequest) {
-            Column(Modifier.padding(vertical = 20.dp)) {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 20.dp)) {
                 Text(
                     text = couponPackage.name,
                     style = MaterialTheme.typography.displaySmall,
-                    modifier = Modifier.padding(horizontal = 10.dp)
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .align(Alignment.CenterHorizontally)
                 )
                 Text(
                     text = couponPackage.describe,
                     style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier.padding(horizontal = 10.dp)
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .align(Alignment.CenterHorizontally)
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
@@ -81,7 +94,7 @@ fun CouponPackageBottomSheetWithReceive(
                     Spacer(modifier = Modifier.width(10.dp))
                     couponPackage.coupons.forEach { coupon ->
                         CouponWithDetailButtonSheet(
-                            modifier = Modifier.size(160.dp, 100.dp),
+                            modifier = Modifier.size(130.dp, 80.dp),
                             coupon = coupon,
                             null
                         )

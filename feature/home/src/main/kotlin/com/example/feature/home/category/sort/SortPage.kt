@@ -3,6 +3,7 @@ package com.example.feature.home.category.sort
 import LoadUIStateScaffold
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -139,15 +140,18 @@ fun SortPage(component: SortComponent) {
                         text = "筛选结果",
                         style = MaterialTheme.typography.displaySmall,
                         modifier = Modifier.padding(10.dp)
+                            .padding(horizontal = 10.dp)
                     )
                 }
             }
             items(items = filterProducts, key = {it.id}) { product ->
                 ProductItem(
                     modifier = Modifier
+                        .padding(horizontal = 10.dp)
                         .fillMaxWidth()
                         .animateItemPlacement()
-                        .clickable { navigation.push(NavConfig.ProductDetail(product.id)) },
+                        .clickable { navigation.push(NavConfig.ProductDetail(product.id)) }
+                    ,
                     product = product
                 )
                 Divider()

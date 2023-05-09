@@ -2,6 +2,7 @@ package feature.modifier_userinfo
 
 import LoadUIStateScaffold
 import NavigationTopBar
+import PostUIStateDialog
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -67,29 +68,7 @@ fun ModifierUserinfoScreen(modifier: Modifier = Modifier, component: ModifierUse
                 }
                 val modifierResultUIState by component.modelState.modifierResultUIStateFlow.collectAsState()
                 val context = LocalContext.current
-                when (modifierResultUIState) {
-                    is PostUIState.Error -> {
-                        Toast.makeText(context, "失败", Toast.LENGTH_SHORT).show()
-                    }
-
-                    PostUIState.Loading -> {
-                        Dialog(onDismissRequest = {}) {
-                            Box(
-                                Modifier
-                                    .fillMaxWidth(.8f)
-                                    .aspectRatio(1f)
-                                    .background(MaterialTheme.colorScheme.surface)
-                            ) {
-                                CircularProgressIndicator(Modifier.align(Alignment.Center))
-                            }
-                        }
-                    }
-
-                    PostUIState.None -> {}
-                    PostUIState.Success -> {
-                        Toast.makeText(context, "成功", Toast.LENGTH_SHORT).show()
-                    }
-                }
+                PostUIStateDialog(postUIState = modifierResultUIState)
             }
         }
     }

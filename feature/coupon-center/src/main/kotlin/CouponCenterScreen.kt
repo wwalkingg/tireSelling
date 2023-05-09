@@ -99,7 +99,7 @@ fun CouponCenterScreen(component: CouponCenterComponent) {
                         ) {
                             items(coupons) { coupon ->
                                 CouponWithDetailButtonSheet(
-                                    modifier = Modifier.size(180.dp, 100.dp),
+                                    modifier = Modifier.size(160.dp, 80.dp),
                                     coupon,
                                     onReceiveClick = {
                                         component.modelState.receiveCoupon(coupon)
@@ -150,7 +150,6 @@ fun CouponCenterScreen(component: CouponCenterComponent) {
                                             couponPackage = couponPackage,
                                             onReceiveClick = {
                                                 component.modelState.receiveCouponPackage(couponPackage)
-                                                isVisible = false
                                             }
                                         )
                                     }
@@ -168,22 +167,7 @@ fun CouponCenterScreen(component: CouponCenterComponent) {
             }
         }
         val receiveCoupon by component.modelState.receiveCouponUIStateFlow.collectAsState()
-        when (receiveCoupon) {
-            is PostUIState.Error -> DialogContent {
-                Text(text = "出错了")
-            }
-
-            PostUIState.Loading -> DialogContent {
-                CircularProgressIndicator()
-            }
-
-            PostUIState.None -> {}
-            PostUIState.Success -> {
-                DialogContent {
-                    Icon(imageVector = Icons.Default.Check, contentDescription = null, tint = Color.Green)
-                }
-            }
-        }
+        PostUIStateDialog(postUIState = receiveCoupon)
     }
 }
 

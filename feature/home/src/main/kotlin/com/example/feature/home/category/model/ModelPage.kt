@@ -33,7 +33,10 @@ fun ModelPage(models: PersistentList<Model>) {
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(items = models) { model ->
-            ModelItem(model = model, onClick = { navigation.push(NavConfig.ModelDetail(model.id))})
+            ModelItem(
+                modifier = Modifier.height(120.dp),
+                model = model,
+                onClick = { navigation.push(NavConfig.ModelDetail(model.id)) })
         }
     }
 }
@@ -62,16 +65,14 @@ fun ModelItem(modifier: Modifier = Modifier, model: Model, onClick: () -> Unit) 
             modifier = Modifier.horizontalScroll(rememberScrollState())
         ) {
             Spacer(modifier = Modifier.width(5.dp))
-            model.compatibleVehicles.split(" ").forEach { vehicle ->
-                Text(
-                    text = vehicle, style = MaterialTheme.typography.labelSmall,
-                    modifier = Modifier
-                        .shadow(6.dp, shape = MaterialTheme.shapes.small)
-                        .clip(MaterialTheme.shapes.small)
-                        .background(MaterialTheme.colorScheme.secondaryContainer)
-                        .padding(4.dp, 2.dp)
-                )
-            }
+            Text(
+                text = model.compatibleVehicles, style = MaterialTheme.typography.labelSmall,
+                modifier = Modifier
+                    .shadow(6.dp, shape = MaterialTheme.shapes.small)
+                    .clip(MaterialTheme.shapes.small)
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
+                    .padding(4.dp, 2.dp)
+            )
             Spacer(modifier = Modifier.width(5.dp))
         }
 

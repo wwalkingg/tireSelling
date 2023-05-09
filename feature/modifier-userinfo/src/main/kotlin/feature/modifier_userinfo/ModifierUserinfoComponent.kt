@@ -56,7 +56,7 @@ internal class ModifierUserinfoModelState : ModelState() {
                     _modifierResultUIStateFlow.value = PostUIState.Error(it)
                 }
                 .collect {
-                    _modifierResultUIStateFlow.value = PostUIState.Success
+                    _modifierResultUIStateFlow.value = PostUIState.Success("修改成功")
                 }
         }
     }

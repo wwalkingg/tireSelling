@@ -31,7 +31,7 @@ import kotlinx.collections.immutable.toPersistentList
 fun RecommendProducts(modifier: Modifier = Modifier, products: PersistentList<Product>) {
     Column(modifier.padding(10.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(painter = painterResource(id = Icons.hotInfo), contentDescription = null, tint = Color.Red)
+            Icon(painter = painterResource(id = Icons.hotInfo), contentDescription = null, tint = Color.Red,modifier = Modifier.size(20.dp))
             Text(text = "为您推荐", style = MaterialTheme.typography.titleLarge, color = Color.Red)
         }
         BoxWithConstraints {
